@@ -1,0 +1,374 @@
+:root {
+  --font-outfit: "Outfit", sans-serif;
+  --font-system:
+    -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto,
+    sans-serif;
+}
+
+@theme inline {
+  --font-outfit: var(--font-outfit);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* Heading — Portal type ramp */
+
+@utility type-heading-h1 {
+  font-family: var(--font-outfit);
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.148px;
+}
+
+@utility type-heading-h2 {
+  font-family: var(--font-outfit);
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: 0.13px;
+}
+
+@utility type-heading-h3 {
+  font-family: var(--font-outfit);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.017px;
+}
+
+@utility type-heading-h4-semi {
+  font-family: var(--font-outfit);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: 0.148px;
+}
+
+@utility type-heading-h4 {
+  font-family: var(--font-outfit);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.35;
+  letter-spacing: 0.148px;
+}
+
+/* Body — Portal type ramp */
+
+@utility type-body-xl {
+  font-family: var(--font-system);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 26px;
+  letter-spacing: -0.056px;
+}
+
+@utility type-body-lg {
+  font-family: var(--font-system);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: -0.05px;
+}
+
+@utility type-body-lg-semi {
+  font-family: var(--font-system);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: -0.05px;
+}
+
+@utility type-body-md {
+  font-family: var(--font-system);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: -0.05px;
+}
+
+@utility type-body-md-semi {
+  font-family: var(--font-system);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  letter-spacing: -0.05px;
+}
+
+@utility type-body-sm {
+  font-family: var(--font-system);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 18px;
+  letter-spacing: 0;
+}
+
+@utility type-body-sm-medium {
+  font-family: var(--font-system);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 18px;
+  letter-spacing: 0;
+}
+
+@utility type-body-caption {
+  font-family: var(--font-system);
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 12px;
+  letter-spacing: 0;
+}
+
+@utility type-body-caption-uppercase {
+  font-family: var(--font-system);
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 12px;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+/* Legacy aliases — outfit/system variants map to the Portal ramp */
+
+@utility type-body-outfit-lg {
+  font-family: var(--font-outfit);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 26px;
+  letter-spacing: -0.056px;
+}
+
+@utility type-body-outfit-md {
+  font-family: var(--font-outfit);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: -0.05px;
+}
+
+@utility type-body-outfit-sm {
+  font-family: var(--font-outfit);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 18px;
+  letter-spacing: 0;
+}
+
+@utility type-body-outfit-lg-semi {
+  font-family: var(--font-outfit);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 26px;
+  letter-spacing: -0.056px;
+}
+
+@utility type-body-outfit-md-semi {
+  font-family: var(--font-outfit);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: -0.05px;
+}
+
+@utility type-body-outfit-sm-semi {
+  font-family: var(--font-outfit);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 18px;
+  letter-spacing: 0;
+}
+
+@utility type-body-system-lg {
+  font-family: var(--font-system);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 26px;
+  letter-spacing: -0.056px;
+}
+
+@utility type-body-system-md {
+  font-family: var(--font-system);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: -0.05px;
+}
+
+@utility type-body-system-sm {
+  font-family: var(--font-system);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 18px;
+  letter-spacing: 0;
+}
+
+@utility type-body-system-lg-semi {
+  font-family: var(--font-system);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 26px;
+  letter-spacing: -0.056px;
+}
+
+@utility type-body-system-md-semi {
+  font-family: var(--font-system);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: -0.05px;
+}
+
+@utility type-body-system-sm-semi {
+  font-family: var(--font-system);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 18px;
+  letter-spacing: 0;
+}
+
+/* App-specific styles (not in Portal type ramp) */
+
+@utility type-coach-chat {
+  font-family: var(--font-system);
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.3;
+  letter-spacing: -0.41px;
+}
+
+@utility type-coach-remark {
+  font-family: var(--font-system);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.05px;
+}
+
+@utility type-coach-name {
+  font-family: var(--font-outfit);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: 0.148px;
+  text-transform: uppercase;
+}
+
+@utility type-counter-lg {
+  font-family: var(--font-outfit);
+  font-size: 160px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 1.2px;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+@utility type-counter-md {
+  font-family: var(--font-outfit);
+  font-size: 80px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.6px;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+@utility type-counter-sm {
+  font-family: var(--font-outfit);
+  font-size: 60px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.156px;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+@utility type-counter-xs {
+  font-family: var(--font-outfit);
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.156px;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+@utility type-counter-body-semi {
+  font-family: var(--font-outfit);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: 0.156px;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+@utility type-ui-top-bar-semi {
+  font-family: var(--font-system);
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.41px;
+}
+
+@utility type-ui-top-bar {
+  font-family: var(--font-system);
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.41px;
+}
+
+@utility type-ui-daily-insight-title {
+  font-family: var(--font-system);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.41px;
+}
+
+@utility type-ui-daily-insight-category {
+  font-family: var(--font-system);
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.6;
+  letter-spacing: -0.41px;
+  text-transform: uppercase;
+}
+
+@layer base {
+  h1 {
+    font-family: var(--font-outfit);
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: 0.148px;
+  }
+
+  h2 {
+    font-family: var(--font-outfit);
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: 0.13px;
+  }
+
+  h3 {
+    font-family: var(--font-outfit);
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: 0.017px;
+  }
+
+  h4 {
+    font-family: var(--font-outfit);
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.35;
+    letter-spacing: 0.148px;
+  }
+
+  p {
+    font-family: var(--font-system);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: -0.05px;
+  }
+}

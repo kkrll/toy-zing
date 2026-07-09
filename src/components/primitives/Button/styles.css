@@ -1,0 +1,68 @@
+.primitive-button {
+  transition:
+    transform 160ms ease,
+    opacity 160ms ease,
+    background-color 160ms ease,
+    color 160ms ease,
+    box-shadow 160ms ease;
+  transform: translateY(0) scale(1);
+}
+
+.primitive-button:not(:disabled) {
+  cursor: pointer;
+}
+
+.primitive-button:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+.primitive-button[data-pressed="true"],
+.primitive-button:not(:disabled):active {
+  transform: translateY(1px) scale(0.985);
+}
+
+.primitive-button[data-variant="ghost"],
+.primitive-button[data-variant="ghostPromo"] {
+  background-color: transparent;
+}
+
+.primitive-button[data-variant="ghost"]:not([data-dark-bg="true"]):hover,
+.primitive-button[data-variant="ghostPromo"]:hover {
+  background-color: var(--color-grey-100);
+}
+
+.primitive-button[data-variant="ghost"][data-dark-bg="true"]:hover {
+  background-color: var(--color-white-24);
+}
+
+.primitive-button[data-variant="ghost"][data-dark-bg="true"][data-pressed="true"],
+.primitive-button[data-variant="ghost"][data-dark-bg="true"]:not(:disabled):active {
+  background-color: var(--color-white-24);
+}
+
+.primitive-button__label {
+  min-width: 0;
+}
+
+.primitive-button__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: currentColor;
+  transition: transform 160ms ease, opacity 160ms ease;
+}
+
+.primitive-button__icon > * {
+  color: inherit;
+}
+
+.primitive-button__icon svg {
+  color: inherit;
+}
+
+.primitive-button[data-pressed="true"] .primitive-button__icon,
+.primitive-button:not(:disabled):active .primitive-button__icon {
+  transform: scale(0.97);
+}

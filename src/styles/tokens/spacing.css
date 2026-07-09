@@ -1,0 +1,158 @@
+:root {
+  --spacing-0: 0px;
+  --spacing-50: 4px;
+  --spacing-100: 8px;
+  --spacing-150: 12px;
+  --spacing-200: 16px;
+  --spacing-300: 24px;
+  --spacing-400: 32px;
+  --spacing-500: 40px;
+  --spacing-600: 48px;
+  --spacing-700: 56px;
+  --spacing-800: 64px;
+  --spacing-900: 72px;
+  --spacing-1000: 80px;
+
+  --spacing-h-gap-options: var(--spacing-0); /* 0px */
+  --spacing-h-gap-selectors: var(--spacing-50); /* 4px */
+  --spacing-h-gap-chips: var(--spacing-100); /* 8px */
+  --spacing-h-pad-card-sm: var(--spacing-150); /* 12px */
+  --spacing-h-pad-card: var(--spacing-200); /* 16px */
+  --spacing-h-pad-screen: var(--spacing-300); /* 24px */
+  --spacing-v-gap-options: var(--spacing-0); /* 0px */
+  --spacing-v-gap-selectors: var(--spacing-50); /* 4px */
+  --spacing-v-gap-text: var(--spacing-100); /* 8px */
+  --spacing-v-gap-cards: var(--spacing-100); /* 8px */
+  --spacing-v-gap-buttons: var(--spacing-100); /* 8px */
+  --spacing-v-gap-label: var(--spacing-200); /* 16px */
+  --spacing-v-gap-items: var(--spacing-200); /* 16px */
+  --spacing-v-gap-content: var(--spacing-300); /* 24px */
+  --spacing-v-gap-sections: var(--spacing-400); /* 32px */
+
+  --radius-50: 4px;
+  --radius-75: 6px;
+  --radius-100: 8px;
+  --radius-150: 12px;
+  --radius-200: 16px;
+  --radius-250: 20px;
+  --radius-300: 24px;
+  --radius-400: 32px;
+  --radius-500: 40px;
+  --radius-600: 48px;
+  --radius-1000: 80px;
+  --radius-pill: 999px;
+  --radius-chip: var(--radius-100); /* 8px */
+  --radius-cell: var(--radius-150); /* 12px */
+  --radius-default: var(--radius-200); /* 16px */
+  --radius-inset: var(--radius-250); /* 20px */
+  --radius-panel: var(--radius-300); /* 24px */
+  --radius-hero: var(--radius-400); /* 32px */
+  --radius-modal: var(--radius-600); /* 48px */
+}
+
+@theme inline {
+  --spacing-0: var(--spacing-0) /* 0px */;
+  --spacing-50: var(--spacing-50) /* 4px */;
+  --spacing-100: var(--spacing-100) /* 8px */;
+  --spacing-150: var(--spacing-150) /* 12px */;
+  --spacing-200: var(--spacing-200) /* 16px */;
+  --spacing-300: var(--spacing-300) /* 24px */;
+  --spacing-400: var(--spacing-400) /* 32px */;
+  --spacing-500: var(--spacing-500) /* 40px */;
+  --spacing-600: var(--spacing-600) /* 48px */;
+  --spacing-700: var(--spacing-700) /* 56px */;
+  --spacing-800: var(--spacing-800) /* 64px */;
+  --spacing-900: var(--spacing-900) /* 72px */;
+  --spacing-1000: var(--spacing-1000) /* 80px */;
+  --spacing-h-gap-options: var(--spacing-h-gap-options) /* 0px */;
+  --spacing-h-gap-selectors: var(--spacing-h-gap-selectors) /* 4px */;
+  --spacing-h-gap-chips: var(--spacing-h-gap-chips) /* 8px */;
+  --spacing-h-pad-card-sm: var(--spacing-h-pad-card-sm) /* 12px */;
+  --spacing-h-pad-card: var(--spacing-h-pad-card) /* 16px */;
+  --spacing-h-pad-screen: var(--spacing-h-pad-screen) /* 24px */;
+  --spacing-v-gap-options: var(--spacing-v-gap-options) /* 0px */;
+  --spacing-v-gap-selectors: var(--spacing-v-gap-selectors) /* 4px */;
+  --spacing-v-gap-text: var(--spacing-v-gap-text) /* 8px */;
+  --spacing-v-gap-cards: var(--spacing-v-gap-cards) /* 8px */;
+  --spacing-v-gap-buttons: var(--spacing-v-gap-buttons) /* 8px */;
+  --spacing-v-gap-label: var(--spacing-v-gap-label) /* 16px */;
+  --spacing-v-gap-items: var(--spacing-v-gap-items) /* 16px */;
+  --spacing-v-gap-content: var(--spacing-v-gap-content) /* 24px */;
+  --spacing-v-gap-sections: var(--spacing-v-gap-sections) /* 32px */;
+}
+
+@utility radius-50 {
+    border-radius: var(--radius-50);
+}
+
+@utility radius-75 {
+    border-radius: var(--radius-75);
+}
+
+@utility radius-100 {
+    border-radius: var(--radius-100);
+}
+
+@utility radius-150 {
+    border-radius: var(--radius-150);
+}
+
+@utility radius-200 {
+    border-radius: var(--radius-200);
+}
+
+@utility radius-250 {
+    border-radius: var(--radius-250);
+}
+
+@utility radius-300 {
+    border-radius: var(--radius-300);
+}
+
+@utility radius-400 {
+    border-radius: var(--radius-400);
+}
+
+@utility radius-500 {
+    border-radius: var(--radius-500);
+}
+
+@utility radius-600 {
+    border-radius: var(--radius-600);
+}
+
+@utility radius-1000 {
+    border-radius: var(--radius-1000);
+}
+
+@utility radius-pill {
+    border-radius: var(--radius-pill);
+}
+
+@utility radius-chip {
+    border-radius: var(--radius-chip);
+}
+
+@utility radius-cell {
+    border-radius: var(--radius-cell);
+}
+
+@utility radius-default {
+    border-radius: var(--radius-default);
+}
+
+@utility radius-inset {
+    border-radius: var(--radius-inset);
+}
+
+@utility radius-panel {
+    border-radius: var(--radius-panel);
+}
+
+@utility radius-hero {
+    border-radius: var(--radius-hero);
+}
+
+@utility radius-modal {
+    border-radius: var(--radius-modal);
+}
