@@ -24,7 +24,7 @@
 @utility type-heading-h2 {
   font-family: var(--font-outfit);
   font-size: 32px;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1.15;
   letter-spacing: 0.13px;
 }
@@ -32,7 +32,7 @@
 @utility type-heading-h3 {
   font-family: var(--font-outfit);
   font-size: 24px;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1.2;
   letter-spacing: 0.017px;
 }

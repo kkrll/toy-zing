@@ -13,13 +13,16 @@ const ChartsPage = () => {
           Use <span className="text-theme-text-primary">MetricCard</span> to
           show metric trends. Pass{" "}
           <span className="text-theme-text-primary">values</span>,{" "}
-          <span className="text-theme-text-primary">type</span> (line, bar, or
-          area), <span className="text-theme-text-primary">category</span> for
-          color theming, and optional{" "}
+          <span className="text-theme-text-primary">type</span> (line, bar,
+          area, ratio-line, or stacked-area),{" "}
+          <span className="text-theme-text-primary">category</span> for color
+          theming, and optional{" "}
           <span className="text-theme-text-primary">target</span>,{" "}
           <span className="text-theme-text-primary">targetArea</span>, and{" "}
           <span className="text-theme-text-primary">unit</span> for the
-          reference line and healthy range.
+          reference line and healthy range. Pass{" "}
+          <span className="text-theme-text-primary">secondaryMetric</span> to
+          show a second value and chart series.
         </p>
       </header>
 
@@ -97,12 +100,50 @@ const ChartsPage = () => {
             type="area"
           />
           <MetricCard
-            title="Body"
-            values={[88, 87, 89, 88, 90, 88, 87, 89, 88, 90]}
+            title="Steps"
+            values={[12388, 12087, 789, 5886, 1290, 13388, 8723, 9889, 10288, 13090]}
+            category="activity"
+            variant={variant}
+            target={6000}
+            type="bar"
+            unit="today"
+            diff={null}
+            caption={
+              <p className="type-body-sm-medium text-theme-text-secondary">
+                5 days streak
+              </p>
+            }
+          />
+          <MetricCard
+            title="Body Scan"
+            valueLabel="Body Fat"
+            values={[27, 26, 28, 25, 24, 23]}
+            secondaryMetric={{
+              label: "Muscle Mass",
+              values: [73, 74, 72, 75, 76, 77],
+              unit: "% muscle",
+              category: "flexibility",
+            }}
             category="body"
             variant={variant}
-            target={88}
-            type="bar"
+            unit="% fat"
+            type="ratio-line"
+            showSecondaryValue
+          />
+          <MetricCard
+            title="Weekly Training Load, min"
+            values={[118, 124, 40, 228, 126, 132]}
+            secondaryMetric={{
+              values: [112, 80, 218, 114, 122, 120],
+              unit: "other",
+              label: "Secondary load",
+              category: "flexibility",
+            }}
+            category="body"
+            variant={variant}
+            unit="gym"
+            type="stacked-area"
+            showSecondaryValue
           />
         </div>
       </div>
