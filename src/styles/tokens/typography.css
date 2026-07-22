@@ -16,7 +16,7 @@
 @utility type-heading-h1 {
   font-family: var(--font-outfit);
   font-size: 40px;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1.1;
   letter-spacing: 0.148px;
 }
@@ -42,7 +42,7 @@
   font-size: 12px;
   font-weight: 600;
   line-height: 1.35;
-  letter-spacing: 0.148px;
+  text-transform: uppercase;
 }
 
 @utility type-heading-h4 {
@@ -50,7 +50,7 @@
   font-size: 12px;
   font-weight: 400;
   line-height: 1.35;
-  letter-spacing: 0.148px;
+  text-transform: uppercase;
 }
 
 /* Body — Portal type ramp */

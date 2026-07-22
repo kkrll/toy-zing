@@ -53,3 +53,20 @@ export const AiSparklesIcon = ({ size = 24, className }: IconProps) => (
     />
   </svg>
 );
+
+export const LogoIcon = ({ size = 60, className }: IconProps) => (
+  <svg
+    width={size}
+    height={size/2*3}
+    viewBox="0 0 60 40"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className={cn(
+      "block shrink-0 select-none text-foreground transition-all duration-100",
+      className,
+    )}
+    aria-hidden="true"
+  >
+    <path d="M16.1595 10.1402L0.239704 37.466C-0.676867 39.0392 1.22731 40.7349 2.70821 39.6642L21.5631 26.032C22.1053 25.64 22.8296 25.6017 23.4108 25.9342L34.5729 32.3207C37.8178 34.1773 41.9671 33.0755 43.8405 29.8598L59.7603 2.53402C60.6769 0.960762 58.7727 -0.734949 57.2918 0.33576L38.4369 13.968C37.8948 14.36 37.1704 14.3983 36.5892 14.0658L25.4271 7.67934C22.1822 5.82275 18.0329 6.92453 16.1595 10.1402Z" fill="currentColor"/>
+  </svg>
+);

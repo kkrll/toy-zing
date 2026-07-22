@@ -11,3 +11,28 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans);
 }
+
+/* Frosted “crown”: blur on the shell, inset fill on ::after */
+.crown {
+    backdrop-filter: blur(24px); /* Lightning CSS auto-adds -webkit- prefix */
+}
+
+.crown::before {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.crown::before {
+  inset: 4px;
+  border-radius: inherit;
+  border-radius: calc(var(--radius-400) - var(--spacing-50));
+  background-color: color-mix(in srgb, var(--ds-theme-bg-100) 50%, transparent);
+  backdrop-filter: blur(24px); /* Lightning CSS auto-adds -webkit- prefix */
+}
+
+.crown > * {
+    position: relative;
+    z-index: 1;
+}
