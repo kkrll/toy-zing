@@ -30,41 +30,45 @@ const PRESS_QUOTES = [
 
 export const Value = () => {
   return (
-    <section>
-      <h2>The next standard of member experience is intelligently personalized</h2>
-      <p>AI Coach inside your existing gym app</p>
-      <p>Integrated in minutes</p>
+    <section className="bg-theme-bg-100 rounded-3xl px-14 py-16 flex flex-col gap-8">
+      <div className="flex flex-col gap-3">
+        <h2 className="type-heading-h2">The next standard of member experience is intelligently personalized</h2>
+        <p className="type-body-lg text-theme-text-secondary">AI Coach inside your existing gym app</p>
+        <p className="type-body-lg text-theme-text-secondary">Integrated in minutes</p>
+      </div>
 
-      <hr />
+      <hr className="border-theme-bg-300" />
 
-      <h3>Built for fitness operators</h3>
+      <div className="flex flex-col gap-6">
+        <h3 className="type-heading-h3">Built for fitness operators</h3>
 
-      <div>
-        <div>
-          <h4>Business value</h4>
-          <ul>
-            {BUSINESS_VALUE.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </div>
+        <div className="grid grid-cols-2 gap-8">
+          <div className="flex flex-col gap-3">
+            <h4 className="type-heading-h4">Business value</h4>
+            <ul className="flex flex-col gap-2">
+              {BUSINESS_VALUE.map((item) => (
+                <li key={item} className="type-body-md text-theme-text-secondary">{item}</li>
+              ))}
+            </ul>
+          </div>
 
-        <div>
-          <h4>Operational value</h4>
-          <ul>
-            {OPERATIONAL_VALUE.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
+          <div className="flex flex-col gap-3">
+            <h4 className="type-heading-h4">Operational value</h4>
+            <ul className="flex flex-col gap-2">
+              {OPERATIONAL_VALUE.map((item) => (
+                <li key={item} className="type-body-md text-theme-text-secondary">{item}</li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
 
-      <div>
+      <div className="grid grid-cols-3 gap-6">
         {PRESS_QUOTES.map((item) => (
-          <figure key={item.source}>
-            <figcaption>{item.source}</figcaption>
+          <figure key={item.source} className="flex flex-col gap-2">
+            <figcaption className="type-body-md-semi">{item.source}</figcaption>
             <blockquote>
-              <p>“{item.quote}”</p>
+              <p className="type-body-md text-theme-text-secondary">“{item.quote}”</p>
             </blockquote>
           </figure>
         ))}

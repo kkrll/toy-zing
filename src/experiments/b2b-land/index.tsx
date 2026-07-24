@@ -15,7 +15,7 @@ const B2BLand = () => {
   return (
     <>
       <Navigation />
-      <main className="p-4 bg-theme-bg-chat flex flex-col gap-6">
+      <main className="p-4 bg-theme-bg-chat flex flex-col gap-4">
         <Hero />
         <Problems />
         <Infrastructure />

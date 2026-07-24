@@ -14,26 +14,26 @@ const LTV_SEGMENTS = [
 
 export const BusinessValue = () => {
   return (
-    <section>
-      <h2>How Zing creates business value</h2>
+    <section className="bg-theme-bg-100 rounded-3xl px-14 py-16 flex flex-col gap-8">
+      <h2 className="type-heading-h2">How Zing creates business value</h2>
 
-      <ol>
+      <ol className="flex flex-col gap-2">
         {VALUE_CHAIN.map((step, index) => (
-          <li key={step}>
-            <p>{step}</p>
-            {index < VALUE_CHAIN.length - 1 ? <p>↓</p> : null}
+          <li key={step} className="flex flex-col gap-2">
+            <p className="type-body-lg">{step}</p>
+            {index < VALUE_CHAIN.length - 1 ? <p className="text-theme-text-secondary">↓</p> : null}
           </li>
         ))}
       </ol>
 
       {/* Visual: Member LTV illustrative stacked bar — Today vs With Zing */}
-      <figure>
-        <p>MEMBER LTV · ILLUSTRATIVE</p>
+      <figure className="flex flex-col gap-4">
+        <p className="type-heading-h4 text-theme-text-secondary">MEMBER LTV · ILLUSTRATIVE</p>
 
         <div aria-label="Member LTV comparison: Today vs With Zing">
           <div>
             <div aria-label="Today: membership base" />
-            <span>Today</span>
+            <span className="type-body-md">Today</span>
           </div>
 
           {/* [dynamic graph: the right column growths] */}
@@ -43,13 +43,13 @@ export const BusinessValue = () => {
                 <div key={segment.key} data-segment={segment.key} />
               ))}
             </div>
-            <span>With Zing</span>
+            <span className="type-body-md">With Zing</span>
           </div>
         </div>
 
-        <ul>
+        <ul className="flex gap-6">
           {LTV_SEGMENTS.map((segment) => (
-            <li key={segment.key}>{segment.label}</li>
+            <li key={segment.key} className="type-body-sm text-theme-text-secondary">{segment.label}</li>
           ))}
         </ul>
       </figure>

@@ -51,34 +51,40 @@ const DEPLOYMENT_MODELS = [
 
 export const Deploy = () => {
   return (
-    <section>
-      <h2>One AI platform. Three ways to launch.</h2>
-      <p>
-        Deploy Zing the way that best fits your business – from a branded
-        experience in days to a fully embedded SDK or a complete white-label
-        application.
-      </p>
+    <section className="bg-theme-bg-100 rounded-3xl px-14 py-16 flex flex-col gap-8">
+      <div className="flex flex-col gap-3">
+        <h2 className="type-heading-h2">One AI platform. Three ways to launch.</h2>
+        <p className="type-body-lg text-theme-text-secondary">
+          Deploy Zing the way that best fits your business – from a branded
+          experience in days to a fully embedded SDK or a complete white-label
+          application.
+        </p>
+      </div>
 
-      <h3>Choose the deployment model that fits your business</h3>
+      <h3 className="type-heading-h3">Choose the deployment model that fits your business</h3>
 
-      <div>
+      <div className="grid grid-cols-3 gap-6">
         {DEPLOYMENT_MODELS.map((model) => (
-          <article key={model.title}>
-            <h4>{model.title}</h4>
-            <p>{model.subtitle}</p>
-            <p>{model.description}</p>
+          <article key={model.title} className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
+              <h4 className="type-body-lg-semi">{model.title}</h4>
+              <p className="type-body-md text-theme-text-secondary">{model.subtitle}</p>
+              <p className="type-body-md text-theme-text-secondary">{model.description}</p>
+            </div>
 
-            <ul>
+            <ul className="flex flex-col gap-1">
               {model.features.map((feature) => (
-                <li key={feature}>{feature}</li>
+                <li key={feature} className="type-body-sm text-theme-text-secondary">{feature}</li>
               ))}
             </ul>
 
-            <p>
-              <strong>Ideal for:</strong> {model.idealFor}
+            <p className="type-body-sm text-theme-text-secondary">
+              <strong className="type-body-sm-medium text-theme-text-primary">Ideal for:</strong> {model.idealFor}
             </p>
 
-            <button type="button">{model.cta}</button>
+            <button type="button" className="type-body-md-semi self-start">
+              {model.cta}
+            </button>
           </article>
         ))}
       </div>

@@ -28,17 +28,19 @@ const STEPS = [
 
 export const Integration = () => {
   return (
-    <section>
-      <h2>Integrated in minutes. Easy to scale.</h2>
+    <section className="bg-theme-bg-100 rounded-3xl px-14 py-16 flex flex-col gap-8">
+      <h2 className="type-heading-h2">Integrated in minutes. Easy to scale.</h2>
 
-      <ol>
+      <ol className="flex flex-col gap-6">
         {STEPS.map((step) => (
-          <li key={step.number}>
-            <h3>
+          <li key={step.number} className="flex flex-col gap-2">
+            <h3 className="type-heading-h3">
               {step.number}. {step.title}
             </h3>
-            <p>{step.description}</p>
-            {"note" in step && step.note ? <p>{step.note}</p> : null}
+            <p className="type-body-lg text-theme-text-secondary">{step.description}</p>
+            {"note" in step && step.note ? (
+              <p className="type-body-md text-theme-text-secondary">{step.note}</p>
+            ) : null}
           </li>
         ))}
       </ol>
