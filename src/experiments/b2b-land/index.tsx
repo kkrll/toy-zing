@@ -15,12 +15,11 @@ const B2BLand = () => {
   return (
     <>
       <Navigation />
-      <main className="p-4 bg-theme-bg-chat flex flex-col gap-4">
+      <main className="p-4 max-w-screen-xl mx-auto flex flex-col gap-4">
         <Hero />
         <Problems />
         <Infrastructure />
         <Value />
-        <BusinessValue />
         <Validated />
         <Experience />
         <Aiden />

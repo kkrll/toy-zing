@@ -42,7 +42,7 @@ const HERO_IMG = "/img/Member%20page/desktop.webp";
 
 export const Hero = () => {
   return (
-    <section className="min-h-svh flex flex-col gap-24 px-14 pb-12 pt-28 bg-theme-bg-chat rounded-3xl">
+    <section className="min-h-svh flex flex-col gap-12 pb-12 pt-28 ">
       <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-3">
         <h1 className="type-heading-h1">Turn every membership <br/>into a personally coached journey</h1>
@@ -53,10 +53,11 @@ export const Hero = () => {
         </div>
         <div className="flex gap-4">
           <a href={DEMO_CALENDAR_URL} className="px-4 py-3 bg-theme-fg-100 text-theme-bg-100 type-body-lg-semi rounded-2xl min-w-3xs">Get Demo →</a>
-          <button type="button" className="px-4 py-3 bg-theme-bg-100 type-body-lg-semi rounded-2xl min-w-3xs">Experience Zing Coach →</button>
+          <button type="button" className="px-4 py-3 bg-theme-bg-chat type-body-lg-semi rounded-2xl min-w-3xs">Experience Zing Coach →</button>
         </div>
       </div>
 
+      <div className="bg-theme-bg-chat rounded-4xl p-4 flex flex-col gap-12">
       <div className="grid grid-cols-[3fr_1fr] gap-4 w-full items-stretch">
         <img
           src={HERO_IMG}
@@ -73,7 +74,7 @@ export const Hero = () => {
         </ul>
         </div>
 
-        <div className="flex flex-col items-center gap-8">
+        <div className="flex flex-col items-center gap-8 p-8">
           <h4 className="type-heading-h4 text-theme-text-secondary">Trusted by leading names in sports and fitness</h4>
           <ul className="flex items-stretch gap-8 w-full">
             {TRUST_ITEMS.partners.map((item) => (
@@ -93,6 +94,7 @@ export const Hero = () => {
             ))}
           </ul>
         </div>
+      </div>
     </section>
   );
 };
