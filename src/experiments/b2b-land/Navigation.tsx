@@ -7,10 +7,15 @@ const DEMO_CALENDAR_URL = "#";
 const LINKS = [
   { label: "About", href: "#about" },
   { label: "Integration", href: "#integration" },
-  { label: "Examples", href: "#examples" },
 ] as const;
 
-export const Navigation = () => {
+export const Navigation = ({
+  setHeroVersion,
+  heroVersion,
+}: {
+  setHeroVersion: React.Dispatch<React.SetStateAction<1 | 2>>;
+  heroVersion: 1 | 2;
+}) => {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -32,7 +37,10 @@ export const Navigation = () => {
           : "top-4 rounded-none bg-transparent md:top-8",
       ].join(" ")}
     >
-      <a href="#" className="type-body-lg-semi flex shrink-0 items-center gap-2">
+      <a
+        href="#"
+        className="type-body-lg-semi flex shrink-0 items-center gap-2"
+      >
         <LogoIcon size={24} />
         Zing Coach
       </a>
@@ -49,6 +57,14 @@ export const Navigation = () => {
               </a>
             </li>
           ))}
+          <li>
+            <button
+              onClick={() => setHeroVersion(heroVersion === 1 ? 2 : 1)}
+              className="type-body-md text-theme-text-secondary transition-colors hover:text-theme-text-primary"
+            >
+              Switch version
+            </button>
+          </li>
         </ul>
 
         <div

@@ -6,9 +6,9 @@ import { Layer, Rectangle, ResponsiveContainer, Sankey } from "recharts";
 const NODES = [
   { name: "All members" }, // 0
   { name: "Work with a PT" }, // 1
-  { name: "Without a PT" }, // 2
-  { name: "Retained" }, // 4
-  { name: "Churn" }, // 5
+  { name: "Start training without a PT" }, // 2
+  { name: "Continue membership" }, // 4
+  { name: "Churn without PT attention" }, // 5
 ];
 
 const LINKS = [
@@ -84,7 +84,7 @@ const renderNode = ({
       </text>
       <text
         x={labelX}
-        y={endY- 28}
+        y={endY - 28}
         textAnchor={anchor}
         dominantBaseline="middle"
         className="type-body-sm fill-theme-text-orchid"
@@ -133,7 +133,7 @@ export const ProblemsFlow = () => {
         <Sankey
           data={DATA}
           nodeWidth={8}
-          nodePadding={48}
+          nodePadding={80}
           linkCurvature={0.5}
           sort={false}
           margin={{ top: 40, right: 0, bottom: 0, left: 0 }}

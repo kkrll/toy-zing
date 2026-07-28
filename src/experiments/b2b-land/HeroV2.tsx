@@ -40,14 +40,13 @@ const DEMO_CALENDAR_URL = "#";
 
 const HERO_IMG = "/img/Member%20page/desktop.webp";
 
-export const Hero = () => {
+export const HeroV2 = () => {
   return (
     <section className="flex min-h-svh flex-col gap-8 pt-24 md:gap-12 md:pt-28">
       <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-3">
           <h1 className="type-heading-h1 text-balance">
-            Turn every membership{" "}
-            <br className="hidden sm:block" />
+            Turn every membership <br className="hidden sm:block" />
             into a personally coached journey
           </h1>
           <p className="type-body-lg max-w-3xl text-theme-text-secondary">

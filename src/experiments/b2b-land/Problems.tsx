@@ -6,11 +6,13 @@ import { ProblemsFlow } from "./ProblemsFlow";
 
 const Quote = ({ className }: { className?: string }) => {
   return (
-    <div className={(cn("flex flex-col gap-2 w-fit", className))}>
+    <div className={cn("flex flex-col gap-2 w-fit", className)}>
       <blockquote className="flex flex-col type-heading-h3 text-theme-text-secondary italic p-8">
-        <p >The problem isn't retention.</p>
-        <p >It’s coaching at scale.</p>
-        <p className="text-balance">The highest rate of churn occurs before habits have formed…</p>
+        <p>The problem isn't retention.</p>
+        <p>It’s coaching at scale.</p>
+        <p className="text-balance">
+          The highest rate of churn occurs before habits have formed…
+        </p>
         <footer className="type-body-md text-theme-text-primary mt-4">
           — Will Orr, CEO The Gym Group
         </footer>
@@ -31,7 +33,7 @@ const Graph = ({ version }: { version: "v1" | "v2" }) => {
         <div className="flex flex-col gap-6 px-2 md:contents">
           <div
             className={cn(
-              "z-10 max-w-2xs text-theme-text-orchid md:absolute md:left-16 md:top-38 md:ml-6",
+              "z-10 max-w-2xs text-theme-text-orchid md:absolute md:left-16 md:top-44 md:ml-6",
             )}
           >
             <p className="type-heading-h3 text-balance pb-2">
@@ -44,7 +46,7 @@ const Graph = ({ version }: { version: "v1" | "v2" }) => {
           </div>
           <div
             className={cn(
-              "z-10 max-w-xs text-theme-text-orchid md:absolute md:bottom-18 md:left-[52%] md:ml-6 md:max-w-[320px]",
+              "z-10 max-w-xs text-theme-text-orchid md:absolute md:bottom-16 md:left-[52%] md:ml-6 md:max-w-[320px]",
             )}
           >
             <p className="type-heading-h3 text-balance pb-2">
@@ -211,8 +213,7 @@ export const Problems = () => {
     <section className="flex flex-col overflow-hidden rounded-3xl bg-linear-to-b from-theme-bg-200 to-theme-bg-orchid-100 pt-10 md:rounded-4xl md:pt-16">
       <div className="flex flex-col gap-4 px-4 md:px-14">
         <h2 className="type-heading-h1 text-balance">
-          95% of your members{" "}
-          <br className="hidden sm:block" />
+          95% of your members <br className="hidden sm:block" />
           never receive coaching
         </h2>
 

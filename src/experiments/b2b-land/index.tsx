@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Aiden } from "./Aiden";
 import { CTA } from "./CTA";
 import { Deploy } from "./Deploy";
 import { Experience } from "./Experience";
-import { Hero } from "./Hero";
+import { HeroV1 } from "./HeroV1";
+import { HeroV2 } from "./HeroV2";
 import { Infrastructure } from "./Infrastructure";
 import { Integration } from "./Integration";
 import { Navigation } from "./Navigation";
@@ -71,12 +72,14 @@ const useForceLightScheme = () => {
 
 const B2BLand = () => {
   useForceLightScheme();
+  const [heroVersion, setHeroVersion] = useState<1 | 2>(1);
 
   return (
     <>
-      <Navigation />
+      <Navigation setHeroVersion={setHeroVersion} heroVersion={heroVersion} />
       <main className="mx-auto flex w-full max-w-screen-xl flex-col gap-4 p-2 sm:p-4">
-        <Hero />
+        {heroVersion === 1 && <HeroV1 />}
+        {heroVersion === 2 && <HeroV2 />}
         <Problems />
         <Infrastructure />
         <Value />

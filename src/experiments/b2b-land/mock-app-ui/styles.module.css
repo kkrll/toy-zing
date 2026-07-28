@@ -1,0 +1,814 @@
+/* Scoped mock phone UI styles */
+
+.root :global(.screen-row) {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-bottom: 40px;
+}
+
+.root :global(.phone) {
+  display: flex;
+  height: 720px;
+  justify-content: center;
+  width: 340px;
+}
+
+.root :global(.phone-shell) {
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 340px;
+  height: 720px;
+  max-width: 340px;
+  overflow: hidden;
+  position: relative;
+}
+
+.root :global(.phone-border-radius) {
+  border-radius: 56px;
+  corner-shape: superellipse(1.69);
+}
+
+.root :global(.status-row) {
+  align-items: center;
+  display: flex;
+  font-size: 12px;
+  font-weight: 700;
+  justify-content: space-between;
+  padding: 4px 24px;
+}
+
+.root :global(.hero-card) {
+  border-radius: 0 0 40px 40px;
+}
+
+.root :global(.hero-card),
+.root :global(.metric-card) {
+  background-color: #fff;
+  padding: 8px;
+}
+
+.root :global(.hero-card.home-workout-hero) {
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 12px 24px 8px;
+  position: relative;
+}
+
+.root :global(.home-workout-calendar) {
+  display: flex;
+  gap: 2px;
+  justify-content: space-between;
+  position: relative;
+  z-index: 1;
+}
+
+.root :global(.home-workout-day) {
+  align-items: center;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.root :global(.home-workout-day-label) {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.root :global(.home-workout-day-circle) {
+  align-items: center;
+  border: 2px solid;
+  border-radius: 999px;
+  display: flex;
+  height: 28px;
+  justify-content: center;
+  width: 28px;
+}
+
+.root :global(.hero-card.home-workout-hero .home-workout-day-circle--today) {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.root :global(.hero-card.home-workout-hero
+  .home-workout-day-circle:not(.home-workout-day-circle--today)) {
+  border-color: rgba(0, 0, 0, 0.16);
+}
+
+.root :global(.hero-card.home-workout-hero
+  .home-workout-day-circle:not(.home-workout-day-circle--today)
+  .home-workout-day-marker) {
+  color: rgba(255, 255, 255, 0.64);
+}
+
+.root :global(.hero-card.home-workout-hero
+  .home-workout-day-circle--muted:not(.home-workout-day-circle--today)
+  .home-workout-day-marker) {
+  color: rgba(255, 255, 255, 0.38);
+}
+
+.root :global(.home-workout-rule) {
+  flex-shrink: 0;
+  height: 1px;
+  margin: 16px 0 12px;
+  position: relative;
+  width: 100%;
+  z-index: 1;
+}
+
+.root :global(.hero-card.home-workout-hero .home-workout-rule) {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.root :global(.home-workout-greet) {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.root :global(.home-workout-title) {
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 0.017px;
+  margin: 0;
+}
+
+.root :global(.home-workout-subtitle) {
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%;
+  letter-spacing: -0.05px;
+}
+
+.root :global(.home-workout-tag) {
+  align-items: center;
+  align-self: flex-start;
+  background-color: rgba(255, 255, 255, 0.24);
+  border-radius: 24px;
+  display: flex;
+  font-size: 12px;
+  gap: 2px;
+  margin-bottom: 8px;
+  padding: 0 12px 0 4px;
+}
+
+.root :global(.home-workout-tag-icon) {
+  align-items: center;
+  display: flex;
+  flex-shrink: 0;
+  height: 24px;
+  justify-content: center;
+  width: 24px;
+}
+
+.root :global(.sr-only) {
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.root :global(.home-workout-block) {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 4px;
+  position: relative;
+  z-index: 1;
+}
+
+.root :global(.home-workout-duration) {
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 110%;
+  letter-spacing: 0.148px;
+  margin: 0;
+}
+
+.root :global(.home-workout-meta) {
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 120%;
+  letter-spacing: var(--font-spacing, -0.41px);
+  margin-bottom: 16px;
+}
+
+.root :global(.home-workout-thumbs) {
+  align-items: center;
+  display: flex;
+  gap: 6px;
+  margin-top: 2px;
+  min-width: 0;
+}
+
+.root :global(.home-workout-thumb-row) {
+  display: flex;
+  flex: 1;
+  gap: 4px;
+  mask-image: linear-gradient(90deg, #000 0%, #000 72%, transparent 100%);
+  min-width: 0;
+  overflow: hidden;
+  padding: 2px 0;
+}
+
+.root :global(.home-workout-thumb-strip) {
+  border: 0;
+  display: block;
+  flex: 1;
+  height: 44px;
+  min-width: 0;
+  object-fit: cover;
+}
+
+.root :global(.home-workout-next),
+.root :global(.weekly-progress-card__chevron-btn),
+.root :global(.icon-button),
+.root :global(.preworkout-toggle),
+.root :global(.preworkout-icon-btn),
+.root :global(.preworkout-add-btn),
+.root :global(.preworkout-add-circle) {
+  border: 0;
+  cursor: default;
+}
+
+.root :global(.home-workout-next) {
+  align-items: center;
+  appearance: none;
+  border-radius: 16px;
+  display: flex;
+  flex-shrink: 0;
+  font: inherit;
+  height: 44px;
+  justify-content: center;
+  padding: 0;
+  width: 44px;
+}
+
+.root :global(.hero-card.home-workout-hero .home-workout-next) {
+  background-color: #fff;
+}
+
+.root :global(.home-workout-next-arrow) {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1;
+  color: #000;
+}
+
+.root :global(.home-workout-pager) {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  margin-top: 2px;
+  position: relative;
+  z-index: 1;
+}
+
+.root :global(.home-workout-pager-dot) {
+  border-radius: 2px;
+  height: 4px;
+  width: 8px;
+}
+
+.root :global(.hero-card.home-workout-hero
+  .home-workout-pager-dot.home-workout-pager-dot--active) {
+  background-color: #fff;
+}
+
+.root :global(.hero-card.home-workout-hero
+  .home-workout-pager-dot:not(.home-workout-pager-dot--active)) {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+.root :global(.home-workout-pager-dot--active) {
+  width: 34px;
+}
+
+.root :global(.metrics-wrapper) {
+  display: flex;
+  flex-direction: column;
+  padding: 0 16px;
+}
+
+.root :global(.metrics-wrapper h3) {
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.017px;
+  line-height: 120%;
+  margin-bottom: 16px;
+}
+
+.root :global(.metric-card) {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  border-radius: 24px;
+}
+
+.root :global(.metric-card-icon) {
+  align-items: center;
+  background-color: #eef4fe;
+  border-radius: 16px;
+  display: flex;
+  justify-content: center;
+  padding: 12px;
+}
+
+.root :global(.metric-card strong) {
+  font-size: 16px;
+  line-height: 1.1;
+}
+
+.root :global(.weekly-progress-card) {
+  background-color: #fff;
+  border: 1px solid;
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px 24px;
+}
+
+.root :global(.weekly-progress-card__header) {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.root :global(.weekly-progress-card__cal-badge) {
+  align-items: center;
+  border-radius: 32px;
+  display: flex;
+  flex-shrink: 0;
+  height: 32px;
+  justify-content: center;
+  width: 32px;
+}
+
+.root :global(.weekly-progress-card__cal-badge path) {
+  fill: #fff;
+}
+
+.root :global(.weekly-progress-card__titles) {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.root :global(.weekly-progress-card__range) {
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: -0.41px;
+  line-height: 1.35;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.root :global(.weekly-progress-card__title) {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.05px;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.root :global(.weekly-progress-card__chevron-btn) {
+  align-items: center;
+  appearance: none;
+  background-color: #f3f4f7;
+  border-radius: 8px;
+  color: inherit;
+  display: flex;
+  flex-shrink: 0;
+  justify-content: center;
+  padding: 6px;
+}
+
+.root :global(.weekly-progress-card__bar) {
+  align-items: center;
+  display: flex;
+  gap: 4px;
+  width: 100%;
+}
+
+.root :global(.weekly-progress-card__bar-fill) {
+  background-color: #8c25f4;
+  border-radius: 8px;
+  flex: 1;
+  height: 28px;
+  min-width: 0;
+}
+
+.root :global(.weekly-progress-card__bar-rest) {
+  background-color: #eef4fe;
+  border-radius: 8px;
+  flex: 1;
+  height: 16px;
+  min-width: 0;
+}
+
+.root :global(.weekly-progress-card__coach) {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.root :global(.weekly-progress-card__coach-row) {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.root :global(.weekly-progress-card__avatar-wrap) {
+  flex-shrink: 0;
+  padding: 4px 4px 4px 0;
+}
+
+.root :global(.weekly-progress-card__avatar) {
+  border-radius: 999px;
+  display: block;
+  height: 32px;
+  object-fit: cover;
+  width: 32px;
+}
+
+.root :global(.weekly-progress-card__coach-eyebrow) {
+  flex: 1;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.35;
+  margin: 0;
+  min-width: 0;
+  text-transform: uppercase;
+}
+
+.root :global(.weekly-progress-card__coach-copy) {
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.41px;
+  line-height: 1.2;
+  margin: 0;
+  width: 100%;
+}
+
+.root :global(.preworkout-shell) {
+  gap: 0;
+  padding: 0;
+}
+
+.root :global(.preworkout-hero) {
+  border-radius: 0 0 40px 40px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 12px 24px 24px;
+  position: relative;
+}
+
+.root :global(.preworkout-hero .status-row) {
+  position: relative;
+  z-index: 1;
+}
+
+.root :global(.preworkout-hero-top) {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 0 0;
+  position: relative;
+  z-index: 1;
+}
+
+.root :global(.preworkout-hero-top .home-workout-tag) {
+  align-self: center;
+  margin-bottom: 0;
+}
+
+.root :global(.icon-button) {
+  align-items: center;
+  appearance: none;
+  border-radius: 16px;
+  display: flex;
+  flex-shrink: 0;
+  height: 44px;
+  justify-content: center;
+  padding: 0;
+  width: 44px;
+}
+
+.root :global(.preworkout-hero-focus) {
+  margin-top: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.root :global(.preworkout-scroll) {
+  background: var(--preworkout-scroll-bg, #fff);
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 20px;
+  min-height: 0;
+  overflow-y: hidden;
+  padding: 24px 16px 16px;
+}
+
+.root :global(.preworkout-section-label) {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  margin: 0 0 10px;
+  text-transform: uppercase;
+}
+
+.root :global(.preworkout-equip-scroll) {
+  display: flex;
+  gap: 8px;
+  margin: 0 -24px;
+  overflow-x: auto;
+  padding: 0 24px 4px;
+  scrollbar-width: none;
+}
+
+.root :global(.preworkout-equip-scroll::-webkit-scrollbar) {
+  display: none;
+}
+
+.root :global(.preworkout-equip-card) {
+  align-items: center;
+  border-radius: 16px;
+  display: flex;
+  flex-shrink: 0;
+  gap: 12px;
+  min-width: 0;
+  padding: 4px 12px 4px 4px;
+}
+
+.root :global(.preworkout-equip-thumb) {
+  border-radius: 10px;
+  flex-shrink: 0;
+  height: 44px;
+  object-fit: cover;
+  width: 44px;
+}
+
+.root :global(.preworkout-equip-name) {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.root :global(.preworkout-row-divider) {
+  background: rgba(15, 23, 42, 0.1);
+  border: 0;
+  height: 1px;
+  margin: 12px 0 0;
+  width: 100%;
+}
+
+.root :global(.preworkout-warmup-row) {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+.root :global(.preworkout-warmup-text) {
+  align-items: baseline;
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-width: 0;
+}
+
+.root :global(.preworkout-warmup-title) {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.root :global(.preworkout-warmup-extra) {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.root :global(.preworkout-warmup-actions) {
+  align-items: center;
+  display: flex;
+  flex-shrink: 0;
+  gap: 8px;
+}
+
+.root :global(.preworkout-toggle) {
+  background: #ccc;
+  border-radius: 999px;
+  flex-shrink: 0;
+  height: 30px;
+  padding: 2px;
+  position: relative;
+  width: 51px;
+}
+
+.root :global(.preworkout-toggle-knob) {
+  background: #fff;
+  border-radius: 999px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  display: block;
+  height: 26px;
+  transition: transform 0.15s ease;
+  width: 26px;
+}
+
+.root :global(.preworkout-toggle--on .preworkout-toggle-knob) {
+  transform: translateX(21px);
+}
+
+.root :global(.preworkout-icon-btn) {
+  align-items: center;
+  appearance: none;
+  background: transparent;
+  border-radius: 8px;
+  color: inherit;
+  display: flex;
+  flex-shrink: 0;
+  height: 28px;
+  justify-content: center;
+  opacity: 0.65;
+  padding: 0;
+  width: 28px;
+}
+
+.root :global(.preworkout-exercises-header) {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+.root :global(.preworkout-exercises-title) {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+
+.root :global(.preworkout-exercises-actions) {
+  align-items: center;
+  display: flex;
+  gap: 6px;
+}
+
+.root :global(.preworkout-add-btn) {
+  align-items: center;
+  appearance: none;
+  background: transparent;
+  display: flex;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  gap: 4px;
+  padding: 4px 0;
+}
+
+.root :global(.preworkout-add-circle) {
+  align-items: center;
+  background: rgba(15, 23, 42, 0.08);
+  border-radius: 999px;
+  color: inherit;
+  display: flex;
+  height: 28px;
+  justify-content: center;
+  width: 28px;
+}
+
+.root :global(.preworkout-exercise-stack) {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 4px;
+}
+
+.root :global(.preworkout-exercise-row) {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+}
+
+.root :global(.preworkout-ex-thumb-wrap) {
+  border-radius: 14px;
+  flex-shrink: 0;
+  height: 72px;
+  position: relative;
+  width: 72px;
+}
+
+.root :global(.preworkout-ex-thumb) {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.root :global(.preworkout-ex-muscle) {
+  align-items: center;
+  background: #fff;
+  border-radius: 6px;
+  bottom: 6px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+  display: flex;
+  height: 22px;
+  justify-content: center;
+  position: absolute;
+  right: -2px;
+  bottom: -2px;
+  width: 22px;
+}
+
+.root :global(.preworkout-ex-body) {
+  flex: 1;
+  min-width: 0;
+}
+
+.root :global(.preworkout-ex-title) {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.25;
+  margin: 0;
+}
+
+.root :global(.preworkout-ex-meta) {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.35;
+  margin: 4px 0 0;
+  opacity: 0.72;
+}
+
+.root :global(.preworkout-ex-side) {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  flex-shrink: 0;
+  justify-content: center;
+}
+
+.root :global(.footer-buttons) {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0 16px 24px;
+}
+
+.root :global(.button) {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 24px;
+  width: 100%;
+  font-weight: 600;
+  justify-content: center;
+  color: #fff;
+}
+
+@media (max-width: 920px) {
+  .root :global(.screen-row) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
