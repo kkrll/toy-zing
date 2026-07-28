@@ -72,14 +72,18 @@ const useForceLightScheme = () => {
 
 const B2BLand = () => {
   useForceLightScheme();
-  const [heroVersion, setHeroVersion] = useState<1 | 2>(1);
+  const [heroVersion, setHeroVersion] = useState<1 | 2>(2);
 
   return (
     <>
       <Navigation setHeroVersion={setHeroVersion} heroVersion={heroVersion} />
+      {heroVersion === 2 && (
+        <div className="w-full p-2 sm:p-4">
+          <HeroV2 />
+        </div>
+      )}
       <main className="mx-auto flex w-full max-w-screen-xl flex-col gap-4 p-2 sm:p-4">
         {heroVersion === 1 && <HeroV1 />}
-        {heroVersion === 2 && <HeroV2 />}
         <Problems />
         <Infrastructure />
         <Value />
