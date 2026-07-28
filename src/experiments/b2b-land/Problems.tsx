@@ -204,7 +204,7 @@ const Graph = ({ version }: { version: "v1" | "v2" }) => {
 
 export const Problems = () => {
   return (
-    <section className="bg-linear-to-b from-theme-bg-200 to-theme-bg-orchid-100 rounded-3xl overflow-hidden pt-16 flex flex-col">
+    <section className="bg-linear-to-b from-theme-bg-200 to-theme-bg-orchid-100 rounded-4xl overflow-hidden pt-16 flex flex-col">
       <div className="px-14 flex flex-col gap-4">
         <h2 className="type-heading-h1">
           95% of your members <br/>never receive coaching

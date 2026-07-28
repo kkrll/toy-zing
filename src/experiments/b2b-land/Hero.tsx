@@ -42,7 +42,7 @@ const HERO_IMG = "/img/Member%20page/desktop.webp";
 
 export const Hero = () => {
   return (
-    <section className="min-h-svh flex flex-col gap-12 pb-12 pt-28 ">
+    <section className="min-h-svh flex flex-col gap-12 pt-28 ">
       <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-3">
         <h1 className="type-heading-h1">Turn every membership <br/>into a personally coached journey</h1>
@@ -74,7 +74,7 @@ export const Hero = () => {
         </ul>
         </div>
 
-        <div className="flex flex-col items-center gap-8 p-8">
+        <div className="flex flex-col items-center gap-8 px-8 py-4">
           <h4 className="type-heading-h4 text-theme-text-secondary">Trusted by leading names in sports and fitness</h4>
           <ul className="flex items-stretch gap-8 w-full">
             {TRUST_ITEMS.partners.map((item) => (

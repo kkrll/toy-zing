@@ -19,7 +19,7 @@ const cellTone = (row: number, col: number): CellTone => {
 };
 
 const TONE_CLASS: Record<Exclude<CellTone, "empty">, string> = {
-  pt: "bg-blue-500",
+  pt: "bg-theme-fg-400",
   zing: "bg-orchid-500",
 };
 
@@ -58,11 +58,13 @@ export const Infrastructure = () => {
   }, []);
 
   return (
-    <section className="bg-theme-bg-100 rounded-3xl px-6 py-8 md:px-14 md:py-16 flex flex-col md:flex-row gap-12">
+    <section className="bg-theme-bg-100 rounded-3xl pl-6 py-8 md:pl-14 md:py-16 flex flex-col items-center md:flex-row gap-12">
       <div className="flex flex-col gap-4 flex-1">
         <div>
-          <h2 className="type-heading-h2">The future isn’t more coaches.</h2>
-          <h2 className="type-heading-h2 text-theme-text-blue">
+          <h2 className="type-heading-h1">The future isn’t more coaches.</h2>
+          <h2
+            className="type-heading-h1 inline-block pb-1 bg-linear-to-r from-theme-text-primary to-theme-text-orchid to-50% bg-clip-text text-transparent"
+          >
             It’s more coaching.
           </h2>
         </div>
@@ -82,7 +84,7 @@ export const Infrastructure = () => {
           ZING COACH. Coaching becomes infrastructure
         </p>
       </div>
-      <div className="flex flex-col gap-4 h-full w-[320px]">
+      <div className="flex flex-col gap-4 p-8 rounded-3xl h-full w-[400px] bg-linear-to-br from-theme-bg-200 to-space-cadet-100">
         <div
           className="grid gap-1.5"
           style={{
@@ -98,7 +100,7 @@ export const Infrastructure = () => {
               <div
                 key={i}
                 className={cn(
-                  "aspect-square rounded-md bg-theme-bg-300 transition-[background-color,transform,opacity] duration-200 ease-out",
+                  "aspect-square rounded-md bg-theme-fg-100/10 transition-[background-color,transform,opacity] duration-200 ease-out",
                   filled && TONE_CLASS[tone],
                   filled
                     ? "scale-100 opacity-100"
@@ -120,7 +122,7 @@ export const Infrastructure = () => {
             <span className="type-body-md-semi">PT + Zing AI</span>
           </li>
           <li className="flex items-center gap-2">
-            <span className="size-3.5 rounded-sm bg-theme-bg-300" aria-hidden />
+            <span className="size-3.5 rounded-sm bg-theme-fg-100/10" aria-hidden />
             <span className="type-body-md-semi">No coaching</span>
           </li>
         </ul>

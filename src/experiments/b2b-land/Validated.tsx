@@ -7,19 +7,10 @@ const METRICS = [
 export const Validated = () => {
   return (
     <section className="bg-theme-bg-100 rounded-3xl px-14 py-16 flex flex-col gap-8">
-      <h2 className="type-heading-h2">Validated in the real world</h2>
+      <h2 className="type-heading-h1">Validated in the real world</h2>
 
-      <ul className="grid grid-cols-3 gap-4">
-        {METRICS.map((metric) => (
-          <li key={metric.value} className="flex flex-col gap-1">
-            <strong className="type-counter-xs">{metric.value}</strong>
-            <span className="type-body-md text-theme-text-secondary">{metric.label}</span>
-          </li>
-        ))}
-      </ul>
-      <p className="type-body-sm text-theme-text-secondary">Internal Zing’s research</p>
-
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-4 bg-theme-bg-chat p-8 rounded-3xl">
         <h3 className="type-heading-h3">
           How one of America’s largest gym operators scaled coaching beyond PT
           capacity
@@ -53,6 +44,17 @@ export const Validated = () => {
           </p>
           <footer className="type-body-md text-theme-text-secondary">— Bill McMenamy, CEO, NYSC</footer>
         </blockquote>
+      </div>
+
+            <ul className="grid grid-cols-4 gap-2">
+            <p className="type-body-sm text-theme-text-secondary">Internal Zing’s research</p>
+              {METRICS.map((metric) => (
+                <li key={metric.value} className="flex flex-col gap-1 bg-theme-bg-200 py-4 px-6 rounded-3xl">
+                  <strong className="type-counter-xs">{metric.value}</strong>
+                  <span className="type-body-md text-theme-text-secondary">{metric.label}</span>
+                </li>
+              ))}
+            </ul>
       </div>
     </section>
   );

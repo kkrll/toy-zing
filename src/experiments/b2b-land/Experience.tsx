@@ -31,16 +31,17 @@ export const Experience = () => {
     <section className="bg-theme-bg-100 rounded-3xl px-14 py-16 flex flex-col gap-8">
       <h2 className="type-heading-h2">What your members experience</h2>
 
-      <ul className="flex flex-col gap-6">
+      <ul className="flex flex gap-6">
         {FEATURES.map((feature) => (
           <li key={feature.title} className="flex flex-col gap-1">
-            <h3 className="type-heading-h3">{feature.title}</h3>
+            <div className="rounded-3xl overflow-hidden bg-theme-bg-main-section h-96 w-80 mb-4" />
+              <h3 className="type-body-lg-semi">{feature.title}</h3>
             <p className="type-body-lg text-theme-text-secondary">{feature.description}</p>
           </li>
         ))}
       </ul>
 
-      <button type="button" className="px-4 py-3 bg-theme-fg-100 text-theme-bg-100 type-body-lg-semi rounded-2xl self-start">
+      <button type="button" className="px-4 py-3 min-w-80 bg-theme-fg-100 text-theme-bg-100 type-body-lg-semi rounded-2xl self-start">
         Try now →
       </button>
     </section>

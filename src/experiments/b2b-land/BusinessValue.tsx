@@ -48,7 +48,7 @@ export const BusinessValue = () => {
   }, [hoveredIndex]);
 
   return (
-      <div className="grid grid-cols-2 gap-16 items-start">
+      <div className="grid grid-cols-2 gap-16 p-8 items-start rounded-3xl bg-theme-bg-200">
         <div className="flex flex-col gap-6">
           <h3 className="type-heading-h3">How Zing creates business value</h3>
 
