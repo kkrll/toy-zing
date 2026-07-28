@@ -58,22 +58,22 @@ export const Infrastructure = () => {
   }, []);
 
   return (
-    <section className="bg-theme-bg-100 rounded-3xl pl-6 py-8 md:pl-14 md:py-16 flex flex-col items-center md:flex-row gap-12">
-      <div className="flex flex-col gap-4 flex-1">
+    <section className="flex flex-col items-center gap-8 rounded-3xl bg-theme-bg-100 px-4 py-8 md:flex-row md:gap-12 md:px-14 md:py-16 md:pl-14">
+      <div className="flex flex-1 flex-col gap-4">
         <div>
-          <h2 className="type-heading-h1">The future isn’t more coaches.</h2>
+          <h2 className="type-heading-h1 text-balance">The future isn’t more coaches.</h2>
           <h2
-            className="type-heading-h1 inline-block pb-1 bg-linear-to-r from-theme-text-primary to-theme-text-orchid to-50% bg-clip-text text-transparent"
+            className="type-heading-h1 inline-block bg-linear-to-r from-theme-text-primary to-theme-text-orchid to-50% bg-clip-text pb-1 text-transparent"
           >
             It’s more coaching.
           </h2>
         </div>
-        <p className="type-body-lg text-theme-text-secondary max-w-xl">
+        <p className="type-body-lg max-w-xl text-theme-text-secondary">
           Coaching shouldn’t be reserved for the 5% who buy personal training.
           It should be a seamless part of every member’s journey.
         </p>
 
-        <p className="type-body-lg text-theme-text-secondary max-w-xl">
+        <p className="type-body-lg max-w-xl text-theme-text-secondary">
           Traditional one-to-one coaching was never designed to reach every
           member. The next generation of gyms won’t scale coaching by hiring
           more coaches—they’ll scale it by extending every coach’s impact with
@@ -84,7 +84,7 @@ export const Infrastructure = () => {
           ZING COACH. Coaching becomes infrastructure
         </p>
       </div>
-      <div className="flex flex-col gap-4 p-8 rounded-3xl h-full w-[400px] bg-linear-to-br from-theme-bg-200 to-space-cadet-100">
+      <div className="flex h-full w-full max-w-md flex-col gap-4 rounded-3xl bg-linear-to-br from-theme-bg-200 to-space-cadet-100 p-4 sm:p-8 md:w-[400px] md:max-w-none">
         <div
           className="grid gap-1.5"
           style={{

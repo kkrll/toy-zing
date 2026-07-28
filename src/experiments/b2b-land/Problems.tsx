@@ -24,32 +24,36 @@ const Graph = ({ version }: { version: "v1" | "v2" }) => {
 
   if (version === "v1") {
     return (
-      <div className="relative w-full gap-4 flex p-12">
-        <ProblemsFlow />
-        <div
-          className={cn(
-            "absolute left-16 top-38  z-10 ml-6 max-w-2xs text-theme-text-orchid",
-          )}
-        >
-          <p className="type-heading-h3 text-balance pb-2">
-            Personal training doesn't scale.
-          </p>
-          <p className="type-body-lg-semi opacity-50">
-            That leaves most members without guidance, motivation or
-            accountability.
-          </p>
+      <div className="relative flex w-full flex-col gap-6 p-4 md:flex-row md:gap-4 md:p-12">
+        <div className="w-full overflow-x-auto">
+          <ProblemsFlow />
         </div>
-        <div
-          className={cn(
-            "absolute left-[52%] bottom-18  z-10 ml-6 max-w-[320px] text-theme-text-orchid",
-          )}
-        >
-          <p className="type-heading-h3 text-balance pb-2">
-            50% of new members leave within 6 months
-          </p>
-          <p className="type-body-lg-semi opacity-50">
-            Without guidance, motivation fades before habits become routines
-          </p>
+        <div className="flex flex-col gap-6 px-2 md:contents">
+          <div
+            className={cn(
+              "z-10 max-w-2xs text-theme-text-orchid md:absolute md:left-16 md:top-38 md:ml-6",
+            )}
+          >
+            <p className="type-heading-h3 text-balance pb-2">
+              Personal training doesn&apos;t scale.
+            </p>
+            <p className="type-body-lg-semi opacity-50">
+              That leaves most members without guidance, motivation or
+              accountability.
+            </p>
+          </div>
+          <div
+            className={cn(
+              "z-10 max-w-xs text-theme-text-orchid md:absolute md:bottom-18 md:left-[52%] md:ml-6 md:max-w-[320px]",
+            )}
+          >
+            <p className="type-heading-h3 text-balance pb-2">
+              50% of new members leave within 6 months
+            </p>
+            <p className="type-body-lg-semi opacity-50">
+              Without guidance, motivation fades before habits become routines
+            </p>
+          </div>
         </div>
       </div>
     );
@@ -204,10 +208,12 @@ const Graph = ({ version }: { version: "v1" | "v2" }) => {
 
 export const Problems = () => {
   return (
-    <section className="bg-linear-to-b from-theme-bg-200 to-theme-bg-orchid-100 rounded-4xl overflow-hidden pt-16 flex flex-col">
-      <div className="px-14 flex flex-col gap-4">
-        <h2 className="type-heading-h1">
-          95% of your members <br/>never receive coaching
+    <section className="flex flex-col overflow-hidden rounded-3xl bg-linear-to-b from-theme-bg-200 to-theme-bg-orchid-100 pt-10 md:rounded-4xl md:pt-16">
+      <div className="flex flex-col gap-4 px-4 md:px-14">
+        <h2 className="type-heading-h1 text-balance">
+          95% of your members{" "}
+          <br className="hidden sm:block" />
+          never receive coaching
         </h2>
 
         {/*<Quote className="mt-10 bg-theme-bg-100  rounded-4xl"/>*/}

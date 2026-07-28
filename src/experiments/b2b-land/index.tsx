@@ -75,7 +75,7 @@ const B2BLand = () => {
   return (
     <>
       <Navigation />
-      <main className="p-4 max-w-screen-xl mx-auto flex flex-col gap-4">
+      <main className="mx-auto flex w-full max-w-screen-xl flex-col gap-4 p-2 sm:p-4">
         <Hero />
         <Problems />
         <Infrastructure />

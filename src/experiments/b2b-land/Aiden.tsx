@@ -29,10 +29,12 @@ const DEMO_CALENDAR_URL = "#";
 
 export const Aiden = () => {
   return (
-    <section className="bg-theme-bg-100 rounded-3xl px-14 py-16 flex flex-col gap-8">
+    <section className="flex flex-col gap-6 rounded-3xl bg-theme-bg-100 px-4 py-8 md:gap-8 md:px-14 md:py-16">
       <div className="flex flex-col gap-3">
-        <h2 className="type-heading-h2">Back your trAIners up</h2>
-        <p className="type-body-lg text-theme-text-secondary">Coming soon: Aiden — the AI Copilot for Personal Trainers</p>
+        <h2 className="type-heading-h2 text-balance">Back your trAIners up</h2>
+        <p className="type-body-lg text-theme-text-secondary">
+          Coming soon: Aiden — the AI Copilot for Personal Trainers
+        </p>
       </div>
 
       {/* [concept for the image] */}
@@ -42,7 +44,9 @@ export const Aiden = () => {
 
       <div className="flex flex-col gap-3">
         <h3 className="type-heading-h3">Every trainer. Supercharged.</h3>
-        <p className="type-body-lg text-theme-text-secondary">Multiply every coach’s impact.</p>
+        <p className="type-body-lg text-theme-text-secondary">
+          Multiply every coach’s impact.
+        </p>
         <p className="type-body-lg text-theme-text-secondary">
           Enable one trainer to coach 3–5× more members by automating planning,
           analysis and routine communication — while keeping every human
@@ -50,18 +54,20 @@ export const Aiden = () => {
         </p>
       </div>
 
-      <ul className="flex flex-col gap-4">
+      <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {CAPABILITIES.map((capability) => (
           <li key={capability.title} className="flex flex-col gap-1">
             <h4 className="type-body-lg-semi">{capability.title}</h4>
-            <p className="type-body-md text-theme-text-secondary">{capability.description}</p>
+            <p className="type-body-md text-theme-text-secondary">
+              {capability.description}
+            </p>
           </li>
         ))}
       </ul>
 
       <a
         href={DEMO_CALENDAR_URL}
-        className="px-4 py-3 bg-theme-fg-100 text-theme-bg-100 type-body-lg-semi rounded-2xl self-start"
+        className="type-body-lg-semi self-start rounded-2xl bg-theme-fg-100 px-4 py-3 text-theme-bg-100"
       >
         Get Demo →
       </a>

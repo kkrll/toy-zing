@@ -48,7 +48,7 @@ export const BusinessValue = () => {
   }, [hoveredIndex]);
 
   return (
-      <div className="grid grid-cols-2 gap-16 p-8 items-start rounded-3xl bg-theme-bg-200">
+      <div className="grid grid-cols-1 items-start gap-8 rounded-3xl bg-theme-bg-200 p-4 md:grid-cols-2 md:gap-16 md:p-8">
         <div className="flex flex-col gap-6">
           <h3 className="type-heading-h3">How Zing creates business value</h3>
 
@@ -84,25 +84,25 @@ export const BusinessValue = () => {
           </ol>
         </div>
 
-        <figure className="flex flex-col gap-4 pt-2">
+        <figure className="flex flex-col gap-4 overflow-x-auto pt-2">
           <div
-            className="relative mb-10 flex h-72 items-stretch justify-center gap-16 border-b border-theme-bg-300"
+            className="relative mb-10 flex h-56 min-w-72 items-stretch justify-center gap-8 border-b border-theme-bg-300 sm:h-72 sm:gap-16"
             aria-label="Member LTV comparison: Today vs With Zing"
           >
             {/* Today */}
-            <div className="relative w-44">
+            <div className="relative w-28 sm:w-44">
               <div
                 className="absolute inset-x-0 bottom-0 rounded-t-lg bg-theme-bg-300"
                 style={{ height: `${TODAY_HEIGHT}%` }}
                 aria-label="Today: membership base"
               />
-              <span className="type-body-md text-theme-text-secondary absolute -bottom-8 inset-x-0 text-center whitespace-nowrap">
+              <span className="type-body-md absolute inset-x-0 -bottom-8 text-center text-theme-text-secondary whitespace-nowrap">
                 Today
               </span>
             </div>
 
             {/* With Zing */}
-            <div className="relative w-44">
+            <div className="relative w-28 sm:w-44">
               <div
                 className="absolute inset-x-0 bottom-0 flex flex-col-reverse overflow-hidden rounded-t-lg transition-[height] duration-500 ease-out"
                 style={{
