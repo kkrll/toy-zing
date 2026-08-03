@@ -28,17 +28,17 @@ const STEPS = [
 
 export const Integration = () => {
   return (
-    <section className="flex flex-col gap-6 rounded-3xl bg-theme-bg-100 px-4 py-8 md:gap-8 md:px-14 md:py-16">
-      <h2 className="type-heading-h2 text-balance">
+    <section className="flex flex-col gap-6 rounded-3xl bg-theme-bg-200 px-4 py-8 md:gap-14 md:px-14 md:py-16">
+      <h2 className="type-heading-h1 text-balance">
         Integrated in minutes. Easy to scale.
       </h2>
 
-      <ol className="grid grid-cols-1 gap-6 md:grid-cols-2">
+      <ol className="grid grid-cols-1 gap-12 md:grid-cols-2">
         {STEPS.map((step) => (
-          <li key={step.number} className="flex flex-col gap-2">
-            <h3 className="type-heading-h3">
+          <li key={step.number} className="flex flex-col gap-1">
+            <p className="type-body-lg-semi">
               {step.number}. {step.title}
-            </h3>
+            </p>
             <p className="type-body-lg text-theme-text-secondary">
               {step.description}
             </p>

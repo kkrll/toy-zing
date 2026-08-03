@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Aiden } from "./Aiden";
+import { AidenV2 } from "./AidenV2";
 import { CTA } from "./CTA";
 import { Deploy } from "./Deploy";
 import { Experience } from "./Experience";
@@ -10,7 +10,7 @@ import { HeroV2 } from "./HeroV2";
 import { Infrastructure } from "./Infrastructure";
 import { Integration } from "./Integration";
 import { Navigation } from "./Navigation";
-import { Problems } from "./Problems";
+import { ProblemsV2 } from "./ProblemsV2";
 import { Validated } from "./Validated";
 import { Value } from "./Value";
 
@@ -78,22 +78,24 @@ const B2BLand = () => {
     <>
       <Navigation setHeroVersion={setHeroVersion} heroVersion={heroVersion} />
       {heroVersion === 2 && (
-        <div className="w-full p-2 sm:p-4">
+        <div className="w-full ">
           <HeroV2 />
         </div>
       )}
-      <main className="mx-auto flex w-full max-w-screen-xl flex-col gap-4 p-2 sm:p-4">
+      <main className="mx-auto flex w-full max-w-screen-xl flex-col gap-56 p-2 sm:p-4">
         {heroVersion === 1 && <HeroV1 />}
-        <Problems />
+        <ProblemsV2 />
         <Infrastructure />
         <Value />
         <Validated />
         <Experience />
-        <Aiden />
+        <AidenV2 />
         <Deploy />
         <Integration />
-        <CTA />
       </main>
+      <div className="w-full p-2 sm:p-4">
+        <CTA />
+      </div>
     </>
   );
 };

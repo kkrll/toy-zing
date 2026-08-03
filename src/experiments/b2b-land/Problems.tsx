@@ -210,16 +210,16 @@ const Graph = ({ version }: { version: "v1" | "v2" }) => {
 
 export const Problems = () => {
   return (
-    <section className="flex flex-col overflow-hidden rounded-3xl bg-linear-to-b from-theme-bg-200 to-theme-bg-orchid-100 pt-10 md:rounded-4xl md:pt-16">
+    <section className="flex flex-col pt-10 md:rounded-4xl md:pt-16">
       <div className="flex flex-col gap-4 px-4 md:px-14">
-        <h2 className="type-heading-h1 text-balance">
+        <h2 className="type-heading-h1 text-balance text-center mb-24">
           95% of your members <br className="hidden sm:block" />
           never receive coaching
         </h2>
 
         {/*<Quote className="mt-10 bg-theme-bg-100  rounded-4xl"/>*/}
       </div>
-      <div className="w-full flex flex-col gap-6">
+      <div className="w-full flex flex-col gap-6 overflow-hidden rounded-3xl bg-theme-bg-200 ">
         <Graph version="v1" />
       </div>
     </section>

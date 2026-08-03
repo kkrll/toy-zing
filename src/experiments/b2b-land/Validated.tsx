@@ -6,9 +6,9 @@ const METRICS = [
 
 export const Validated = () => {
   return (
-    <section className="relative flex flex-col gap-2">
+    <section className="relative flex flex-col gap-4">
       {/* BG: /img/Member%20page/TV.png */}
-      <div className="relative z-10 flex flex-col gap-8 overflow-hidden rounded-3xl bg-theme-bg-chat px-4 py-8 md:gap-12 md:px-14 md:py-16">
+      <div className="relative z-10 flex flex-col gap-8 overflow-hidden rounded-3xl bg-theme-bg-chat px-4 py-8 md:gap-14 md:px-14 md:py-16">
         <div className="flex flex-col gap-2">
           <h2 className="type-body-lg-semi text-theme-text-secondary">
             Validated in the real world:

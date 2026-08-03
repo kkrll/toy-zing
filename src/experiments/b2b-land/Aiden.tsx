@@ -76,8 +76,10 @@ export const Aiden = () => {
                     onClick={() => setActiveIndex(index)}
                     aria-pressed={isActive}
                     className={cn(
-                      "flex w-full flex-col gap-1 rounded-2xl px-4 py-3 text-left transition-colors",
-                      isActive ? "bg-theme-bg-200" : "hover:bg-theme-bg-200/60",
+                      "flex w-full flex-col gap-1 rounded-2xl border px-4 py-3 text-left transition-colors",
+                      isActive
+                        ? "bg-theme-bg-200 border-theme-bg-200"
+                        : "cursor-pointer border-theme-fg-500/10 hover:bg-theme-bg-200/60",
                     )}
                   >
                     <span className="type-body-lg-semi">
