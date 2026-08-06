@@ -1,70 +1,99 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const GRID_SIZE = 15;
-const ACTIVE_SIZE = 13;
 const PT_WEDGE_ROWS = 4;
-const CELL_STEP_MS = 28;
-const ZING_EXTRA_DELAY_MS = 2000;
+/** Soft leading edge of the fill wave, as a fraction of the diagonal. */
+const WAVE = 0.1;
 
-type CellTone = "pt" | "zing" | "empty";
+type CellTone = "pt" | "zing";
 
 const cellTone = (row: number, col: number): CellTone => {
-  if (row >= ACTIVE_SIZE || col >= ACTIVE_SIZE) return "empty";
-  // Blue PT wedge in the top-left: 4, 3, 2, 1 across the first rows
+  // PT wedge in the top-left: 4, 3, 2, 1 across the first rows
   if (row < PT_WEDGE_ROWS && col < PT_WEDGE_ROWS - row) return "pt";
   return "zing";
 };
 
-const TONE_CLASS: Record<Exclude<CellTone, "empty">, string> = {
+const TONE_CLASS: Record<CellTone, string> = {
   pt: "bg-theme-fg-400",
   zing: "bg-orchid-500",
 };
 
-const CELLS: CellTone[] = Array.from(
-  { length: GRID_SIZE * GRID_SIZE },
-  (_, i) => {
-    const row = Math.floor(i / GRID_SIZE);
-    const col = i % GRID_SIZE;
-    return cellTone(row, col);
-  },
-);
+const CELLS = Array.from({ length: GRID_SIZE * GRID_SIZE }, (_, i) => {
+  const row = Math.floor(i / GRID_SIZE);
+  const col = i % GRID_SIZE;
+  return {
+    tone: cellTone(row, col),
+    // Manhattan distance from top-left → diagonal front toward bottom-right
+    dist: row + col,
+  };
+});
 
-const PT_COUNT = CELLS.filter((t) => t === "pt").length;
+const MAX_DIST = (GRID_SIZE - 1) * 2;
 
-/** Fill order delay: PT first, then 2s pause, then PT+AI. */
-const CELL_DELAYS = (() => {
-  let ptIndex = 0;
-  let zingIndex = 0;
-  return CELLS.map((tone) => {
-    if (tone === "empty") return 0;
-    if (tone === "pt") return ptIndex++ * CELL_STEP_MS;
-    return (
-      PT_COUNT * CELL_STEP_MS +
-      ZING_EXTRA_DELAY_MS +
-      zingIndex++ * CELL_STEP_MS
-    );
-  });
-})();
+const clamp01 = (value: number) => Math.min(1, Math.max(0, value));
 
 export const Infrastructure = () => {
-  const [started, setStarted] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+  const rafRef = useRef(0);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    const id = window.requestAnimationFrame(() => setStarted(true));
-    return () => window.cancelAnimationFrame(id);
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let ticking = false;
+
+    const update = () => {
+      ticking = false;
+
+      if (reduced.matches) {
+        setProgress(1);
+        return;
+      }
+
+      const rect = section.getBoundingClientRect();
+      // Fill while the section travels through the middle of the viewport.
+      const start = window.innerHeight * 0.85;
+      const end = window.innerHeight * 0.2;
+      const next =
+        Math.round(clamp01((start - rect.top) / (start - end)) * 80) / 80;
+      setProgress((prev) => (prev === next ? prev : next));
+    };
+
+    const onScrollOrResize = () => {
+      if (ticking) return;
+      ticking = true;
+      rafRef.current = requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener("scroll", onScrollOrResize, { passive: true });
+    window.addEventListener("resize", onScrollOrResize, { passive: true });
+    reduced.addEventListener("change", update);
+
+    return () => {
+      window.removeEventListener("scroll", onScrollOrResize);
+      window.removeEventListener("resize", onScrollOrResize);
+      reduced.removeEventListener("change", update);
+      cancelAnimationFrame(rafRef.current);
+    };
   }, []);
 
   return (
-    <section className="flex flex-col items-center gap-8 rounded-3xl bg-theme-bg-100 px-4 py-8 md:flex-row md:gap-12 md:px-14 md:py-16 md:pl-14">
+    <section
+      ref={sectionRef}
+      className="flex flex-col items-center gap-8 rounded-4xl bg-linear-to-br from-theme-bg-100 to-space-cadet-100 p-4 sm:p-8 md:flex-row md:gap-12 md:px-14 md:py-16 md:pl-14"
+    >
       <div className="flex flex-1 flex-col gap-4">
         <div>
-          <h2 className="type-heading-h1 text-balance">The future isn’t more coaches.</h2>
-          <h2
-            className="type-heading-h1 inline-block bg-linear-to-r from-theme-text-primary to-theme-text-orchid to-50% bg-clip-text pb-1 text-transparent"
-          >
+          <h2 className="type-heading-h1 text-balance">
+            The future isn’t more coaches.
+          </h2>
+          <h2 className="type-heading-h1 inline-block bg-linear-to-r from-theme-text-primary to-theme-text-orchid to-50% bg-clip-text pb-1 text-transparent">
             It’s more coaching.
           </h2>
         </div>
@@ -84,7 +113,7 @@ export const Infrastructure = () => {
           ZING COACH. Coaching becomes infrastructure
         </p>
       </div>
-      <div className="flex h-full w-full max-w-md flex-col gap-4 rounded-3xl bg-linear-to-br from-theme-bg-200 to-space-cadet-100 p-4 sm:p-8 md:w-[400px] md:max-w-none">
+      <div className="flex h-full w-full max-w-md flex-col gap-4  md:w-[480px] md:max-w-none">
         <div
           className="grid gap-1.5"
           style={{
@@ -93,20 +122,22 @@ export const Infrastructure = () => {
           role="img"
           aria-label="Member coaching coverage: a small share reached by PT alone, most members reached by PT plus Zing AI"
         >
-          {CELLS.map((tone, i) => {
-            const filled = started && tone !== "empty";
+          {CELLS.map(({ tone, dist }, i) => {
+            const threshold = dist / MAX_DIST;
+            const local = clamp01((progress - threshold + WAVE) / WAVE);
+            const filled = local > 0;
 
             return (
               <div
                 key={i}
                 className={cn(
-                  "aspect-square rounded-md bg-theme-fg-100/10 transition-[background-color,transform,opacity] duration-200 ease-out",
+                  "aspect-square rounded-md bg-theme-fg-100/10",
                   filled && TONE_CLASS[tone],
-                  filled
-                    ? "scale-100 opacity-100"
-                    : tone !== "empty" && "scale-75 opacity-60",
                 )}
-                style={{ transitionDelay: `${CELL_DELAYS[i]}ms` }}
+                style={{
+                  opacity: 0.6 + local * 0.4,
+                  transform: `scale(${0.75 + local * 0.25})`,
+                }}
               />
             );
           })}
@@ -114,7 +145,7 @@ export const Infrastructure = () => {
 
         <ul className="flex flex-wrap gap-6 justify-between">
           <li className="flex items-center gap-2">
-            <span className="size-3.5 rounded-sm bg-blue-500" aria-hidden />
+            <span className="size-3.5 rounded-sm bg-theme-fg-300" aria-hidden />
             <span className="type-body-md-semi">PT</span>
           </li>
           <li className="flex items-center gap-2">
@@ -122,7 +153,10 @@ export const Infrastructure = () => {
             <span className="type-body-md-semi">PT + Zing AI</span>
           </li>
           <li className="flex items-center gap-2">
-            <span className="size-3.5 rounded-sm bg-theme-fg-100/10" aria-hidden />
+            <span
+              className="size-3.5 rounded-sm bg-theme-fg-100/10"
+              aria-hidden
+            />
             <span className="type-body-md-semi">No coaching</span>
           </li>
         </ul>

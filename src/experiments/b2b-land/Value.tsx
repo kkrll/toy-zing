@@ -1,18 +1,54 @@
+import { cn } from "@/lib/utils";
+import type { LucideIcon } from "lucide-react";
+import {
+  Brain,
+  Code2,
+  Dumbbell,
+  Gem,
+  HeartHandshake,
+  Smartphone,
+  Timer,
+  TrendingUp,
+} from "lucide-react";
 import { BusinessValue } from "./BusinessValue";
 
 const BUSINESS_VALUE = [
-  "Every member becomes coachable - not just the 5% who can afford personal trainers",
-  "Members stay engaged with coaching for longer",
-  "More value from the members you already have",
-  "Richer member intelligence across every interaction",
-] as const;
+  {
+    text: "Every member becomes coachable - not just the 5% who can afford personal trainers",
+    icon: HeartHandshake,
+  },
+  {
+    text: "Members stay engaged with coaching for longer",
+    icon: TrendingUp,
+  },
+  {
+    text: "More value from the members you already have",
+    icon: Gem,
+  },
+  {
+    text: "Richer member intelligence across every interaction",
+    icon: Brain,
+  },
+] as const satisfies ReadonlyArray<{ text: string; icon: LucideIcon }>;
 
 const OPERATIONAL_VALUE = [
-  "Five-minute basic integration",
-  "No additional hardware needed",
-  "White-label SDK",
-  "Les Mills content integration",
-] as const;
+  {
+    text: "Five-minute basic integration",
+    icon: Timer,
+  },
+  {
+    text: "No additional hardware needed",
+    icon: Smartphone,
+  },
+  {
+    text: "White-label SDK",
+    icon: Code2,
+  },
+  {
+    text: "Les Mills content integration",
+    icon: Dumbbell,
+  },
+] as const satisfies ReadonlyArray<{ text: string; icon: LucideIcon }>;
 
 const PRESS_QUOTES = [
   {
@@ -30,11 +66,41 @@ const PRESS_QUOTES = [
   },
 ] as const;
 
-const CARD_IMG = "/img/Member%20page/card-in-gym.png";
+const ValueCard = ({
+  items,
+  type,
+}: {
+  items: ReadonlyArray<{ text: string; icon: LucideIcon }>;
+  type: "operational" | "business";
+}) => {
+  return (
+    <ul className="grid w-full grid-cols-2 gap-4 overflow-hidden md:gap-12">
+      {items.map(({ text, icon: Icon }) => (
+        <li
+          key={text}
+          className={cn(
+            "flex flex-1 flex-col gap-3 border-t-2 pt-4",
+            type === "operational"
+              ? "border-theme-bg-300"
+              : "border-theme-fg-100",
+          )}
+        >
+          <Icon
+            aria-hidden
+            className="size-5 shrink-0 text-theme-text-primary"
+            strokeWidth={1.75}
+          />
+          <span className="type-body-md-semi text-balance">{text}</span>
+        </li>
+      ))}
+    </ul>
+  );
+};
 
 export const Value = () => {
   return (
-    <section className="flex flex-col gap-8 rounded-3xl bg-linear-to-b from-theme-bg-200 to-theme-bg-100 px-4 py-8 md:gap-12 md:px-14 md:py-16">
+    <section className="bg-theme-bg-200 ">
+      <div className="mx-auto flex max-w-screen-xl flex-col gap-8 px-4 py-16 md:gap-12 md:px-14 md:py-32">
         <div className="flex flex-col gap-3">
           <h2 className="type-heading-h1 text-balance">
             The next standard of member experience is intelligently personalized
@@ -44,66 +110,52 @@ export const Value = () => {
           </p>
         </div>
 
-      <div className="flex flex-col gap-4">
-        <div className="grid grid-cols-1 items-stretch gap-2 md:grid-cols-3">
-          <div className="mt-0 rounded-3xl border border-theme-bg-300 bg-theme-bg-orchid-100 p-6 md:mt-8 md:p-8">
-            <h3 className="type-heading-h3 text-theme-text-orchid">
-              Operational value
-            </h3>
-            <ul className="mt-4 flex flex-col gap-3">
-              {OPERATIONAL_VALUE.map((item) => (
-                <li key={item} className="flex gap-2.5">
-                  <span className="mt-2 size-1.5 shrink-0 rounded-full bg-orchid-500" />
-                  <span className="type-body-md text-theme-text-secondary">
-                    {item}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
+        <div className="grid gap-12 md:grid-cols-[2fr_1fr] md:gap-24">
+          <div className="flex flex-col gap-10 py-4 md:gap-32 md:py-8">
+            <div className="grid grid-cols-1 items-baseline md:grid-cols-[1fr_3fr] gap-14">
+              <h3 className="type-heading-h">
+                Operational <br className="hidden md:block" />
+                value
+              </h3>
+              <ValueCard items={OPERATIONAL_VALUE} type="operational" />
+            </div>
 
-          <div className="mb-0 aspect-[4/5] overflow-hidden rounded-3xl bg-theme-bg-200 md:mb-8 md:aspect-auto">
-            <img
-              src={CARD_IMG}
-              alt="AI Coach in the gym"
-              className="size-full object-cover"
-            />
+            <div className="flex flex-col gap-10 md:gap-4">
+              <div className="grid grid-cols-1 items-baseline md:grid-cols-[1fr_3fr] gap-14">
+                <h3 className="type-heading-h">
+                  Business <br className="hidden md:block" />
+                  value
+                </h3>
+                <ValueCard items={BUSINESS_VALUE} type="business" />
+              </div>
+            </div>
           </div>
-
-          <div className="mt-0 rounded-3xl bg-theme-bg-100 p-6 md:mt-8 md:p-8">
-            <h3 className="type-heading-h3">Business value</h3>
-            <ul className="mt-4 flex flex-col gap-3">
-              {BUSINESS_VALUE.map((item) => (
-                <li key={item} className="flex gap-2.5">
-                  <span className="mt-2 size-1.5 shrink-0 rounded-full bg-orchid-500" />
-                  <span className="type-body-md text-theme-text-secondary">
-                    {item}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <div className="hidden md:block w-full h-full rounded-3xl bg-cover bg-center bg-[url('/img/Member%20page/card-in-gym.png')]"></div>
         </div>
 
-        <BusinessValue />
-      </div>
+        <div className="h-px my-12 bg-theme-bg-300 w-full" />
 
-      <div className="flex flex-col gap-4">
-        <ul className="flex w-full flex-col items-stretch gap-6 sm:flex-row sm:gap-8">
-          {PRESS_QUOTES.map((item) => (
-            <li key={item.source} className="flex flex-1 flex-col gap-4">
-              <div className="type-body-caption flex h-8 w-12 shrink-0 items-center justify-center bg-theme-bg-300 text-theme-text-disabled">
-                logo
-              </div>
-              <div className="flex flex-col gap-1">
-                <span className="type-body-sm text-theme-text-secondary">
-                  {item.source}
-                </span>
-                <span className="type-body-md-semi text-balance">"{item.quote}"</span>
-              </div>
-            </li>
-          ))}
-        </ul>
+        <BusinessValue />
+
+        <div className="flex flex-col gap-4">
+          <ul className="flex w-full flex-col items-stretch gap-6 sm:flex-row sm:gap-8">
+            {PRESS_QUOTES.map((item) => (
+              <li key={item.source} className="flex flex-1 flex-col gap-4">
+                <div className="type-body-caption flex h-8 w-12 shrink-0 items-center justify-center bg-theme-bg-300 text-theme-text-disabled">
+                  logo
+                </div>
+                <div className="flex flex-col gap-1">
+                  <span className="type-body-sm text-theme-text-secondary">
+                    {item.source}
+                  </span>
+                  <span className="type-body-md-semi text-balance">
+                    "{item.quote}"
+                  </span>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </section>
   );

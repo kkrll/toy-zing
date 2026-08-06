@@ -10,9 +10,10 @@ import { HeroV2 } from "./HeroV2";
 import { Infrastructure } from "./Infrastructure";
 import { Integration } from "./Integration";
 import { Navigation } from "./Navigation";
-import { ProblemsV2 } from "./ProblemsV2";
+import { Stories } from "./Stories";
 import { Validated } from "./Validated";
 import { Value } from "./Value";
+import { ProblemsV2 } from "./ProblemsV2";
 
 /** Light theme tokens — mirrors :root in semantic-colors.css */
 const LIGHT_SCHEME_VARS: Record<string, string> = {
@@ -75,28 +76,26 @@ const B2BLand = () => {
   const [heroVersion, setHeroVersion] = useState<1 | 2>(2);
 
   return (
-    <>
+    <main className="bg-theme-bg-100">
       <Navigation setHeroVersion={setHeroVersion} heroVersion={heroVersion} />
       {heroVersion === 2 && (
         <div className="w-full ">
           <HeroV2 />
         </div>
       )}
-      <main className="mx-auto flex w-full max-w-screen-xl flex-col gap-56 p-2 sm:p-4">
-        {heroVersion === 1 && <HeroV1 />}
-        <ProblemsV2 />
-        <Infrastructure />
-        <Value />
-        <Validated />
-        <Experience />
-        <AidenV2 />
-        <Deploy />
-        <Integration />
-      </main>
-      <div className="w-full p-2 sm:p-4">
-        <CTA />
-      </div>
-    </>
+      <Stories />
+      {heroVersion === 1 && <HeroV1 />}
+      <ProblemsV2 />
+      {/*<ProblemsV3 />*/}
+      {/*<Infrastructure />*/}
+      <Value />
+      <Validated />
+      <Experience />
+      <AidenV2 />
+      <Deploy />
+      <Integration />
+      <CTA />
+    </main>
   );
 };
 

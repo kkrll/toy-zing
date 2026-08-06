@@ -1,0 +1,464 @@
+/*
+ * Problems — member coverage grid.
+ *
+ * The browser scrubs this section itself. `.runway` declares a view timeline and one
+ * animation walks `--problems-p` from 0 to 1 across the pinned travel; the three cell
+ * beats are derived from that single number with calc(), and the cards and footer hang
+ * off the same timeline with their own ranges. Nothing runs on scroll in JS.
+ *
+ * The previous pass sampled scroll in rAF, rounded progress to 1/80 and pushed it
+ * through React state — so every notch re-rendered all 320 cells, and the tail cells
+ * swapped DOM shape as the orchid wave reached them. The wave stepped instead of
+ * travelling, and the frames that cost showed.
+ *
+ * This is the opposite trade from Aiden and Value, which pick a discrete step and let a
+ * transition ease between rests. That split exists because a card crossing a long
+ * distance can't be scrubbed off a wheel's ~100px notches without lurching. Here each
+ * cell moves a few pixels and only the *front* of the wave travels, so scrubbing reads
+ * well — and it's the compositor interpolating, not us.
+ *
+ * Timeline. Each beat is followed by a short hold — long enough for the composed state
+ * to read, short enough that the scroll never feels stuck:
+ *
+ *   0.00–0.04  lead-in, all grey — just enough for the pin to register
+ *   0.04–0.18  the PT strip fills
+ *   0.18–0.23  hold
+ *   0.23–0.54  the right half thins to outline
+ *   0.54–0.59  hold
+ *   0.59–0.90  orchid sweeps everything but PT
+ *   0.68–0.96  footer rides the tail of that sweep
+ *
+ * Scroll is budgeted by how much actually moves, not evenly. The PT beat fills 16
+ * cells and gets 14%; the outline and orchid beats move 160 and 304 and get 31% each.
+ * An earlier pass split it evenly, so the smallest beat cost the most scrolling per
+ * thing that happened, and it read as the section refusing to get on with it.
+ *
+ * The cards and footer key off these same boundaries rather than carrying their own
+ * numbers — the handovers land inside the holds, so a card changes while the grid is
+ * still rather than competing with it.
+ */
+
+/*
+ * Registering these is what lets calc() resolve them to a number once, on the element
+ * that declares them, and inherit the result — an unregistered property would inherit
+ * as unparsed tokens and be re-evaluated on every descendant that touches it.
+ *
+ * `initial-value` is the *end* of the section, not the start: a browser without
+ * scroll-driven animations never runs the driver below, and lands on the composed
+ * final state rather than a frozen grey grid. Names are namespaced because @property
+ * registers globally.
+ */
+@property --problems-p {
+    syntax: "<number>";
+    inherits: true;
+    initial-value: 1;
+}
+
+/* Half-width of each wave's soft leading edge, in axis units. */
+@property --problems-wave {
+    syntax: "<number>";
+    inherits: true;
+    initial-value: 0.14;
+}
+
+@property --problems-pt-front {
+    syntax: "<number>";
+    inherits: true;
+    initial-value: 1;
+}
+
+@property --problems-outline-front {
+    syntax: "<number>";
+    inherits: true;
+    initial-value: 1;
+}
+
+@property --problems-orchid-front {
+    syntax: "<number>";
+    inherits: true;
+    initial-value: 1;
+}
+
+.runway {
+    --runway: 400svh;
+    --travel: calc(var(--runway) - 100svh);
+
+    /* Each beat's own 0→1, clipped to its slice of the runway. */
+    --pt-band: clamp(0, calc((var(--problems-p) - 0.04) / 0.14), 1);
+    --outline-band: clamp(0, calc((var(--problems-p) - 0.23) / 0.31), 1);
+    --orchid-band: clamp(0, calc((var(--problems-p) - 0.59) / 0.31), 1);
+
+    /*
+     * Where the leading edge of each wave sits on its axis. It starts one wave-width
+     * short of the near end and finishes at the far one, so a band of 0 leaves every
+     * cell untouched — the old JS needed an explicit guard for that case, because a
+     * front parked at 0 had already painted the origin cells.
+     */
+    --problems-pt-front: calc(
+        var(--pt-band) * (1 + var(--problems-wave)) - var(--problems-wave)
+    );
+    --problems-outline-front: calc(
+        var(--outline-band) * (1 + var(--problems-wave)) - var(--problems-wave)
+    );
+    --problems-orchid-front: calc(
+        var(--orchid-band) * (1 + var(--problems-wave)) - var(--problems-wave)
+    );
+
+    position: relative;
+    height: var(--runway);
+    view-timeline-name: --problems-runway;
+    view-timeline-axis: block;
+}
+
+/*
+ * Cells.
+ *
+ * `--l` and `--r` come in per cell as its position along the sweep, 0 at the edge the
+ * wave starts from and 1 at the far one. Subtracting that from the front and dividing
+ * by the wave width gives the cell's own 0→1, so one expression covers all 320.
+ */
+/*
+ * Rests at exactly 1, like every other cell. Until the wave reaches it a PT cell *is*
+ * an uncoached cell and has to be indistinguishable from one — an earlier version
+ * parked these two columns at 0.8 scale and 0.65 opacity, which left the left edge of
+ * the grid visibly smaller and paler than the rest before the beat had even started.
+ * The dark fill arriving is the whole of the change; `.layerPt` crossfades it in.
+ */
+.cellPt {
+    --pt: clamp(
+        0,
+        calc((var(--problems-pt-front) - var(--l)) / var(--problems-wave) + 1),
+        1
+    );
+
+    transform: scale(calc(1 + 0.3 * var(--pt) * (1 - var(--pt))));
+}
+
+/*
+ * A cell swells slightly as the front crosses it and settles back — t(1-t) peaks at
+ * 0.25, so this tops out around 1.075 halfway through and is exactly 1 at both ends.
+ */
+.cellMid {
+    --orchid: clamp(
+        0,
+        calc((var(--problems-orchid-front) - var(--l)) / var(--problems-wave) + 1),
+        1
+    );
+
+    transform: scale(calc(1 + 0.3 * var(--orchid) * (1 - var(--orchid))));
+}
+
+/*
+ * The tail shrinks as it hollows out to an outline, then comes back to full size as
+ * orchid claims it: (1 - 0.37·o)(1 - c) + c reduces to the term below. 0.37 is the
+ * design's ratio between a churned chip and a grey one (12px against 19px).
+ */
+.cellTail {
+    --outline: clamp(
+        0,
+        calc((var(--problems-outline-front) - var(--r)) / var(--problems-wave) + 1),
+        1
+    );
+    --orchid: clamp(
+        0,
+        calc((var(--problems-orchid-front) - var(--l)) / var(--problems-wave) + 1),
+        1
+    );
+
+    transform: scale(
+        calc(
+            (1 - 0.37 * var(--outline) * (1 - var(--orchid))) *
+                (1 + 0.3 * var(--orchid) * (1 - var(--orchid)))
+        )
+    );
+}
+
+/*
+ * Every beat is a layer crossfading over the one beneath rather than a class swap, so
+ * the browser only ever animates opacity — and the DOM stays put while it does.
+ */
+.layerPt {
+    opacity: var(--pt);
+}
+
+/*
+ * A coached cell carries the Zing mark — white at 30%, so it reads as texture on the
+ * orchid rather than as a logo repeated three hundred times. It's a background-image on
+ * the layer that was already there, so the mark costs no extra element per cell, and
+ * the artwork's own viewBox sizes it to ~60% of the cell exactly as the design has it.
+ */
+.layerOrchid {
+    opacity: var(--orchid);
+    background-image: url("/img/zing-mark.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+/*
+ * A churned cell is meant to read as barely there — the design draws it at 60% and
+ * noticeably smaller than a grey one, so it recedes rather than just changing style.
+ */
+.layerOutline {
+    opacity: calc(var(--outline) * 0.6);
+}
+
+.layerSolid {
+    opacity: calc(1 - var(--outline));
+}
+
+/* The legend swatch for the coached state shows the mark on its own chip. */
+.legendMark {
+    background-image: url("/img/zing-mark.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+/*
+ * Both of these are visible by default — that's the composed end state, and what a
+ * browser with no scroll-driven animations gets.
+ */
+.legendOrchid,
+.legendChurned {
+    opacity: 1;
+}
+
+/*
+ * Cards and footer read as discrete states, so they get their own short crossfades
+ * pinned to the scroll positions where the grid reaches each rest, rather than being
+ * derived from the beat maths.
+ */
+.card {
+    opacity: 1;
+}
+
+/* Gradient stays painted underneath; the veil crossfades over it, because a
+ * background-image swap has nothing to interpolate. */
+.cardVeil {
+    opacity: 1;
+}
+
+.footerBeat {
+    opacity: 1;
+    transform: none;
+}
+
+/*
+ * Everything above is the composed end state. The animations that walk it back to the
+ * start only exist where the browser can drive them off scroll.
+ */
+@supports (animation-timeline: view()) {
+    .runway {
+        animation: problems-scrub linear both;
+        animation-timeline: --problems-runway;
+        animation-range: contain;
+        animation-duration: auto;
+    }
+
+    .card,
+    .cardVeil,
+    .footerBeat,
+    .footer,
+    .legendOrchid,
+    .legendChurned {
+        animation-timeline: --problems-runway;
+        animation-range: contain;
+        animation-duration: auto;
+        animation-fill-mode: both;
+    }
+
+    .cardOne {
+        animation-name: problems-card-one;
+    }
+
+    .cardTwo {
+        animation-name: problems-card-two;
+    }
+
+    .cardVeilOne {
+        animation-name: problems-veil-one;
+    }
+
+    .cardVeilTwo {
+        animation-name: problems-veil-two;
+    }
+
+    .footer {
+        animation-name: problems-footer-gate;
+    }
+
+    .footerLead {
+        animation-name: problems-footer-lead;
+    }
+
+    .footerLine1 {
+        animation-name: problems-footer-line1;
+    }
+
+    .footerLine2 {
+        animation-name: problems-footer-line2;
+    }
+
+    .legendChurned {
+        animation-name: problems-legend-churned;
+    }
+
+    .legendOrchid {
+        animation-name: problems-legend-orchid;
+    }
+}
+
+/*
+ * `contain` runs from the moment the runway's top meets the top of the viewport to the
+ * moment its bottom meets the bottom — precisely the span the sticky child is pinned
+ * for. So keyframe percentages here are progress values, and read directly against
+ * the timeline at the top of the file.
+ */
+@keyframes problems-scrub {
+    from {
+        --problems-p: 0;
+    }
+    to {
+        --problems-p: 1;
+    }
+}
+
+/*
+ * The cards hand over inside the two holds — 18–23% and 54–59% — so the swap happens
+ * while the grid is momentarily still, and each card is lit for exactly the beat its
+ * copy is about.
+ */
+@keyframes problems-card-one {
+    0%,
+    18% {
+        opacity: 1;
+    }
+    23%,
+    54% {
+        opacity: 0.45;
+    }
+    59%,
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes problems-card-two {
+    0%,
+    18% {
+        opacity: 0.45;
+    }
+    23%,
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes problems-veil-one {
+    0%,
+    18% {
+        opacity: 0;
+    }
+    23%,
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes problems-veil-two {
+    0%,
+    18% {
+        opacity: 1;
+    }
+    23%,
+    54% {
+        opacity: 0;
+    }
+    59%,
+    100% {
+        opacity: 1;
+    }
+}
+
+/*
+ * The footer starts inside the orchid sweep rather than after it — overlapping the two
+ * is what removes the last stall — and its three lines trail each other so they still
+ * read one after another. The last one settles at 97%, just before the pin releases.
+ */
+@keyframes problems-footer-lead {
+    0%,
+    68% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    80%,
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes problems-footer-line1 {
+    0%,
+    74% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    86%,
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes problems-footer-line2 {
+    0%,
+    80% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    96%,
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/*
+ * Each key arrives with the beat that puts its state on the grid — churned at 23% with
+ * the outline sweep, coached at 59% with the orchid one. Showing them from the start
+ * would caption states that aren't on screen yet and give away where this is going.
+ */
+@keyframes problems-legend-churned {
+    0%,
+    23% {
+        opacity: 0;
+    }
+    31%,
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes problems-legend-orchid {
+    0%,
+    59% {
+        opacity: 0;
+    }
+    67%,
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes problems-footer-gate {
+    0%,
+    71.9% {
+        pointer-events: none;
+    }
+    72%,
+    100% {
+        pointer-events: auto;
+    }
+}

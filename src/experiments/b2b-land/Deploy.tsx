@@ -1,7 +1,12 @@
-const DEPLOYMENT_MODELS = [
+"use client";
+
+import { cn } from "@/lib/utils";
+import { useState } from "react";
+
+const DEPLOYMENT_OPTIONS = [
   {
     title: "Branded Experience",
-    subtitle: "Embed AI coaching into your existing member app.",
+    tagline: "Tailor Zing Coach app experience to your brand.",
     description:
       "Built for gym operators who want complete control over the member experience.",
     features: [
@@ -14,12 +19,15 @@ const DEPLOYMENT_MODELS = [
     idealFor:
       "Gyms, influencers, and wellness providers who want to launch fast without technical overhead.",
     cta: "Explore Branded Experience →",
+    image: "/img/Member%20page/nysc-bg.png",
+    mock: "/img/Member%20page/mock-branded.png",
+    badge: "/img/Member%20page/logos/mock-sdk.svg",
   },
   {
     title: "Mobile SDK",
-    subtitle: "Embed AI coaching into your existing member app.",
+    tagline: "Full control over UX inside your existing product.",
     description:
-      "Built for gym operators who want complete control over the member experience.",
+      "Built for platforms that want AI coaching features without rebuilding their app.",
     features: [
       "Native iOS & Android SDK",
       "White-label UI components",
@@ -30,10 +38,13 @@ const DEPLOYMENT_MODELS = [
     idealFor:
       "Health apps, fitness platforms, and insurers who want AI features inside their existing user experience.",
     cta: "Explore SDK →",
+    image: "/img/Member%20page/card-bg-1.png",
+    mock: "/img/Member%20page/mock-sdk.png",
+    badge: "/img/Member%20page/logos/mock-branded.png",
   },
   {
     title: "White-label App",
-    subtitle: "Your brand. Our technology. Zero maintenance.",
+    tagline: "Your brand. Our technology. Zero maintenance.",
     description:
       "Launch a fully branded AI coaching app without building one yourself.",
     features: [
@@ -46,67 +57,144 @@ const DEPLOYMENT_MODELS = [
     idealFor:
       "Enterprise gym chains, franchises, and corporate wellness programs needing a fully owned app experience.",
     cta: "Explore White-label →",
+    image: "/img/Member%20page/card-bg-2.png",
+    mock: "/img/Member%20page/mock-sdk.png",
+    badge: "/img/Member%20page/logos/mock-branded.png",
   },
 ] as const;
 
+const CheckIcon = ({ className }: { className?: string }) => (
+  <svg
+    aria-hidden
+    viewBox="0 0 16 16"
+    fill="none"
+    className={cn("size-4 shrink-0", className)}
+  >
+    <path
+      d="M3.5 8.5 6.5 11.5 12.5 4.5"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
 export const Deploy = () => {
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const selected = DEPLOYMENT_OPTIONS[selectedIndex];
+
   return (
-    <section className="flex flex-col gap-6 rounded-3xl bg-theme-bg-100 px-4 py-8 md:gap-8 md:px-14 md:py-16">
-      <div className="flex flex-col gap-3">
-        <h2 className="type-heading-h1 text-balance">
-          One AI platform. Three ways to launch.
-        </h2>
-        <p className="type-body-lg text-theme-text-secondary max-w-xl">
-          Deploy Zing the way that best fits your business – from a branded
-          experience in days to a fully embedded SDK or a complete white-label
-          application.
-        </p>
-      </div>
+    <section className="bg-theme-fg-200 px-4 py-16 text-theme-text-primary-inv md:px-14 md:py-32">
+      <div className="flex mx-auto max-w-screen-xl flex-col gap-12">
+        <div className="flex flex-col gap-3">
+          <h2 className="type-heading-h1 text-balance">
+            One AI platform. Three ways to launch.
+          </h2>
+          <p className="type-body-lg max-w-xl text-theme-text-secondary-inv">
+            Deploy Zing the way that best fits your business – from a branded
+            experience in days to a fully embedded SDK or a complete white-label
+            application.
+          </p>
+        </div>
 
-      <div className="flex flex-col gap-4">
-        <h3 className="type-heading-h3 text-balance">
-          Choose the deployment model that fits your business
-        </h3>
+        <div className="mx-auto grid w-full max-w-screen-xl grid-cols-1 items-start gap-4 md:grid-cols-2 md:gap-6">
+          {/* Col 1 — option list */}
+          <ul className="flex flex-col justify-center h-full gap-2">
+            {DEPLOYMENT_OPTIONS.map((option, index) => {
+              const isSelected = index === selectedIndex;
 
-        <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
-          {DEPLOYMENT_MODELS.map((model) => (
-            <article
-              key={model.title}
-              className="flex flex-col bg-theme-bg-main-section p-6 rounded-3xl gap-4 justify-between"
-            >
-              <div className="flex flex-col gap-4">
-                <h4 className="type-heading-h3 mb-2">{model.title}</h4>
-                <p className="type-body-md text-theme-text-secondary">
-                  {model.subtitle}
-                </p>
-                <p className="type-body-md text-theme-text-secondary">
-                  {model.description}
-                </p>
-
-                <ul className="flex flex-col gap-1">
-                  {model.features.map((feature) => (
-                    <li
-                      key={feature}
-                      className="type-body-sm text-theme-text-secondary"
+              return (
+                <li key={option.title}>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedIndex(index)}
+                    aria-expanded={isSelected}
+                    className={cn(
+                      "flex w-full flex-col gap-2 rounded-3xl border px-5 py-4 text-left transition-colors duration-200",
+                      isSelected
+                        ? "bg-theme-bg-main-section text-theme-text-primary"
+                        : "cursor-pointer border-theme-fg-400 bg-theme-fg-300/50 text-theme-text-primary-inv hover:bg-theme-fg-300",
+                    )}
+                  >
+                    <span className="type-body-lg-semi">{option.title}</span>
+                    <p
+                      className={cn(
+                        "type-body-md",
+                        isSelected
+                          ? "text-theme-text-secondary"
+                          : "text-theme-text-secondary-inv",
+                      )}
                     >
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
+                      {option.description}
+                    </p>
 
-                <p className="type-body-sm text-theme-text-secondary">
-                  <strong className="type-body-sm-medium text-theme-text-primary">
-                    Ideal for:
-                  </strong>{" "}
-                  {model.idealFor}
-                </p>
+                    <div
+                      className={cn(
+                        "grid transition-[grid-template-rows,opacity] duration-300 ease-out",
+                        isSelected
+                          ? "grid-rows-[1fr] opacity-100"
+                          : "grid-rows-[0fr] opacity-0",
+                      )}
+                    >
+                      <div className="overflow-hidden">
+                        <div className="flex flex-col gap-4 pt-2">
+                          <ul className="flex flex-col gap-2">
+                            {option.features.map((feature) => (
+                              <li
+                                key={feature}
+                                className="type-body-md flex items-start gap-2"
+                              >
+                                <CheckIcon className="mt-0.5 text-theme-text-secondary" />
+                                <span>{feature}</span>
+                              </li>
+                            ))}
+                          </ul>
+                          <p className="type-body-sm text-theme-text-secondary">
+                            <span className="type-body-sm-medium text-theme-text-primary">
+                              Ideal for:
+                            </span>{" "}
+                            {option.idealFor}
+                          </p>
+                          <span className="type-body-md-semi mt-1 inline-flex self-start rounded-2xl bg-theme-fg-100 px-4 py-3 text-theme-bg-100">
+                            {option.cta}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+
+          {/* Col 2 — selected preview (fixed height so accordion open/close can't resize it) */}
+          <div
+            className="relative h-80 w-full overflow-hidden rounded-4xl bg-cover bg-center md:sticky md:top-28 md:h-[35rem]"
+            style={{ backgroundImage: `url('${selected.image}')` }}
+          >
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 bg-theme-fg-100/40"
+            />
+            <div className="relative z-10 flex h-full flex-col items-center justify-end p-8 md:p-12">
+              <div className="relative min-h-0 w-full flex-1">
+                <img
+                  src={selected.mock}
+                  alt=""
+                  className="absolute inset-0 h-full w-full object-contain object-bottom"
+                />
+                <img
+                  src={selected.badge}
+                  alt=""
+                  className="absolute border-4 border-theme-bg-100/20 rounded-4xl backdrop-blur-3xl bottom-8 left-1/4 h-24 w-auto -translate-x-1/2 object-contain"
+                />
               </div>
-
-              <button type="button" className="type-body-md-semi self-start">
-                {model.cta}
-              </button>
-            </article>
-          ))}
+              <p className="pt-4 border-t border-theme-bg-100/20 type-heading-h3 max-w-sm text-balance text-center text-theme-text-primary-inv">
+                {selected.tagline}
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </section>

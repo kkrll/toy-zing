@@ -31,7 +31,7 @@ export const Navigation = ({
   return (
     <header
       className={[
-        "fixed left-1/2 z-50 flex w-full max-w-screen-xl -translate-x-1/2 items-center justify-between gap-4 px-4 py-2 transition-[top,left,right,border-radius,background-color,box-shadow] duration-300 ease-out md:gap-6 md:pl-6 md:pr-3",
+        "fixed left-1/2 z-50 flex w-full max-w-screen-xl -translate-x-1/2 items-center justify-between gap-4 px-4 py-2 transition-[top,left,right,border-radius,background-color,box-shadow] duration-300 ease-out md:gap-6 md:px-14",
         scrolled
           ? "crown top-2 rounded-3xl shadow-sm md:top-3 md:rounded-4xl"
           : "top-4 rounded-none bg-transparent md:top-8",

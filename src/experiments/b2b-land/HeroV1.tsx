@@ -4,33 +4,41 @@ const STATS = [
   { value: "850k", label: "paying users" },
 ] as const;
 
+const LOGO_BASE = "/img/Member%20page/logos";
+
 const TRUST_ITEMS = {
   awards: [
     {
       name: "TechRadar",
       detail: "Best Fitness App 2025",
+      logo: `${LOGO_BASE}/logo-techradar.svg`,
     },
     {
       name: "Athletech News",
       detail: "Top innovator, Global ranking 2026",
+      logo: `${LOGO_BASE}/logo-atn.svg`,
     },
     {
       name: "Globee® Awards for Technology",
       detail: "Best Fitness&Training Technology 2025",
+      logo: `${LOGO_BASE}/logo-globee.png`,
     },
   ],
   partners: [
     {
       name: "PSG",
       detail: "Official fitness app partner",
+      logo: `${LOGO_BASE}/logo-psg.svg`,
     },
     {
       name: "Les Mills",
       detail: "Content partner",
+      logo: `${LOGO_BASE}/logo-les-mills.svg`,
     },
     {
       name: "New York Sports Club",
       detail: "MYCO by Zing Coach – official club's AI Coach",
+      logo: `${LOGO_BASE}/logo-nysc.svg`,
     },
   ],
 } as const;
@@ -42,7 +50,7 @@ const HERO_IMG = "/img/Member%20page/desktop.webp";
 
 export const HeroV1 = () => {
   return (
-    <section className="flex min-h-svh flex-col gap-8 pt-24 md:gap-12 md:pt-28">
+    <section className="mx-auto flex min-h-svh w-full max-w-screen-xl flex-col gap-8 px-4 pt-24 md:gap-12 md:px-14 md:pt-28">
       <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-3">
           <h1 className="type-heading-h1 text-balance">
@@ -90,7 +98,7 @@ export const HeroV1 = () => {
           </ul>
         </div>
 
-        <div className="flex flex-col items-center gap-6 px-2 py-2 md:gap-8 md:px-8 md:py-4">
+        <div className="flex flex-col items-center gap-6 px-4 py-2 md:gap-8 md:px-14 md:py-4">
           <h4 className="type-heading-h4 text-center text-theme-text-secondary">
             Trusted by leading names in sports and fitness
           </h4>
@@ -98,11 +106,13 @@ export const HeroV1 = () => {
             {TRUST_ITEMS.partners.map((item) => (
               <li
                 key={item.name}
-                className="flex w-40 shrink-0 snap-start flex-col items-center text-center md:w-auto md:flex-1"
+                className="group flex w-40 shrink-0 snap-start flex-col items-center text-center md:w-auto md:flex-1"
               >
-                <div className="type-body-caption mb-2 flex h-8 w-12 items-center justify-center bg-theme-bg-300 text-theme-text-disabled">
-                  logo
-                </div>
+                <img
+                  src={item.logo}
+                  alt=""
+                  className="mb-2 h-8 w-auto object-contain opacity-40 grayscale transition-opacity duration-200 group-hover:opacity-100"
+                />
                 <span className="type-body-md-semi">{item.name}</span>
                 <span className="type-body-sm text-theme-text-secondary">
                   {item.detail}
@@ -113,11 +123,13 @@ export const HeroV1 = () => {
             {TRUST_ITEMS.awards.map((item) => (
               <li
                 key={item.name}
-                className="flex w-40 shrink-0 snap-start flex-col items-center text-center md:w-auto md:flex-1"
+                className="group flex w-40 shrink-0 snap-start flex-col items-center text-center md:w-auto md:flex-1"
               >
-                <div className="type-body-caption mb-2 flex h-8 w-12 items-center justify-center bg-theme-bg-300 text-theme-text-disabled">
-                  logo
-                </div>
+                <img
+                  src={item.logo}
+                  alt=""
+                  className="mb-2 h-8 w-auto object-contain opacity-40 grayscale transition-opacity duration-200 group-hover:opacity-100"
+                />
                 <span className="type-body-md-semi">{item.name}</span>
                 <span className="type-body-sm text-theme-text-secondary">
                   {item.detail}

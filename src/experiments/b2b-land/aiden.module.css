@@ -1,0 +1,108 @@
+/*
+ * Choreography for the Aiden card stack.
+ *
+ * Scroll picks which card is at the front and `useScrollPhase` writes that index onto the
+ * runway as `--step`; the movement between two indices then plays on its own clock. Bound
+ * straight to scroll position it was only ever as smooth as the device pushing it, and a
+ * mouse wheel's ~100px notches are far too coarse for a card to travel in.
+ *
+ * Where the Problems section animates a fixed set of beats, this one moves five cards
+ * through the same positions in turn — so rather than five sets of rules, one registered
+ * number carries each element through the stack and every visual is derived from it with
+ * calc(). `--aiden-slot` is an element's distance from the front: 0 is the front card,
+ * positive is queued behind, negative is on its way out. Only `--index` differs, so the
+ * one transition below moves all fifteen elements in lockstep.
+ *
+ * Registering it is what makes that transition possible at all — an unregistered custom
+ * property has no type to interpolate, so the stack would jump between cards instead of
+ * travelling. The name is namespaced because `@property` registers globally: claiming a
+ * generic `--slot` would redefine the type of anyone else's property of that name.
+ */
+
+@property --aiden-slot {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+
+/*
+ * `--gap` is one card's share of the pinned scroll and `--start` where the first sits.
+ * Together they set how far you scroll per card, and they're deliberately tight: the snap
+ * markers below are spaced by `--gap`, and proximity snapping only reaches across a
+ * viewport-ish distance the browser picks for us.
+ */
+.runway {
+  --runway: 240svh;
+  --travel: calc(var(--runway) - 100svh);
+  --start: 0.08;
+  --gap: 0.21;
+
+  position: relative;
+  height: var(--runway);
+}
+
+/*
+ * One snap target per card, at the scroll position where that card reaches the front. The
+ * dots read their offsets back off these nodes, so this stays the only place the positions
+ * are defined.
+ */
+.snap {
+  position: absolute;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  top: calc((var(--start) + var(--index) * var(--gap)) * var(--travel));
+  scroll-snap-align: start;
+}
+
+.advance {
+  --aiden-slot: calc(var(--index) - var(--step));
+
+  transition: --aiden-slot 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/*
+ * Queued cards drop and shrink; leaving cards lift and dissolve. Both opacity terms are
+ * allowed to run past 0 — the property clamps them, which saves clamping here and keeps
+ * cards more than two deep fully hidden.
+ */
+.card {
+  --depth: max(var(--aiden-slot), 0);
+  --gone: max(calc(-1 * var(--aiden-slot)), 0);
+
+  transform: translateY(calc(var(--depth) * 44px - var(--gone) * 56px))
+    scale(calc(1 - var(--depth) * 0.08 + var(--gone) * 0.04));
+  opacity: min(calc(1 - var(--gone)), calc(3 - var(--depth)));
+}
+
+/*
+ * Captions and dots only care how far they are from the front, in either direction.
+ * `max(n, -n)` stands in for abs(), which isn't safely available yet.
+ */
+.caption {
+  --swing: max(var(--aiden-slot), calc(-1 * var(--aiden-slot)));
+
+  opacity: calc(1 - 2 * var(--swing));
+  transform: translateY(calc(var(--swing) * 10px));
+}
+
+.dotFill {
+  --swing: max(var(--aiden-slot), calc(-1 * var(--aiden-slot)));
+
+  opacity: calc(1 - 2 * var(--swing));
+}
+
+/*
+ * Product UI is a second beat after the card lands. A short enter delay lets the advance
+ * read first without the overlay feeling parked; exit has no delay so the outgoing
+ * screen is gone before the next card arrives.
+ */
+.ui {
+  opacity: 0;
+  transition: opacity 200ms linear;
+}
+
+.uiIn {
+  opacity: 1;
+  transition: opacity 280ms 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}

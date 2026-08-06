@@ -3,26 +3,33 @@
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 
+const CADET = "var(--ds-theme-text-cadet)";
+
 const VALUE_CHAIN = [
   {
     label: "More members coached",
-    color: "bg-blue-200",
+    tint: `color-mix(in oklab, ${CADET} 20%, transparent)`,
+    swatch: "bg-theme-text-cadet/20",
   },
   {
     label: "More consistent training habits",
-    color: "bg-green-200",
+    tint: `color-mix(in oklab, ${CADET} 40%, transparent)`,
+    swatch: "bg-theme-text-cadet/40",
   },
   {
     label: "Higher retention",
-    color: "bg-marsala-200",
+    tint: `color-mix(in oklab, ${CADET} 60%, transparent)`,
+    swatch: "bg-theme-text-cadet/60",
   },
   {
     label: "Higher lifetime value",
-    color: "bg-orchid-200",
+    tint: `color-mix(in oklab, ${CADET} 80%, transparent)`,
+    swatch: "bg-theme-text-cadet/80",
   },
   {
     label: "More revenue from your existing member base",
-    color: "bg-orange-200",
+    tint: CADET,
+    swatch: "bg-theme-text-cadet",
   },
 ] as const;
 
@@ -34,8 +41,7 @@ export const BusinessValue = () => {
   const [autoActive, setAutoActive] = useState(0);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
-  const activeCount =
-    hoveredIndex !== null ? hoveredIndex + 1 : autoActive;
+  const activeCount = hoveredIndex !== null ? hoveredIndex + 1 : autoActive;
 
   useEffect(() => {
     if (hoveredIndex !== null) return;
@@ -48,88 +54,118 @@ export const BusinessValue = () => {
   }, [hoveredIndex]);
 
   return (
-      <div className="grid grid-cols-1 items-start gap-8 rounded-3xl bg-theme-bg-200 p-4 md:grid-cols-2 md:gap-16 md:p-8">
-        <div className="flex flex-col gap-6">
-          <h3 className="type-heading-h3">How Zing creates business value</h3>
+    <div className="flex flex-col gap-8 rounded-3xl bg-theme-bg-200 md:gap-16">
+      <div className="flex flex-col">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <h3 className="type-heading-h2 md: pt-24">
+            How Zing creates <br />
+            business value
+          </h3>
 
-          <ol className="flex flex-col gap-2">
-            {VALUE_CHAIN.map((step, index) => {
-              const isActive = index < activeCount;
-
-              return (
-                <li key={step.label}>
-                  <button
-                    type="button"
-                    onMouseEnter={() => setHoveredIndex(index)}
-                    onMouseLeave={() => setHoveredIndex(null)}
-                    className={cn(
-                      "flex w-full items-center gap-3 rounded-2xl border px-2 py-2 text-left transition-colors duration-300",
-                      isActive
-                        ? "border-theme-fg-100 text-theme-text-primary"
-                        : "border-theme-bg-300 text-theme-text-disabled",
-                    )}
-                  >
-                    <span
-                      className={cn(
-                        "size-5 shrink-0 rounded-md transition-colors duration-300",
-                        isActive ? step.color : "bg-theme-bg-300",
-                      )}
-                      aria-hidden
-                    />
-                    <span className="type-body-lg">{step.label}</span>
-                  </button>
-                </li>
-              );
-            })}
-          </ol>
-        </div>
-
-        <figure className="flex flex-col gap-4 overflow-x-auto pt-2">
-          <div
-            className="relative mb-10 flex h-56 min-w-72 items-stretch justify-center gap-8 border-b border-theme-bg-300 sm:h-72 sm:gap-16"
-            aria-label="Member LTV comparison: Today vs With Zing"
-          >
-            {/* Today */}
-            <div className="relative w-28 sm:w-44">
-              <div
-                className="absolute inset-x-0 bottom-0 rounded-t-lg bg-theme-bg-300"
-                style={{ height: `${TODAY_HEIGHT}%` }}
-                aria-label="Today: membership base"
-              />
-              <span className="type-body-md absolute inset-x-0 -bottom-8 text-center text-theme-text-secondary whitespace-nowrap">
-                Today
-              </span>
-            </div>
-
-            {/* With Zing */}
-            <div className="relative w-28 sm:w-44">
-              <div
-                className="absolute inset-x-0 bottom-0 flex flex-col-reverse overflow-hidden rounded-t-lg transition-[height] duration-500 ease-out"
-                style={{
-                  height: `${TODAY_HEIGHT + activeCount * SEGMENT_HEIGHT}%`,
-                }}
-                aria-label="With Zing: membership base plus value uplift"
-              >
+          <figure className="flex flex-col gap-4 overflow-x-auto pt-2">
+            <div
+              className="relative flex h-56 min-w-72 items-stretch justify-center gap-8 sm:h-72 sm:gap-16"
+              aria-label="Member LTV comparison: Today vs With Zing"
+            >
+              {/* Today */}
+              <div className="relative w-28 sm:w-44">
                 <div
-                  className="w-full bg-theme-bg-300"
-                  style={{ flex: TODAY_HEIGHT }}
-                />
-                {VALUE_CHAIN.map((step, index) =>
-                  index < activeCount ? (
-                    <div
-                      key={step.label}
-                      className={cn("w-full", step.color)}
-                      style={{ flex: SEGMENT_HEIGHT }}
-                    />
-                  ) : null,
-                )}
+                  className="absolute inset-x-0 bottom-0 overflow-hidden rounded-t-lg"
+                  style={{
+                    height: `${TODAY_HEIGHT}%`,
+                    background:
+                      "linear-gradient(to bottom, var(--ds-theme-bg-300) 0%, var(--ds-theme-bg-300) calc(100% - 32px), var(--ds-theme-bg-400) 100%)",
+                  }}
+                  aria-label="Today: membership base"
+                >
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute inset-0 bg-repeat mix-blend-overlay"
+                    style={{ backgroundImage: "url('/noise-light.png')" }}
+                  />
+                </div>
+                <span className="type-body-md absolute inset-x-0 bottom-4 z-10 text-center text-theme-text-secondary whitespace-nowrap">
+                  Revenue Today
+                </span>
               </div>
-              <span className="type-body-md-semi absolute -bottom-8 inset-x-0 text-center whitespace-nowrap">
-                With Zing
-              </span>
+
+              {/* With Zing */}
+              <div className="relative w-28 sm:w-44">
+                <div
+                  className="absolute inset-x-0 bottom-0 flex flex-col-reverse overflow-hidden rounded-t-lg transition-[height] duration-500 ease-out"
+                  style={{
+                    height: `${TODAY_HEIGHT + activeCount * SEGMENT_HEIGHT}%`,
+                  }}
+                  aria-label="With Zing: membership base plus value uplift"
+                >
+                  <div
+                    className="w-full"
+                    style={{
+                      flex: TODAY_HEIGHT,
+                      background:
+                        "linear-gradient(to bottom, var(--ds-theme-bg-300) 0%, var(--ds-theme-bg-300) calc(100% - 32px), var(--ds-theme-bg-400) 100%)",
+                    }}
+                  />
+                  {VALUE_CHAIN.map((step, index) =>
+                    index < activeCount ? (
+                      <div
+                        key={step.label}
+                        className={cn("w-full", step.swatch)}
+                        style={{ flex: SEGMENT_HEIGHT }}
+                      />
+                    ) : null,
+                  )}
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute inset-0 bg-repeat mix-blend-overlay"
+                    style={{ backgroundImage: "url('/noise-light.png')" }}
+                  />
+                </div>
+                <span className="type-body-md-semi absolute inset-x-0 bottom-4 z-10 text-center whitespace-nowrap">
+                  Revenue With Zing
+                </span>
+              </div>
             </div>
-          </div>
-        </figure>
+          </figure>
+        </div>
+        <ol className="grid grid-cols-1 md:grid-cols-5 rounded-b-2xl overflow-hidden">
+          {VALUE_CHAIN.map((step, index) => {
+            const isActive = index < activeCount;
+
+            return (
+              <li key={step.label} className="h-full">
+                <button
+                  type="button"
+                  onMouseEnter={() => setHoveredIndex(index)}
+                  onMouseLeave={() => setHoveredIndex(null)}
+                  className={cn(
+                    "flex md:flex-col w-full h-full justify-center items-center gap-3 px-4 md:px-0 py-4 md:pt-0 text-left transition-colors duration-300",
+                    isActive
+                      ? "text-theme-text-primary"
+                      : "text-theme-text-disabled",
+                  )}
+                  style={{
+                    background: isActive
+                      ? `var(--ds-theme-bg-100)`
+                      : "color-mix(in oklab, var(--ds-theme-bg-300) 30%, transparent)",
+                  }}
+                >
+                  <span
+                    className={cn(
+                      "size-8 md:w-full md:h-1 shrink-0 rounded-md md:rounded-none transition-colors duration-300",
+                      isActive ? step.swatch : "bg-theme-bg-300",
+                    )}
+                    aria-hidden
+                  />
+                  <div className="flex items-center type-body-md md:px-2 h-full text-balance text-center">
+                    {step.label}
+                  </div>
+                </button>
+              </li>
+            );
+          })}
+        </ol>
       </div>
+    </div>
   );
 };

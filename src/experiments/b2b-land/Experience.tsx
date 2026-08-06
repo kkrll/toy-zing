@@ -86,106 +86,108 @@ export const Experience = () => {
   };
 
   return (
-    <section className="flex flex-col gap-6 overflow-hidden rounded-3xl bg-theme-bg-100 py-8 md:py-16">
-      <div className="flex items-center justify-between gap-4 px-4 md:px-14">
-        <h2 className="type-heading-h1 text-balance">
-          What your members experience
-        </h2>
-        <div className="flex shrink-0 items-center gap-1">
-          <button
-            type="button"
-            aria-label="Previous feature"
-            disabled={!canScrollPrev}
-            onClick={() => goTo(activeIndex - 1)}
-            className={cn(
-              "flex size-10 items-center justify-center rounded-xl type-heading-h3 transition-colors",
-              canScrollPrev
-                ? "cursor-pointer bg-theme-bg-200 text-theme-text-secondary hover:text-theme-text-primary"
-                : "cursor-default text-theme-text-disabled/30",
-            )}
-          >
-            <svg
-              width="32"
-              height="32"
-              viewBox="0 0 32 32"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden
+    <section className="bg-theme-bg-200">
+      <div className="mx-auto flex max-w-screen-xl flex-col gap-6 overflow-hidden py-16 md:py-32">
+        <div className="flex items-start justify-between gap-3 px-4 md:items-center md:gap-4 md:px-14">
+          <h2 className="type-heading-h1 min-w-0 flex-1 text-balance">
+            What your members experience
+          </h2>
+          <div className="flex shrink-0 items-center gap-1">
+            <button
+              type="button"
+              aria-label="Previous feature"
+              disabled={!canScrollPrev}
+              onClick={() => goTo(activeIndex - 1)}
+              className={cn(
+                "flex size-10 items-center justify-center rounded-xl type-heading-h3 transition-colors",
+                canScrollPrev
+                  ? "cursor-pointer bg-theme-bg-200 text-theme-text-secondary hover:text-theme-text-primary"
+                  : "cursor-default text-theme-text-disabled/30",
+              )}
             >
-              <path
-                d="M14.8686 11.4745L10.3431 16L14.8686 20.5255M10.3431 16H21.6568"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-            </svg>
-          </button>
-          <button
-            type="button"
-            aria-label="Next feature"
-            disabled={!canScrollNext}
-            onClick={() => goTo(activeIndex + 1)}
-            className={cn(
-              "flex size-10 items-center justify-center rounded-xl type-heading-h3 transition-colors",
-              canScrollNext
-                ? "cursor-pointer bg-theme-bg-200 text-theme-text-secondary hover:text-theme-text-primary"
-                : "cursor-default text-theme-text-disabled/30",
-            )}
-          >
-            <svg
-              width="32"
-              height="32"
-              viewBox="0 0 32 32"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden
+              <svg
+                width="32"
+                height="32"
+                viewBox="0 0 32 32"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden
+              >
+                <path
+                  d="M14.8686 11.4745L10.3431 16L14.8686 20.5255M10.3431 16H21.6568"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </button>
+            <button
+              type="button"
+              aria-label="Next feature"
+              disabled={!canScrollNext}
+              onClick={() => goTo(activeIndex + 1)}
+              className={cn(
+                "flex size-10 items-center justify-center rounded-xl type-heading-h3 transition-colors",
+                canScrollNext
+                  ? "cursor-pointer bg-theme-bg-200 text-theme-text-secondary hover:text-theme-text-primary"
+                  : "cursor-default text-theme-text-disabled/30",
+              )}
             >
-              <path
-                d="M17.1314 11.4745L21.6569 16L17.1314 20.5255M21.6569 16H10.3432"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-            </svg>
-          </button>
+              <svg
+                width="32"
+                height="32"
+                viewBox="0 0 32 32"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden
+              >
+                <path
+                  d="M17.1314 11.4745L21.6569 16L17.1314 20.5255M21.6569 16H10.3432"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
-      </div>
 
-      <div className="relative">
-        <ul
-          ref={scrollerRef}
-          className="flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-4 pb-8 pt-2 scroll-px-4 md:gap-6 md:px-14 md:scroll-px-14"
+        <div className="relative">
+          <ul
+            ref={scrollerRef}
+            className="flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-4 pb-8 pt-2 scroll-px-4 md:gap-6 md:px-14 md:scroll-px-14"
+          >
+            {FEATURES.map((feature) => (
+              <li
+                key={feature.title}
+                className="flex w-64 shrink-0 snap-start flex-col gap-1 sm:w-80"
+              >
+                <div className="mb-4 h-72 w-full overflow-hidden rounded-3xl bg-theme-bg-main-section sm:h-96" />
+                <h3 className="type-body-lg-semi">{feature.title}</h3>
+                <p className="type-body-lg text-theme-text-secondary">
+                  {feature.description}
+                </p>
+              </li>
+            ))}
+          </ul>
+
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-y-0 left-0 w-4 bg-linear-to-r from-theme-bg-200 to-transparent md:w-14"
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-y-0 right-0 w-4 bg-linear-to-l from-theme-bg-200 to-transparent md:w-14"
+          />
+        </div>
+
+        <button
+          type="button"
+          className="type-body-lg-semi ml-4 min-w-0 self-start rounded-2xl bg-theme-fg-100 px-4 py-3 text-theme-bg-100 sm:min-w-80 md:ml-14"
         >
-          {FEATURES.map((feature) => (
-            <li
-              key={feature.title}
-              className="flex w-64 shrink-0 snap-start flex-col gap-1 sm:w-80"
-            >
-              <div className="mb-4 h-72 w-full overflow-hidden rounded-3xl bg-theme-bg-main-section sm:h-96" />
-              <h3 className="type-body-lg-semi">{feature.title}</h3>
-              <p className="type-body-lg text-theme-text-secondary">
-                {feature.description}
-              </p>
-            </li>
-          ))}
-        </ul>
-
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-y-0 left-0 w-4 bg-linear-to-r from-theme-bg-100 to-transparent md:w-14"
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-y-0 right-0 w-4 bg-linear-to-l from-theme-bg-100 to-transparent md:w-14"
-        />
+          Try now →
+        </button>
       </div>
-
-      <button
-        type="button"
-        className="type-body-lg-semi ml-4 min-w-0 self-start rounded-2xl bg-theme-fg-100 px-4 py-3 text-theme-bg-100 sm:min-w-80 md:ml-14"
-      >
-        Try now →
-      </button>
     </section>
   );
 };
