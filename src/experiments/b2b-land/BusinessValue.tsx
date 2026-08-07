@@ -57,18 +57,18 @@ export const BusinessValue = () => {
     <div className="flex flex-col gap-8 rounded-3xl bg-theme-bg-200 md:gap-16">
       <div className="flex flex-col">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <h3 className="type-heading-h2 md: pt-24">
+          <h3 className="type-heading-h2 md:pt-24">
             How Zing creates <br />
             business value
           </h3>
 
           <figure className="flex flex-col gap-4 overflow-x-auto pt-2">
             <div
-              className="relative flex h-56 min-w-72 items-stretch justify-center gap-8 sm:h-72 sm:gap-16"
+              className="relative flex h-56 min-w-72 items-stretch justify-center gap-4 md:gap-8 sm:h-72 sm:gap-16"
               aria-label="Member LTV comparison: Today vs With Zing"
             >
               {/* Today */}
-              <div className="relative w-28 sm:w-44">
+              <div className="relative w-48 sm:w-64">
                 <div
                   className="absolute inset-x-0 bottom-0 overflow-hidden rounded-t-lg"
                   style={{
@@ -90,7 +90,7 @@ export const BusinessValue = () => {
               </div>
 
               {/* With Zing */}
-              <div className="relative w-28 sm:w-44">
+              <div className="relative w-48 sm:w-64">
                 <div
                   className="absolute inset-x-0 bottom-0 flex flex-col-reverse overflow-hidden rounded-t-lg transition-[height] duration-500 ease-out"
                   style={{
@@ -128,18 +128,21 @@ export const BusinessValue = () => {
             </div>
           </figure>
         </div>
-        <ol className="grid grid-cols-1 md:grid-cols-5 rounded-b-2xl overflow-hidden">
+        <ol className="grid grid-cols-1 md:grid-cols-5 rounded-2xl md:rounded-t-none overflow-hidden">
           {VALUE_CHAIN.map((step, index) => {
             const isActive = index < activeCount;
 
             return (
-              <li key={step.label} className="h-full">
+              <li
+                key={step.label}
+                className="h-full border-b md:border-b-0 md:border-r border-theme-bg-300 last:border-none"
+              >
                 <button
                   type="button"
                   onMouseEnter={() => setHoveredIndex(index)}
                   onMouseLeave={() => setHoveredIndex(null)}
                   className={cn(
-                    "flex md:flex-col w-full h-full justify-center items-center gap-3 px-4 md:px-0 py-4 md:pt-0 text-left transition-colors duration-300",
+                    "flex md:flex-col w-full h-full md:justify-center items-center gap-3 px-4 md:px-0 py-4 md:pt-0 text-left transition-colors duration-300",
                     isActive
                       ? "text-theme-text-primary"
                       : "text-theme-text-disabled",

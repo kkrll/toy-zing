@@ -130,11 +130,15 @@ export const HeroV2 = () => {
         <h4 className="type-heading-h4 text-center text-theme-text-secondary">
           Trusted by leading names in sports and fitness
         </h4>
+        {/* A carousel on mobile only. Past `md` the list stops being a scroll
+            container, so the items' `snap-start` would bind to the next one up — the
+            document, which AidenV2 makes snappable — and turn the strip into six
+            vertical snap points on the way into the section below. */}
         <ul className="flex w-full snap-x snap-mandatory gap-6 overflow-x-auto pb-2 md:flex-wrap md:items-stretch md:justify-center md:gap-8 md:overflow-visible md:pb-0">
           {TRUST_ITEMS.partners.map((item) => (
             <li
               key={item.name}
-              className="group flex w-36 shrink-0 snap-start flex-col items-center text-center md:w-auto md:flex-1"
+              className="group flex w-36 shrink-0 snap-start flex-col items-center text-center md:w-auto md:flex-1 md:snap-align-none"
             >
               <img
                 src={item.logo}
@@ -151,7 +155,7 @@ export const HeroV2 = () => {
           {TRUST_ITEMS.awards.map((item) => (
             <li
               key={item.name}
-              className="group flex w-36 shrink-0 snap-start flex-col items-center text-center md:w-auto md:flex-1"
+              className="group flex w-36 shrink-0 snap-start flex-col items-center text-center md:w-auto md:flex-1 md:snap-align-none"
             >
               <img
                 src={item.logo}

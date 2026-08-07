@@ -65,12 +65,20 @@
  * Queued cards drop and shrink; leaving cards lift and dissolve. Both opacity terms are
  * allowed to run past 0 — the property clamps them, which saves clamping here and keeps
  * cards more than two deep fully hidden.
+ *
+ * The drop is a share of the card's own height, not a pixel count. A translate
+ * percentage resolves against the untransformed box, and the card is `inset-0` in a
+ * fixed-ratio container, so the deck now spreads proportionally at every width. In
+ * pixels it spilled a constant ~55px past the container: nothing on a desktop card, but
+ * a quarter of a phone-width one, where it reached past the gap and painted over the
+ * caption below. 9.4% and 12% are the old 44px and 56px against the desktop card, so
+ * that end is unchanged.
  */
 .card {
   --depth: max(var(--aiden-slot), 0);
   --gone: max(calc(-1 * var(--aiden-slot)), 0);
 
-  transform: translateY(calc(var(--depth) * 44px - var(--gone) * 56px))
+  transform: translateY(calc(var(--depth) * 9.4% - var(--gone) * 12%))
     scale(calc(1 - var(--depth) * 0.08 + var(--gone) * 0.04));
   opacity: min(calc(1 - var(--gone)), calc(3 - var(--depth)));
 }

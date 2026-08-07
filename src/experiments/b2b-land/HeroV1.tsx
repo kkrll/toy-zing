@@ -106,7 +106,7 @@ export const HeroV1 = () => {
             {TRUST_ITEMS.partners.map((item) => (
               <li
                 key={item.name}
-                className="group flex w-40 shrink-0 snap-start flex-col items-center text-center md:w-auto md:flex-1"
+                className="group flex w-40 shrink-0 snap-start flex-col items-center text-center md:w-auto md:flex-1 md:snap-align-none"
               >
                 <img
                   src={item.logo}
@@ -123,7 +123,7 @@ export const HeroV1 = () => {
             {TRUST_ITEMS.awards.map((item) => (
               <li
                 key={item.name}
-                className="group flex w-40 shrink-0 snap-start flex-col items-center text-center md:w-auto md:flex-1"
+                className="group flex w-40 shrink-0 snap-start flex-col items-center text-center md:w-auto md:flex-1 md:snap-align-none"
               >
                 <img
                   src={item.logo}

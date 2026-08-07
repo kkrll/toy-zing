@@ -5,6 +5,7 @@ const METRICS = [
 ] as const;
 
 const BG = "/img/Member%20page/nysc-bg.png";
+const BILL = "/img/Member%20page/bill-mcmenamy.png";
 
 export const Validated = () => {
   return (
@@ -13,18 +14,20 @@ export const Validated = () => {
       className="relative mx-auto flex max-w-screen-xl flex-col gap-10 px-4 py-16 md:gap-18 md:px-14 md:py-32"
     >
       <h2 className="type-heading-h1">Validated in the real world</h2>
-      <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-4 border-b pb-8">
+      <ul className="grid grid-cols-1 gap-6 md:gap-2 sm:grid-cols-2 lg:grid-cols-4 border-b pb-8">
         {METRICS.map((metric) => (
           <li key={metric.value} className="flex flex-col gap-1">
-            <strong className="type-counter-md">{metric.value}</strong>
-            <span className="type-body-lg text-balance text-theme-text-secondary">
+            <strong className="type-heading-h1 md:type-counter-md">
+              {metric.value}
+            </strong>
+            <span className="type-body-lg md:max-w-[20ch] text-balance text-theme-text-secondary">
               {metric.label}
             </span>
           </li>
         ))}
-        <div className="flex items-center py-2">
-          <p className="type-heading-h3 text-theme-text-secondary">
-            Internal Zing&apos;s <br className="hidden md:block" /> research
+        <div className="flex items-end pt-4">
+          <p className="type-body-lg text-theme-text-disabled md:max-w-[20ch] italic">
+            *According to internal Zing&apos;s research
           </p>
         </div>
       </ul>
@@ -32,7 +35,7 @@ export const Validated = () => {
         className="text-theme-text-primary-inv relative z-10 grid grid-cols-1 overflow-hidden rounded-3xl object-cover object-center md:grid-cols-2 md:gap-24"
         style={{ backgroundImage: `url(${BG})` }}
       >
-        <div className="flex flex-col gap-8 px-4 py-8 md:gap-12 md:px-14 md:py-16">
+        <div className="flex flex-col gap-8 px-4 py-8 md:gap-12 md:px-14 md:py-16 md:pl-16 md:pr-0">
           <div className="flex flex-col gap-2 mb-16">
             <svg
               className="mb-2 w-24"
@@ -87,8 +90,12 @@ export const Validated = () => {
                 </dd>
               </div>
             </div>
-            <div>
-              <div className="aspect-square h-12 bg-theme-bg-100">photo</div>
+            <div className="flex gap-4">
+              <img
+                src={BILL}
+                className="h-24 rounded-2xl border-4 border-theme-bg-100/25"
+                alt="Bill McMenamy"
+              />
               <blockquote className="flex flex-col gap-2">
                 <p className="type-heading-h3 text-balance">
                   “I tried to trick it a million ways, and it always comes back

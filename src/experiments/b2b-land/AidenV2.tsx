@@ -5,7 +5,6 @@ import type { CSSProperties } from "react";
 import { Aiden } from "./Aiden";
 import styles from "./aiden.module.css";
 import {
-  scrollToMarker,
   useProximitySnap,
   useReducedMotion,
   useScrollPhase,
@@ -104,8 +103,10 @@ export const AidenV2 = () => {
             </p>
           </div>
 
-          <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,7fr)_minmax(0,4fr)] lg:gap-14">
-            <div className="relative aspect-3/2 w-full">
+          {/* The gap has to clear the deck: queued cards sit below the front one and
+              spill past the stack's box, which on one column is where the copy is. */}
+          <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,7fr)_minmax(0,4fr)] lg:gap-14">
+            <div className="relative aspect-16/10 w-full md:aspect-3/2">
               {CAPABILITIES.map((capability, index) => (
                 <article
                   key={capability.title}
@@ -130,13 +131,19 @@ export const AidenV2 = () => {
                     className={cn(
                       styles.ui,
                       step === index && styles.uiIn,
-                      "absolute left-1/2 -translate-x-1/2 bottom-0 w-[85%] object-cover",
+                      // Narrower on the shorter mobile card, so the band of card left
+                      // above the screenshot stays the same share of it as on desktop —
+                      // at 85% the UI is ~95% of a 16/10 card's height and runs into
+                      // the rounded top corners.
+                      "absolute bottom-0 left-1/2 w-4/5 -translate-x-1/2 object-cover md:w-[85%]",
                     )}
                   />
                 </article>
               ))}
             </div>
-            <div className="flex flex-col gap-6">
+            {/* Above the deck, so a card on its way out passes behind the copy rather
+                than over it — the cards carry z-indices, so this needs one too. */}
+            <div className="relative z-10 flex flex-col gap-6">
               {/* Stacked in one cell so swapping copy can't shift the layout. */}
 
               <div className="grid">

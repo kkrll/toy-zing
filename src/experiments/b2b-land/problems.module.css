@@ -20,13 +20,14 @@
  * Timeline. Each beat is followed by a short hold — long enough for the composed state
  * to read, short enough that the scroll never feels stuck:
  *
- *   0.00–0.04  lead-in, all grey — just enough for the pin to register
- *   0.04–0.18  the PT strip fills
- *   0.18–0.23  hold
+ *   0.035      where the section arrives — the strip is already a quarter filled
+ *   0.00–0.14  the PT strip fills
+ *   0.14–0.23  hold
  *   0.23–0.54  the right half thins to outline
  *   0.54–0.59  hold
  *   0.59–0.90  orchid sweeps everything but PT
- *   0.68–0.96  footer rides the tail of that sweep
+ *   0.59–0.92  the stage drifts up by whatever it overhangs the viewport by
+ *   0.68–0.98  footer rides the tail of that sweep, quote last
  *
  * Scroll is budgeted by how much actually moves, not evenly. The PT beat fills 16
  * cells and gets 14%; the outline and orchid beats move 160 and 304 and get 31% each.
@@ -64,7 +65,7 @@
 @property --problems-pt-front {
     syntax: "<number>";
     inherits: true;
-    initial-value: 1;
+    initial-value: 0.14;
 }
 
 @property --problems-outline-front {
@@ -81,10 +82,10 @@
 
 .runway {
     --runway: 400svh;
-    --travel: calc(var(--runway) - 100svh);
+    --travel: calc(var(--runway) - 120svh);
 
     /* Each beat's own 0→1, clipped to its slice of the runway. */
-    --pt-band: clamp(0, calc((var(--problems-p) - 0.04) / 0.14), 1);
+    --pt-band: clamp(0, calc((var(--problems-p)) / 0.14), 1);
     --outline-band: clamp(0, calc((var(--problems-p) - 0.23) / 0.31), 1);
     --orchid-band: clamp(0, calc((var(--problems-p) - 0.59) / 0.31), 1);
 
@@ -115,7 +116,8 @@
  *
  * `--l` and `--r` come in per cell as its position along the sweep, 0 at the edge the
  * wave starts from and 1 at the far one. Subtracting that from the front and dividing
- * by the wave width gives the cell's own 0→1, so one expression covers all 320.
+ * by the wave width gives the cell's own 0→1, so one expression covers every cell of
+ * either layout — the 40×8 desktop grid and the 20×8 mobile one.
  */
 /*
  * Rests at exactly 1, like every other cell. Until the wave reaches it a PT cell *is*
@@ -141,7 +143,9 @@
 .cellMid {
     --orchid: clamp(
         0,
-        calc((var(--problems-orchid-front) - var(--l)) / var(--problems-wave) + 1),
+        calc(
+            (var(--problems-orchid-front) - var(--l)) / var(--problems-wave) + 1
+        ),
         1
     );
 
@@ -156,12 +160,17 @@
 .cellTail {
     --outline: clamp(
         0,
-        calc((var(--problems-outline-front) - var(--r)) / var(--problems-wave) + 1),
+        calc(
+            (var(--problems-outline-front) - var(--r)) / var(--problems-wave) +
+                1
+        ),
         1
     );
     --orchid: clamp(
         0,
-        calc((var(--problems-orchid-front) - var(--l)) / var(--problems-wave) + 1),
+        calc(
+            (var(--problems-orchid-front) - var(--l)) / var(--problems-wave) + 1
+        ),
         1
     );
 
@@ -225,6 +234,28 @@
 }
 
 /*
+ * The pinned stage holds still for the first two beats and then travels up through the
+ * third, so the section reads its own layout instead of pinning one framing for the
+ * whole runway — the grid and footer sit below the fold on any viewport the content
+ * outgrows, and until now nothing ever brought them up.
+ *
+ * How far is the content's own overhang: `100svh - 100%` is viewport minus stage
+ * height — 0 when the stage fits the window, and exactly the hidden remainder when it
+ * doesn't, so the drift reveals what's below the fold and no more.
+ *
+ * Clamped at both ends, because that measure alone is degenerate at both. A window tall
+ * enough to show everything has an overhang of 0 and would sit dead still through the
+ * beat, which is indistinguishable from the drift not working; a phone overhangs by a
+ * whole viewport and travelling all of it reads as a jump. So: never less than 8svh of
+ * travel, never more than 22svh.
+ */
+.stage {
+    --overhang: clamp(-22svh, calc(100svh - 100%), -14svh);
+
+    transform: translateY(0);
+}
+
+/*
  * Cards and footer read as discrete states, so they get their own short crossfades
  * pinned to the scroll positions where the grid reaches each rest, rather than being
  * derived from the beat maths.
@@ -256,6 +287,7 @@
         animation-duration: auto;
     }
 
+    .stage,
     .card,
     .cardVeil,
     .footerBeat,
@@ -266,6 +298,10 @@
         animation-range: contain;
         animation-duration: auto;
         animation-fill-mode: both;
+    }
+
+    .stage {
+        animation-name: problems-stage;
     }
 
     .cardOne {
@@ -300,6 +336,10 @@
         animation-name: problems-footer-line2;
     }
 
+    .footerQuote {
+        animation-name: problems-footer-quote;
+    }
+
     .legendChurned {
         animation-name: problems-legend-churned;
     }
@@ -314,10 +354,18 @@
  * moment its bottom meets the bottom — precisely the span the sticky child is pinned
  * for. So keyframe percentages here are progress values, and read directly against
  * the timeline at the top of the file.
+ *
+ * It starts at 0.035 rather than 0, which is a quarter of the way into the PT beat: the
+ * section arrives with the strip already filling rather than with a grid that hasn't
+ * begun. Earlier than that isn't a timing problem — the beats can be pulled back into
+ * `entry` with animation-range, but the grid sits ~400px down the stage, so every pixel
+ * of pre-pin scroll would be spent on cells that are still below the fold. Showing the
+ * beat before the section lands means moving the grid up the stage, not moving the
+ * range.
  */
 @keyframes problems-scrub {
     from {
-        --problems-p: 0;
+        --problems-p: 0.04;
     }
     to {
         --problems-p: 1;
@@ -325,17 +373,42 @@
 }
 
 /*
+ * Held for the PT and outline beats, then travelling for the orchid one — so the two
+ * beats you read against a fixed frame keep it, and the drift lands before the footer's
+ * last lines settle rather than sliding under them.
+ */
+@keyframes problems-stage {
+    0%,
+    59% {
+        transform: translateY(0);
+    }
+    92%,
+    100% {
+        transform: translateY(var(--overhang));
+    }
+}
+
+/*
  * The cards hand over inside the two holds — 18–23% and 54–59% — so the swap happens
  * while the grid is momentarily still, and each card is lit for exactly the beat its
  * copy is about.
+ *
+ * They hand over at the *tail* of each hold (21–23%, 57–59%) rather than the head. A
+ * beat's composed state is the thing its card is captioning, so the card has to outlive
+ * the beat by the length of the hold — keying the swap to the head meant the grid
+ * finished filling the PT strip and the card explaining it dimmed on the same frame.
+ * That also gives the cards a resting state to be clicked *to*: `MESSAGES[].rest` sits
+ * in the middle of the window where the beat is done and its card is still lit.
  */
 @keyframes problems-card-one {
-    0%,
-    18% {
+    0% {
+        opacity: 0.45;
+    }
+    21% {
         opacity: 1;
     }
     23%,
-    54% {
+    57% {
         opacity: 0.45;
     }
     59%,
@@ -346,7 +419,7 @@
 
 @keyframes problems-card-two {
     0%,
-    18% {
+    21% {
         opacity: 0.45;
     }
     23%,
@@ -357,7 +430,7 @@
 
 @keyframes problems-veil-one {
     0%,
-    18% {
+    21% {
         opacity: 0;
     }
     23%,
@@ -368,11 +441,11 @@
 
 @keyframes problems-veil-two {
     0%,
-    18% {
+    21% {
         opacity: 1;
     }
     23%,
-    54% {
+    57% {
         opacity: 0;
     }
     59%,
@@ -398,8 +471,7 @@
         transform: translateY(0);
     }
 }
-
-@keyframes problems-footer-line1 {
+@keyframes problems-footer-quote {
     0%,
     74% {
         opacity: 0;
@@ -412,13 +484,26 @@
     }
 }
 
-@keyframes problems-footer-line2 {
+@keyframes problems-footer-line1 {
     0%,
     80% {
         opacity: 0;
         transform: translateY(10px);
     }
     96%,
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes problems-footer-line2 {
+    0%,
+    86% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    98%,
     100% {
         opacity: 1;
         transform: translateY(0);

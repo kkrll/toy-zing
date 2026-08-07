@@ -50,19 +50,24 @@ const OPERATIONAL_VALUE = [
   },
 ] as const satisfies ReadonlyArray<{ text: string; icon: LucideIcon }>;
 
+const LOGO_BASE = "/img/Member%20page/logos";
+
 const PRESS_QUOTES = [
   {
     source: "TechRadar",
     quote: "App that reveals the true power of AI training",
+    logo: `${LOGO_BASE}/logo-techradar.svg`,
   },
   {
     source: "Business Insider",
     quote: "AI is a key to building better health and fitness habits.",
+    logo: `${LOGO_BASE}/logo-business-insider.png`,
   },
   {
     source: "Forbes",
     quote:
       "Zing adjusts your daily workouts to your current mental and physical state.",
+    logo: `${LOGO_BASE}/logo-forbes.svg`,
   },
 ] as const;
 
@@ -141,9 +146,12 @@ export const Value = () => {
           <ul className="flex w-full flex-col items-stretch gap-6 sm:flex-row sm:gap-8">
             {PRESS_QUOTES.map((item) => (
               <li key={item.source} className="flex flex-1 flex-col gap-4">
-                <div className="type-body-caption flex h-8 w-12 shrink-0 items-center justify-center bg-theme-bg-300 text-theme-text-disabled">
-                  logo
-                </div>
+                <img
+                  src={item.logo}
+                  alt=""
+                  aria-hidden
+                  className="h-4 w-auto object-contain object-left"
+                />
                 <div className="flex flex-col gap-1">
                   <span className="type-body-sm text-theme-text-secondary">
                     {item.source}

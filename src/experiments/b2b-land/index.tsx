@@ -5,6 +5,7 @@ import { AidenV2 } from "./AidenV2";
 import { CTA } from "./CTA";
 import { Deploy } from "./Deploy";
 import { Experience } from "./Experience";
+import { Footer } from "./Footer";
 import { HeroV1 } from "./HeroV1";
 import { HeroV2 } from "./HeroV2";
 import { Infrastructure } from "./Infrastructure";
@@ -95,6 +96,7 @@ const B2BLand = () => {
       <Deploy />
       <Integration />
       <CTA />
+      <Footer />
     </main>
   );
 };
