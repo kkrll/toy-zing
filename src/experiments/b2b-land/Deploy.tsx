@@ -1,28 +1,9 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const DEPLOYMENT_OPTIONS = [
-  {
-    title: "Branded Experience",
-    tagline: "Tailor Zing Coach app experience to your brand.",
-    description:
-      "Built for gym operators who want complete control over the member experience.",
-    features: [
-      "Native iOS & Android SDK",
-      "White-label UI components",
-      "API integrations",
-      "Full control over UX",
-      "Connect to member data, schedules, and club systems",
-    ],
-    idealFor:
-      "Gyms, influencers, and wellness providers who want to launch fast without technical overhead.",
-    cta: "Explore Branded Experience →",
-    image: "/img/Member%20page/nysc-bg.png",
-    mock: "/img/Member%20page/mock-branded.png",
-    badge: "/img/Member%20page/logos/mock-sdk.svg",
-  },
   {
     title: "Mobile SDK",
     tagline: "Full control over UX inside your existing product.",
@@ -41,6 +22,25 @@ const DEPLOYMENT_OPTIONS = [
     image: "/img/Member%20page/card-bg-1.png",
     mock: "/img/Member%20page/mock-sdk.png",
     badge: "/img/Member%20page/logos/mock-branded.png",
+  },
+  {
+    title: "Branded Experience",
+    tagline: "Tailor Zing Coach app experience to your brand.",
+    description:
+      "Built for gym operators who want complete control over the member experience.",
+    features: [
+      "Native iOS & Android SDK",
+      "White-label UI components",
+      "API integrations",
+      "Full control over UX",
+      "Connect to member data, schedules, and club systems",
+    ],
+    idealFor:
+      "Gyms, influencers, and wellness providers who want to launch fast without technical overhead.",
+    cta: "Explore Branded Experience →",
+    image: "/img/Member%20page/nysc-bg.png",
+    mock: "/img/Member%20page/mock-branded.png",
+    badge: "/img/Member%20page/logos/mock-sdk.svg",
   },
   {
     title: "White-label App",
@@ -80,121 +80,309 @@ const CheckIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
+const DeployPreview = ({
+  option,
+  className,
+  tag,
+}: {
+  option: (typeof DEPLOYMENT_OPTIONS)[number];
+  className?: string;
+  tag?: boolean;
+}) => (
+  <div
+    className={cn(
+      "relative overflow-hidden rounded-3xl bg-cover bg-center",
+      className,
+    )}
+    style={{ backgroundImage: `url('${option.image}')` }}
+  >
+    <div
+      aria-hidden
+      className="pointer-events-none absolute inset-0 bg-theme-fg-100/40"
+    />
+    <div
+      className={cn(
+        "relative z-10 flex h-full flex-col items-center justify-end px-6 pt-6 md:p-12",
+        tag && "pb-6",
+      )}
+    >
+      <div className="relative min-h-0 w-full flex-1">
+        <img
+          src={option.mock}
+          alt=""
+          className="absolute inset-0 h-full w-full object-contain object-bottom"
+        />
+        <img
+          src={option.badge}
+          alt=""
+          className="absolute bottom-4 left-1/4 h-16 w-auto -translate-x-1/2 rounded-3xl border-4 border-theme-bg-100/20 object-contain backdrop-blur-3xl md:bottom-8 md:h-24 md:rounded-4xl"
+        />
+      </div>
+      {tag && (
+        <p className="type-heading-h3 max-w-sm border-t border-theme-bg-100/20 pt-3 text-balance text-center text-theme-text-primary-inv md:pt-4">
+          {option.tagline}
+        </p>
+      )}
+    </div>
+  </div>
+);
+
 export const Deploy = () => {
+  const scrollerRef = useRef<HTMLUListElement>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const selected = DEPLOYMENT_OPTIONS[selectedIndex];
 
+  const canScrollPrev = selectedIndex > 0;
+  const canScrollNext = selectedIndex < DEPLOYMENT_OPTIONS.length - 1;
+
+  useEffect(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
+
+    const syncIndex = () => {
+      // Desktop stays an accordion — only sync from the mobile snap scroller.
+      if (window.matchMedia("(min-width: 768px)").matches) return;
+
+      const scrollerLeft = el.getBoundingClientRect().left;
+      const paddingLeft = Number.parseFloat(getComputedStyle(el).paddingLeft);
+      const target = scrollerLeft + paddingLeft;
+
+      let closest = 0;
+      let closestDist = Infinity;
+
+      for (let i = 0; i < el.children.length; i++) {
+        const card = el.children[i] as HTMLElement;
+        const dist = Math.abs(card.getBoundingClientRect().left - target);
+        if (dist < closestDist) {
+          closestDist = dist;
+          closest = i;
+        }
+      }
+
+      setSelectedIndex(closest);
+    };
+
+    syncIndex();
+    el.addEventListener("scroll", syncIndex, { passive: true });
+    el.addEventListener("scrollend", syncIndex);
+    window.addEventListener("resize", syncIndex);
+
+    return () => {
+      el.removeEventListener("scroll", syncIndex);
+      el.removeEventListener("scrollend", syncIndex);
+      window.removeEventListener("resize", syncIndex);
+    };
+  }, []);
+
+  const goTo = (index: number) => {
+    const next = Math.max(0, Math.min(DEPLOYMENT_OPTIONS.length - 1, index));
+    setSelectedIndex(next);
+
+    if (window.matchMedia("(min-width: 768px)").matches) return;
+
+    const card = scrollerRef.current?.children[next] as HTMLElement | undefined;
+    card?.scrollIntoView({
+      behavior: "smooth",
+      inline: "start",
+      block: "nearest",
+    });
+  };
+
   return (
-    <section className="bg-theme-fg-200 px-4 py-16 text-theme-text-primary-inv md:px-14 md:py-32">
-      <div className="flex mx-auto max-w-screen-xl flex-col gap-12">
-        <div className="flex flex-col gap-3">
-          <h2 className="type-heading-h1 text-balance">
-            One AI platform. Three ways to launch.
-          </h2>
-          <p className="type-body-lg max-w-xl text-theme-text-secondary-inv">
-            Deploy Zing the way that best fits your business – from a branded
-            experience in days to a fully embedded SDK or a complete white-label
-            application.
-          </p>
+    <section className="bg-theme-fg-200 py-16 text-theme-text-primary-inv md:px-14 md:py-32">
+      <div className="mx-auto flex max-w-screen-xl flex-col gap-8 overflow-hidden md:gap-12">
+        <div className="flex items-start justify-between gap-3 px-4 md:items-center md:gap-4 md:px-0">
+          <div className="flex min-w-0 flex-1 flex-col gap-3">
+            <h2 className="type-heading-h1 text-balance">
+              One AI platform. Three ways to launch.
+            </h2>
+            <p className="type-body-lg max-w-xl text-theme-text-secondary-inv">
+              Deploy Zing the way that best fits your business – from a branded
+              experience in days to a fully embedded SDK or a complete
+              white-label application.
+            </p>
+          </div>
+          <div className="flex shrink-0 items-center gap-1 md:hidden">
+            <button
+              type="button"
+              aria-label="Previous deployment option"
+              disabled={!canScrollPrev}
+              onClick={() => goTo(selectedIndex - 1)}
+              className={cn(
+                "flex size-10 items-center justify-center rounded-xl type-heading-h3 transition-colors",
+                canScrollPrev
+                  ? "cursor-pointer text-theme-text-secondary-inv hover:text-theme-text-primary-inv"
+                  : "cursor-default text-theme-text-secondary-inv/30",
+              )}
+            >
+              <svg
+                width="32"
+                height="32"
+                viewBox="0 0 32 32"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden
+              >
+                <path
+                  d="M14.8686 11.4745L10.3431 16L14.8686 20.5255M10.3431 16H21.6568"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </button>
+            <button
+              type="button"
+              aria-label="Next deployment option"
+              disabled={!canScrollNext}
+              onClick={() => goTo(selectedIndex + 1)}
+              className={cn(
+                "flex size-10 items-center justify-center rounded-xl type-heading-h3 transition-colors",
+                canScrollNext
+                  ? "cursor-pointer text-theme-text-secondary-inv hover:text-theme-text-primary-inv"
+                  : "cursor-default text-theme-text-secondary-inv/30",
+              )}
+            >
+              <svg
+                width="32"
+                height="32"
+                viewBox="0 0 32 32"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden
+              >
+                <path
+                  d="M17.1314 11.4745L21.6569 16L17.1314 20.5255M21.6569 16H10.3432"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
 
-        <div className="mx-auto grid w-full max-w-screen-xl grid-cols-1 items-start gap-4 md:grid-cols-2 md:gap-6">
-          {/* Col 1 — option list */}
-          <ul className="flex flex-col justify-center h-full gap-2">
-            {DEPLOYMENT_OPTIONS.map((option, index) => {
-              const isSelected = index === selectedIndex;
+        <div className="mx-auto grid w-full max-w-screen-xl grid-cols-1 items-start gap-4 md:grid-cols-2 md:gap-6 md:px-0">
+          <div className="relative min-w-0">
+            <ul
+              ref={scrollerRef}
+              className="flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth px-4 pb-2 scroll-px-4 md:flex-col md:gap-2 md:overflow-visible md:px-0 md:pb-0 md:scroll-px-0"
+            >
+              {DEPLOYMENT_OPTIONS.map((option, index) => {
+                const isSelected = index === selectedIndex;
 
-              return (
-                <li key={option.title}>
-                  <button
-                    type="button"
-                    onClick={() => setSelectedIndex(index)}
-                    aria-expanded={isSelected}
-                    className={cn(
-                      "flex w-full flex-col gap-2 rounded-3xl border px-5 py-4 text-left transition-colors duration-200",
-                      isSelected
-                        ? "bg-theme-bg-main-section text-theme-text-primary"
-                        : "cursor-pointer border-theme-fg-400 bg-theme-fg-300/50 text-theme-text-primary-inv hover:bg-theme-fg-300",
-                    )}
+                return (
+                  <li
+                    key={option.title}
+                    className="w-[min(80vw,22rem)] shrink-0 snap-start md:w-full"
                   >
-                    <span className="type-body-lg-semi">{option.title}</span>
-                    <p
-                      className={cn(
-                        "type-body-md",
-                        isSelected
-                          ? "text-theme-text-secondary"
-                          : "text-theme-text-secondary-inv",
-                      )}
-                    >
-                      {option.description}
-                    </p>
+                    {/* Mobile: always-open card */}
+                    <article className="flex h-full w-full flex-col gap-3 rounded-3xl border border-theme-fg-400 bg-theme-fg-300/50 px-4 py-4 text-theme-text-primary-inv md:hidden">
+                      <DeployPreview option={option} className="h-56 w-full" />
+                      <span className="type-body-lg-semi">{option.title}</span>
+                      <p className="type-body-md text-theme-text-secondary-inv">
+                        {option.description}
+                      </p>
+                      <ul className="flex flex-col gap-2">
+                        {option.features.map((feature) => (
+                          <li
+                            key={feature}
+                            className="type-body-md flex items-start gap-2"
+                          >
+                            <CheckIcon className="mt-0.5 text-theme-text-secondary-inv" />
+                            <span>{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+                      <p className="type-body-sm text-theme-text-secondary-inv">
+                        <span className="type-body-sm-medium text-theme-text-primary-inv">
+                          Ideal for:
+                        </span>{" "}
+                        {option.idealFor}
+                      </p>
+                      <span className="type-body-md-semi mt-auto inline-flex self-start rounded-2xl bg-theme-bg-100 px-4 py-3 text-theme-text-primary">
+                        {option.cta}
+                      </span>
+                    </article>
 
-                    <div
+                    {/* Desktop: accordion */}
+                    <button
+                      type="button"
+                      onClick={() => goTo(index)}
+                      aria-expanded={isSelected}
                       className={cn(
-                        "grid transition-[grid-template-rows,opacity] duration-300 ease-out",
+                        "hidden w-full flex-col gap-2 rounded-3xl border px-5 py-4 text-left transition-colors duration-200 md:flex",
                         isSelected
-                          ? "grid-rows-[1fr] opacity-100"
-                          : "grid-rows-[0fr] opacity-0",
+                          ? "bg-theme-bg-main-section text-theme-text-primary"
+                          : "cursor-pointer border-theme-fg-400 bg-theme-fg-300/50 text-theme-text-primary-inv hover:bg-theme-fg-300",
                       )}
                     >
-                      <div className="overflow-hidden">
-                        <div className="flex flex-col gap-4 pt-2">
-                          <ul className="flex flex-col gap-2">
-                            {option.features.map((feature) => (
-                              <li
-                                key={feature}
-                                className="type-body-md flex items-start gap-2"
-                              >
-                                <CheckIcon className="mt-0.5 text-theme-text-secondary" />
-                                <span>{feature}</span>
-                              </li>
-                            ))}
-                          </ul>
-                          <p className="type-body-sm text-theme-text-secondary">
-                            <span className="type-body-sm-medium text-theme-text-primary">
-                              Ideal for:
-                            </span>{" "}
-                            {option.idealFor}
-                          </p>
-                          <span className="type-body-md-semi mt-1 inline-flex self-start rounded-2xl bg-theme-fg-100 px-4 py-3 text-theme-bg-100">
-                            {option.cta}
-                          </span>
+                      <span className="type-body-lg-semi">{option.title}</span>
+                      <p
+                        className={cn(
+                          "type-body-md",
+                          isSelected
+                            ? "text-theme-text-secondary"
+                            : "text-theme-text-secondary-inv",
+                        )}
+                      >
+                        {option.description}
+                      </p>
+
+                      <div
+                        className={cn(
+                          "grid transition-[grid-template-rows,opacity] duration-300 ease-out",
+                          isSelected
+                            ? "grid-rows-[1fr] opacity-100"
+                            : "grid-rows-[0fr] opacity-0",
+                        )}
+                      >
+                        <div className="overflow-hidden">
+                          <div className="flex flex-col gap-4 pt-2">
+                            <ul className="flex flex-col gap-2">
+                              {option.features.map((feature) => (
+                                <li
+                                  key={feature}
+                                  className="type-body-md flex items-start gap-2"
+                                >
+                                  <CheckIcon className="mt-0.5 text-theme-text-secondary" />
+                                  <span>{feature}</span>
+                                </li>
+                              ))}
+                            </ul>
+                            <p className="type-body-sm text-theme-text-secondary">
+                              <span className="type-body-sm-medium text-theme-text-primary">
+                                Ideal for:
+                              </span>{" "}
+                              {option.idealFor}
+                            </p>
+                            <span className="type-body-md-semi mt-1 inline-flex self-start rounded-2xl bg-theme-fg-100 px-4 py-3 text-theme-bg-100">
+                              {option.cta}
+                            </span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
 
-          {/* Col 2 — selected preview (fixed height so accordion open/close can't resize it) */}
-          <div
-            className="relative h-80 w-full overflow-hidden rounded-4xl bg-cover bg-center md:sticky md:top-28 md:h-[35rem]"
-            style={{ backgroundImage: `url('${selected.image}')` }}
-          >
             <div
               aria-hidden
-              className="pointer-events-none absolute inset-0 bg-theme-fg-100/40"
+              className="pointer-events-none absolute inset-y-0 left-0 w-4 bg-linear-to-r from-theme-fg-200 to-transparent md:hidden"
             />
-            <div className="relative z-10 flex h-full flex-col items-center justify-end p-8 md:p-12">
-              <div className="relative min-h-0 w-full flex-1">
-                <img
-                  src={selected.mock}
-                  alt=""
-                  className="absolute inset-0 h-full w-full object-contain object-bottom"
-                />
-                <img
-                  src={selected.badge}
-                  alt=""
-                  className="absolute border-4 border-theme-bg-100/20 rounded-4xl backdrop-blur-3xl bottom-8 left-1/4 h-24 w-auto -translate-x-1/2 object-contain"
-                />
-              </div>
-              <p className="pt-4 border-t border-theme-bg-100/20 type-heading-h3 max-w-sm text-balance text-center text-theme-text-primary-inv">
-                {selected.tagline}
-              </p>
-            </div>
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-y-0 right-0 w-4 bg-linear-to-l from-theme-fg-200 to-transparent md:hidden"
+            />
           </div>
+
+          <DeployPreview
+            option={selected}
+            tag
+            className="hidden h-80 w-full rounded-4xl md:sticky md:top-28 md:block md:h-[35rem]"
+          />
         </div>
       </div>
     </section>

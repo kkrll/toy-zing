@@ -365,7 +365,7 @@
  */
 @keyframes problems-scrub {
     from {
-        --problems-p: 0.04;
+        --problems-p: 0.14;
     }
     to {
         --problems-p: 1;
@@ -461,11 +461,11 @@
  */
 @keyframes problems-footer-lead {
     0%,
-    68% {
+    60% {
         opacity: 0;
         transform: translateY(10px);
     }
-    80%,
+    72%,
     100% {
         opacity: 1;
         transform: translateY(0);

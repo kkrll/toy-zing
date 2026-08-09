@@ -90,11 +90,6 @@ const ValueCard = ({
               : "border-theme-fg-100",
           )}
         >
-          <Icon
-            aria-hidden
-            className="size-5 shrink-0 text-theme-text-primary"
-            strokeWidth={1.75}
-          />
           <span className="type-body-md-semi text-balance">{text}</span>
         </li>
       ))}

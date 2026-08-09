@@ -152,6 +152,20 @@ export const Integration = () => {
             </li>
           ))}
         </ol>
+        <div className="flex gap-4">
+          <a
+            href={""}
+            className="type-body-lg-semi min-w-0 rounded-2xl bg-theme-bg-100 px-4 py-3 text-center text-theme-text-primary sm:min-w-3xs"
+          >
+            Get API Key
+          </a>
+          <button
+            type="button"
+            className="type-body-lg-semi min-w-0 rounded-2xl bg-theme-fg-300 px-4 py-3 text-center text-theme-text-primary-inv sm:min-w-3xs"
+          >
+            View documentation
+          </button>
+        </div>
       </div>
     </section>
   );

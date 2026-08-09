@@ -52,7 +52,7 @@ const HERO_VIDEO =
 export const HeroV2 = () => {
   return (
     <section className="flex flex-col gap-6 md:gap-12">
-      <div className="relative isolate flex min-h-[75svh] flex-col gap-6 overflow-hidden bg-theme-bg-100 pt-24 md:justify-end md:gap-6 md:pb-24 md:pt-28">
+      <div className="relative isolate flex min-h-[75svh] md:h-[70svh] flex-col gap-6 overflow-hidden bg-theme-bg-100 pt-24 md:justify-end md:gap-6 md:pb-24 md:pt-28">
         {/* Video under multiply. Mobile: in-flow. Desktop: right rail. */}
         <div
           aria-hidden="true"
@@ -127,9 +127,6 @@ export const HeroV2 = () => {
       </div>
 
       <div className="mx-auto flex w-full max-w-screen-xl flex-col items-center gap-4 px-4 py-2 md:gap-8 md:px-14 md:pb-12">
-        <h4 className="type-heading-h4 text-center text-theme-text-secondary">
-          Trusted by leading names in sports and fitness
-        </h4>
         {/* A carousel on mobile only. Past `md` the list stops being a scroll
             container, so the items' `snap-start` would bind to the next one up — the
             document, which AidenV2 makes snappable — and turn the strip into six
