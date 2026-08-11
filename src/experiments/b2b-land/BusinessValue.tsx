@@ -4,40 +4,35 @@ import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { useReducedMotion } from "./scrollAnimation";
 
-const CADET = "var(--ds-theme-text-cadet)";
+/** Shared by both bars — the membership revenue that already exists today */
+const BASE = {
+  label: "Base membership value",
+  swatch: "bg-theme-bg-300",
+} as const;
 
-const VALUE_CHAIN = [
+/** Stacked on top of the base in the "With Zing" bar only */
+const UPLIFTS = [
   {
-    label: "More members coached",
-    tint: `color-mix(in oklab, ${CADET} 20%, transparent)`,
-    swatch: "bg-theme-text-cadet/20",
+    label: "Retention uplift",
+    swatch: "bg-theme-text-cadet/50",
   },
   {
-    label: "More consistent training habits",
-    tint: `color-mix(in oklab, ${CADET} 40%, transparent)`,
-    swatch: "bg-theme-text-cadet/40",
-  },
-  {
-    label: "Higher retention",
-    tint: `color-mix(in oklab, ${CADET} 60%, transparent)`,
-    swatch: "bg-theme-text-cadet/60",
-  },
-  {
-    label: "Higher lifetime value",
-    tint: `color-mix(in oklab, ${CADET} 80%, transparent)`,
+    label: "New coaching revenue",
     swatch: "bg-theme-text-cadet/80",
   },
 ] as const;
 
+type Hovered = "base" | number | null;
+
 /** Heights as % of the chart area */
 const TODAY_HEIGHT = 40;
-const SEGMENT_HEIGHT = 12;
-const FULL_HEIGHT = TODAY_HEIGHT + VALUE_CHAIN.length * SEGMENT_HEIGHT;
+const SEGMENT_HEIGHT = 20;
+const FULL_HEIGHT = TODAY_HEIGHT + UPLIFTS.length * SEGMENT_HEIGHT;
 
 export const BusinessValue = () => {
   const reducedMotion = useReducedMotion();
   const [grown, setGrown] = useState(false);
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [hovered, setHovered] = useState<Hovered>(null);
 
   useEffect(() => {
     if (reducedMotion) {
@@ -49,28 +44,30 @@ export const BusinessValue = () => {
     return () => window.cancelAnimationFrame(id);
   }, [reducedMotion]);
 
-  const dimOthers = hoveredIndex !== null;
+  const dimOthers = hovered !== null;
+  const baseDimmed = dimOthers && hovered !== "base";
 
   return (
     <div className="flex flex-col gap-8 rounded-3xl bg-theme-bg-200 md:gap-16 pb-12 md:pb-20">
       <div className="flex flex-col">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-4">
           <h3 className="order-1 type-heading-h2 md:col-start-1 md:row-start-1 ">
             How Zing creates <br />
             business value
           </h3>
 
           <ol className="order-3 grid grid-cols-1 md:order-none md:col-start-1 md:row-start-2 md:max-w-xs">
-            {VALUE_CHAIN.map((step, index) => {
-              const isHovered = hoveredIndex === index;
+            {[BASE, ...UPLIFTS].map((step, index) => {
+              const key: Hovered = index === 0 ? "base" : index - 1;
+              const isHovered = hovered === key;
               const isDimmed = dimOthers && !isHovered;
 
               return (
                 <li key={step.label} className="h-full">
                   <button
                     type="button"
-                    onMouseEnter={() => setHoveredIndex(index)}
-                    onMouseLeave={() => setHoveredIndex(null)}
+                    onMouseEnter={() => setHovered(key)}
+                    onMouseLeave={() => setHovered(null)}
                     className={cn(
                       "flex w-full h-full items-center px-2 py-2 gap-2 text-left rounded-xl transition-[colors,opacity] duration-300",
                       isHovered ? "cursor-pointer" : "",
@@ -107,11 +104,13 @@ export const BusinessValue = () => {
                   className="absolute inset-x-0 bottom-0 overflow-hidden rounded-t-lg transition-opacity duration-300"
                   style={{
                     height: `${TODAY_HEIGHT}%`,
-                    opacity: dimOthers ? 0.5 : 1,
+                    opacity: baseDimmed ? 0.5 : 1,
                     background:
                       "linear-gradient(to bottom, var(--ds-theme-bg-300) 0%, var(--ds-theme-bg-300) calc(100% - 32px), var(--ds-theme-bg-400) 100%)",
                   }}
-                  aria-label="Today: membership base"
+                  aria-label="Today: base membership value"
+                  onMouseEnter={() => setHovered("base")}
+                  onMouseLeave={() => setHovered(null)}
                 >
                   <div
                     aria-hidden
@@ -129,25 +128,27 @@ export const BusinessValue = () => {
                 <div
                   className="absolute inset-x-0 bottom-0 overflow-hidden rounded-t-lg"
                   style={{ height: `${FULL_HEIGHT}%` }}
-                  aria-label="With Zing: membership base plus value uplift"
+                  aria-label="With Zing: base membership value plus retention uplift and new coaching revenue"
                 >
                   {/* Base */}
                   <div
                     className="absolute inset-x-0 bottom-0 w-full transition-opacity duration-300"
                     style={{
                       height: `${(TODAY_HEIGHT / FULL_HEIGHT) * 100}%`,
-                      opacity: dimOthers ? 0.5 : 1,
+                      opacity: baseDimmed ? 0.5 : 1,
                       background:
                         "linear-gradient(to bottom, var(--ds-theme-bg-300) 0%, var(--ds-theme-bg-300) calc(100% - 32px), var(--ds-theme-bg-400) 100%)",
                     }}
+                    onMouseEnter={() => setHovered("base")}
+                    onMouseLeave={() => setHovered(null)}
                   />
 
-                  {VALUE_CHAIN.map((step, index) => {
+                  {UPLIFTS.map((step, index) => {
                     const bottomPct =
                       ((TODAY_HEIGHT + index * SEGMENT_HEIGHT) / FULL_HEIGHT) *
                       100;
                     const heightPct = (SEGMENT_HEIGHT / FULL_HEIGHT) * 100;
-                    const isActive = hoveredIndex === index;
+                    const isActive = hovered === index;
                     const isDimmed = dimOthers && !isActive;
 
                     return (
@@ -165,8 +166,8 @@ export const BusinessValue = () => {
                             grown ? index * 120 : 0
                           }ms, opacity 300ms ease-out, background-color 300ms ease-out`,
                         }}
-                        onMouseEnter={() => setHoveredIndex(index)}
-                        onMouseLeave={() => setHoveredIndex(null)}
+                        onMouseEnter={() => setHovered(index)}
+                        onMouseLeave={() => setHovered(null)}
                       />
                     );
                   })}

@@ -132,9 +132,6 @@ export const Deploy = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const selected = DEPLOYMENT_OPTIONS[selectedIndex];
 
-  const canScrollPrev = selectedIndex > 0;
-  const canScrollNext = selectedIndex < DEPLOYMENT_OPTIONS.length - 1;
-
   useEffect(() => {
     const el = scrollerRef.current;
     if (!el) return;
@@ -191,75 +188,15 @@ export const Deploy = () => {
   return (
     <section className="bg-theme-fg-200 py-16 text-theme-text-primary-inv md:px-14 md:py-32">
       <div className="mx-auto flex max-w-screen-xl flex-col gap-8 overflow-hidden md:gap-12">
-        <div className="flex items-start justify-between gap-3 px-4 md:items-center md:gap-4 md:px-0">
-          <div className="flex min-w-0 flex-1 flex-col gap-3">
-            <h2 className="type-heading-h1 text-balance">
-              One AI platform. Three ways to launch.
-            </h2>
-            <p className="type-body-lg max-w-xl text-theme-text-secondary-inv">
-              Deploy Zing the way that best fits your business – from a branded
-              experience in days to a fully embedded SDK or a complete
-              white-label application.
-            </p>
-          </div>
-          <div className="flex shrink-0 items-center gap-1 md:hidden">
-            <button
-              type="button"
-              aria-label="Previous deployment option"
-              disabled={!canScrollPrev}
-              onClick={() => goTo(selectedIndex - 1)}
-              className={cn(
-                "flex size-10 items-center justify-center rounded-xl type-heading-h3 transition-colors",
-                canScrollPrev
-                  ? "cursor-pointer text-theme-text-secondary-inv hover:text-theme-text-primary-inv"
-                  : "cursor-default text-theme-text-secondary-inv/30",
-              )}
-            >
-              <svg
-                width="32"
-                height="32"
-                viewBox="0 0 32 32"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                aria-hidden
-              >
-                <path
-                  d="M14.8686 11.4745L10.3431 16L14.8686 20.5255M10.3431 16H21.6568"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </button>
-            <button
-              type="button"
-              aria-label="Next deployment option"
-              disabled={!canScrollNext}
-              onClick={() => goTo(selectedIndex + 1)}
-              className={cn(
-                "flex size-10 items-center justify-center rounded-xl type-heading-h3 transition-colors",
-                canScrollNext
-                  ? "cursor-pointer text-theme-text-secondary-inv hover:text-theme-text-primary-inv"
-                  : "cursor-default text-theme-text-secondary-inv/30",
-              )}
-            >
-              <svg
-                width="32"
-                height="32"
-                viewBox="0 0 32 32"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                aria-hidden
-              >
-                <path
-                  d="M17.1314 11.4745L21.6569 16L17.1314 20.5255M21.6569 16H10.3432"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </button>
-          </div>
+        <div className="flex flex-col gap-3 px-4 md:px-0">
+          <h2 className="type-heading-h1 text-balance">
+            One AI platform. Three ways to launch.
+          </h2>
+          <p className="type-body-lg max-w-xl text-theme-text-secondary-inv">
+            Deploy Zing the way that best fits your business – from a branded
+            experience in days to a fully embedded SDK or a complete white-label
+            application.
+          </p>
         </div>
 
         <div className="mx-auto grid w-full max-w-screen-xl grid-cols-1 items-start gap-4 md:grid-cols-2 md:gap-6 md:px-0">

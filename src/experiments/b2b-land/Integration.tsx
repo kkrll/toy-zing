@@ -152,19 +152,30 @@ export const Integration = () => {
             </li>
           ))}
         </ol>
-        <div className="flex gap-4">
-          <a
-            href={""}
-            className="type-body-lg-semi min-w-0 rounded-2xl bg-theme-bg-100 px-4 py-3 text-center text-theme-text-primary sm:min-w-3xs"
-          >
-            Get API Key
-          </a>
-          <button
-            type="button"
-            className="type-body-lg-semi min-w-0 rounded-2xl bg-theme-fg-300 px-4 py-3 text-center text-theme-text-primary-inv sm:min-w-3xs"
-          >
-            View documentation
-          </button>
+
+        <div className="h-px md:my-12 bg-theme-fg-400 w-full" />
+        <div className="flex flex-col gap-1">
+          <p className="type-heading-h3">
+            Want to see how simple integration is?
+          </p>
+          <p className="pb-6">
+            Get demo keys and test a basic Zing SDK integration in under 5
+            minutes.
+          </p>
+          <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <a
+              href={""}
+              className="type-body-lg-semi min-w-0 rounded-2xl bg-theme-bg-100 px-4 py-3 text-center text-theme-text-primary sm:min-w-3xs"
+            >
+              Get API Key
+            </a>
+            <button
+              type="button"
+              className="type-body-lg-semi min-w-0 rounded-2xl bg-theme-fg-300 px-4 py-3 text-center text-theme-text-primary-inv sm:min-w-3xs"
+            >
+              View documentation
+            </button>
+          </div>
         </div>
       </div>
     </section>

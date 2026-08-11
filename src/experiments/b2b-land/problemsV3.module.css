@@ -28,6 +28,9 @@
  * Scroll is budgeted by how much moves, as in V2. The PT band is 42 cells and gets 12%;
  * the churn sweep is 126 and the orchid sweep 124, and they get 22% and 18%. The act
  * handover gets 16% despite moving no cells at all, because it moves the whole stage.
+ *
+ * All of the above is md and up. Below it the grids and the timeline are both gone — see
+ * the breakpoint note above the `@supports` block.
  */
 
 @property --p3-p {
@@ -277,92 +280,118 @@
     transform: none;
 }
 
-@supports (animation-timeline: view()) {
+/*
+ * Below md the section is a plain document — no runway, no pin, no scrub.
+ *
+ * The grids come out of the DOM at the same breakpoint (see ProblemsV3), and without them
+ * there is nothing left for the sweeps to argue with: what remains is copy, and pinning a
+ * viewport for five screens' worth of scroll to fade copy in is scroll the section hasn't
+ * earned. So the runway gets its natural height back and the stage stops clipping — the
+ * `sticky` and `h-svh` that pinned it are md-only in the markup.
+ *
+ * Nothing else is needed to undo the animation, because every animated rule above already
+ * declares its composed end state as the plain value and only the block below overrides
+ * it. Gating that one block by width leaves mobile with the finished picture and no
+ * timeline attached to it.
+ */
+@media (max-width: 767px) {
     .runway {
-        animation: p3-scrub linear both;
-        animation-timeline: --p3-runway;
-        animation-range: contain;
-        animation-duration: auto;
+        height: auto;
     }
 
-    .track,
-    .split,
-    .card,
-    .cardVeil,
-    .quoteCard,
-    .rule,
-    .legendA,
-    .legendB,
-    .actTwoBeat,
-    .actTwoGate {
-        animation-timeline: --p3-runway;
-        animation-range: contain;
-        animation-duration: auto;
-        animation-fill-mode: both;
+    .stage {
+        overflow: visible;
     }
+}
 
-    .track {
-        animation-name: p3-track;
-    }
+@media (min-width: 768px) {
+    @supports (animation-timeline: view()) {
+        .runway {
+            animation: p3-scrub linear both;
+            animation-timeline: --p3-runway;
+            animation-range: contain;
+            animation-duration: auto;
+        }
 
-    .cardOne {
-        animation-name: p3-card-one;
-    }
+        .track,
+        .split,
+        .card,
+        .cardVeil,
+        .quoteCard,
+        .rule,
+        .legendA,
+        .legendB,
+        .actTwoBeat,
+        .actTwoGate {
+            animation-timeline: --p3-runway;
+            animation-range: contain;
+            animation-duration: auto;
+            animation-fill-mode: both;
+        }
 
-    .cardTwo {
-        animation-name: p3-card-two;
-    }
+        .track {
+            animation-name: p3-track;
+        }
 
-    .cardVeilOne {
-        animation-name: p3-veil-one;
-    }
+        .cardOne {
+            animation-name: p3-card-one;
+        }
 
-    .cardVeilTwo {
-        animation-name: p3-veil-two;
-    }
+        .cardTwo {
+            animation-name: p3-card-two;
+        }
 
-    .quoteCard {
-        animation-name: p3-quote-card;
-    }
+        .cardVeilOne {
+            animation-name: p3-veil-one;
+        }
 
-    .rule {
-        animation-name: p3-rule;
-    }
+        .cardVeilTwo {
+            animation-name: p3-veil-two;
+        }
 
-    .split {
-        animation-name: p3-split;
-    }
+        .quoteCard {
+            animation-name: p3-quote-card;
+        }
 
-    .legendA {
-        animation-name: p3-legend-a;
-    }
+        .rule {
+            animation-name: p3-rule;
+        }
 
-    .legendB {
-        animation-name: p3-legend-b;
-    }
+        .split {
+            animation-name: p3-split;
+        }
 
-    .actTwoLead {
-        animation-name: p3-act-two-lead;
-    }
+        .legendA {
+            animation-name: p3-legend-a;
+        }
 
-    .actTwoCopy {
-        animation-name: p3-act-two-copy;
-    }
+        .legendB {
+            animation-name: p3-legend-b;
+        }
 
-    .actTwoLabel {
-        animation-name: p3-act-two-label;
-    }
+        .actTwoLead {
+            animation-name: p3-act-two-lead;
+        }
 
-    .actTwoGrid {
-        animation-name: p3-act-two-grid;
-    }
+        .actTwoCopy {
+            animation-name: p3-act-two-copy;
+        }
 
-    .actTwoLegend {
-        animation-name: p3-act-two-legend;
-    }
+        .actTwoLabel {
+            animation-name: p3-act-two-label;
+        }
 
-    .actTwoGate {
-        animation-name: p3-act-two-gate;
+        .actTwoGrid {
+            animation-name: p3-act-two-grid;
+        }
+
+        .actTwoLegend {
+            animation-name: p3-act-two-legend;
+        }
+
+        .actTwoGate {
+            animation-name: p3-act-two-gate;
+        }
     }
 }
 

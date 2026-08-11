@@ -97,7 +97,7 @@ export const Experience = () => {
           <h2 className="type-heading-h1 min-w-0 flex-1 text-balance">
             What your members experience
           </h2>
-          <div className="flex shrink-0 items-center gap-1">
+          <div className="hidden shrink-0 items-center gap-1 md:flex">
             <button
               type="button"
               aria-label="Previous feature"
@@ -194,7 +194,7 @@ export const Experience = () => {
 
         <button
           type="button"
-          className="type-body-lg-semi ml-4 min-w-0 self-start rounded-2xl bg-theme-fg-100 px-4 py-3 text-theme-bg-100 sm:min-w-80 md:ml-14"
+          className="type-body-lg-semi md:max-w-[320px] mx-4 rounded-2xl bg-theme-fg-100 px-4 py-3 text-center text-theme-bg-100 md:mx-14"
         >
           Try now →
         </button>

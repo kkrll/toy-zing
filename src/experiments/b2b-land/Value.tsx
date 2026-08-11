@@ -79,7 +79,7 @@ const ValueCard = ({
   type: "operational" | "business";
 }) => {
   return (
-    <ul className="grid w-full grid-cols-2 gap-4 overflow-hidden md:gap-12">
+    <ul className="grid w-full grid-cols-2 lg:grid-cols-4 gap-4 overflow-hidden md:gap-12">
       {items.map(({ text, icon: Icon }) => (
         <li
           key={text}
@@ -110,28 +110,26 @@ export const Value = () => {
           </p>
         </div>
 
-        <div className="grid gap-12 md:grid-cols-[2fr_1fr] md:gap-24">
-          <div className="flex flex-col gap-10 py-4 md:gap-32 md:py-8">
-            <div className="grid grid-cols-1 items-baseline md:grid-cols-[1fr_3fr] gap-14">
+        <div className="flex flex-col gap-10 py-4 md:gap-32 md:py-8">
+          <div className="grid grid-cols-1 items-baseline md:grid-cols-[1fr_4fr] gap-6 md:gap-14">
+            <h3 className="type-heading-h">
+              Operational <br className="hidden md:block" />
+              value
+            </h3>
+            <ValueCard items={OPERATIONAL_VALUE} type="operational" />
+          </div>
+
+          <div className="flex flex-col gap-10 md:gap-4">
+            <div className="grid grid-cols-1 items-baseline md:grid-cols-[1fr_4fr] gap-6 md:gap-14">
               <h3 className="type-heading-h">
-                Operational <br className="hidden md:block" />
+                Business <br className="hidden md:block" />
                 value
               </h3>
-              <ValueCard items={OPERATIONAL_VALUE} type="operational" />
-            </div>
-
-            <div className="flex flex-col gap-10 md:gap-4">
-              <div className="grid grid-cols-1 items-baseline md:grid-cols-[1fr_3fr] gap-14">
-                <h3 className="type-heading-h">
-                  Business <br className="hidden md:block" />
-                  value
-                </h3>
-                <ValueCard items={BUSINESS_VALUE} type="business" />
-              </div>
+              <ValueCard items={BUSINESS_VALUE} type="business" />
             </div>
           </div>
-          <div className="hidden md:block w-full h-full rounded-3xl bg-cover bg-center bg-[url('/img/Member%20page/card-in-gym.png')]"></div>
         </div>
+        {/*<div className="hidden md:block w-full h-full rounded-3xl bg-cover bg-center bg-[url('/img/Member%20page/card-in-gym.png')]"></div>*/}
 
         <div className="h-px my-12 bg-theme-bg-300 w-full" />
 

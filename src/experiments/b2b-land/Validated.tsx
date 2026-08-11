@@ -6,6 +6,7 @@ const METRICS = [
 
 const BG = "/img/Member%20page/nysc-bg.png";
 const BILL = "/img/Member%20page/bill-mcmenamy.png";
+const NYSC = "/img/Member%20page/nysc.png";
 
 export const Validated = () => {
   return (
@@ -13,7 +14,9 @@ export const Validated = () => {
       id="validated"
       className="relative mx-auto flex max-w-screen-xl flex-col gap-10 px-4 py-16 md:gap-18 md:px-14 md:py-32"
     >
-      <h2 className="type-heading-h1">Validated in the real world</h2>
+      <h2 className="type-heading-h1 text-balance">
+        Validated in the real world
+      </h2>
       <ul className="grid grid-cols-1 gap-6 md:gap-2 sm:grid-cols-2 lg:grid-cols-4 border-b pb-8">
         {METRICS.map((metric) => (
           <li key={metric.value} className="flex flex-col gap-1">
@@ -25,7 +28,7 @@ export const Validated = () => {
             </span>
           </li>
         ))}
-        <div className="flex items-end pt-4">
+        <div className="flex items-end -mt-3 pt-0 md:mt-0 md:pt-4">
           <p className="type-body-lg text-theme-text-disabled md:max-w-[20ch] italic">
             *According to internal Zing&apos;s research
           </p>
@@ -36,7 +39,7 @@ export const Validated = () => {
         style={{ backgroundImage: `url(${BG})` }}
       >
         <div className="flex flex-col gap-8 px-4 py-8 md:gap-12 md:px-14 md:py-16 md:pl-16 md:pr-0">
-          <div className="flex flex-col gap-2 mb-16">
+          <div className="flex flex-col gap-2 mb-4 md:mb-16">
             <svg
               className="mb-2 w-24"
               viewBox="0 0 240 113"
@@ -64,27 +67,31 @@ export const Validated = () => {
                 fill="currentColor"
               />
             </svg>
-            <h3 className="type-heading-h2 text-balance">
+            <h3 className="type-heading-h3 md:type-heading-h2 text-balance">
               How one of America&apos;s largest gym operators scaled coaching
               beyond PT capacity
             </h3>
           </div>
-          <dl className="flex flex-col gap-6 md:gap-12">
+          <dl className="flex flex-col gap-10 md:gap-12">
             <div className="flex flex-col gap-1">
-              <dt className="type-heading-h3">New York Sports Club</dt>
+              <dt className="type-body-lg-semi md:type-heading-h3">
+                New York Sports Club
+              </dt>
               <dd className="type-body-md text-theme-text-secondary-inv">
                 Partner
               </dd>
             </div>
-            <div className="flex gap-8">
+            <div className="flex gap-10 md:gap-8">
               <div className="flex flex-col gap-1">
-                <dt className="type-heading-h3">Live</dt>
+                <dt className="type-body-lg-semi md:type-heading-h3">Live</dt>
                 <dd className="type-body-md text-theme-text-secondary-inv">
                   since April, 2026
                 </dd>
               </div>
               <div className="flex flex-col gap-1">
-                <dt className="type-heading-h3">2.3x / week</dt>
+                <dt className="type-body-lg-semi md:type-heading-h3">
+                  2.3x / week
+                </dt>
                 <dd className="type-body-md text-theme-text-secondary-inv">
                   average workout per user
                 </dd>
@@ -97,7 +104,7 @@ export const Validated = () => {
                 alt="Bill McMenamy"
               />
               <blockquote className="flex flex-col gap-2">
-                <p className="type-heading-h3 text-balance">
+                <p className="type-body-lg-semi md:type-heading-h3 text-balance">
                   “I tried to trick it a million ways, and it always comes back
                   with what’s right for you.”
                 </p>
@@ -108,8 +115,12 @@ export const Validated = () => {
             </div>
           </dl>
         </div>
-        <div className="flex min-h-56 items-center justify-center bg-theme-bg-400 md:min-h-0">
-          video
+        <div className="relative flex min-h-[28rem] items-end justify-center bg-theme-fg-300 md:min-h-[40rem]">
+          <img
+            src={NYSC}
+            alt="New York Sports Club"
+            className="size-full object-contain object-bottom"
+          />
         </div>
       </div>
     </section>

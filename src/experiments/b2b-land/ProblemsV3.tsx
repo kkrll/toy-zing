@@ -17,8 +17,12 @@ const WILL = "/img/Member%20page/will-orr.jpeg";
  * are just what that cell happens to fit into each container at the artboard's width. So
  * the cell is the constant here and the counts are measured, rather than the counts being
  * fixed and the cells coming out a different size in each grid.
+ *
+ * A single size, with no narrow variant, because the grids are md and up: below that the
+ * section drops them along with the scroll animation that sweeps them.
  */
-const CELL = { wide: { size: 19, gap: 6 }, narrow: { size: 12, gap: 4 } };
+const CELL = { size: 19, gap: 6 };
+const RADIUS = "rounded-[4px]";
 
 /** Act one is a portrait block: the top rows are PT, and the rule splits it in half. */
 const ACT_ONE_ROWS = 18;
@@ -28,8 +32,15 @@ const ACT_TWO_ROWS = 4;
 /** The design's 3 of 34 — kept as a share so it survives any column count. */
 const ACT_TWO_PT_SHARE = 3 / 34;
 
-/** Tracks the breakpoint the cell size switches on, so both grids change together. */
-const useCellMetrics = () => {
+/**
+ * md — the breakpoint the grids and the whole scroll animation live above.
+ *
+ * The stylesheet already hides the grid columns below it; this is what keeps their cells
+ * out of the DOM rather than merely out of sight, since a hidden act one is still 252
+ * elements. Seeded wide so the server and the first paint agree on the desktop markup —
+ * the CSS has the columns hidden on a narrow screen before this prunes them.
+ */
+const useIsWide = () => {
   const [wide, setWide] = useState(true);
 
   useEffect(() => {
@@ -41,7 +52,7 @@ const useCellMetrics = () => {
     return () => query.removeEventListener("change", update);
   }, []);
 
-  return wide ? CELL.wide : CELL.narrow;
+  return wide;
 };
 
 /**
@@ -106,8 +117,7 @@ const buildActOne = (cols: number) => {
       l: (col + row * ptLean) / maxPt,
       // Measured up from the last row and in from the last column, so the band empties
       // from the bottom-right corner towards the rule rather than draining away from it.
-      d:
-        (ACT_ONE_ROWS - 1 - row + (cols - 1 - col) * churnLean) / maxChurn,
+      d: (ACT_ONE_ROWS - 1 - row + (cols - 1 - col) * churnLean) / maxChurn,
     };
   });
 };
@@ -158,17 +168,15 @@ const ActOneCell = ({
   role,
   l,
   d,
-  radius,
 }: {
   role: ActOneRole;
   l: number;
   d: number;
-  radius: string;
 }) => (
   <div
     className={cn(
       "relative aspect-square",
-      radius,
+      RADIUS,
       role === "pt" && styles.cellPt,
       role === "churn" && styles.cellChurn,
       // The churn band's grey fades out to leave an outline, so it needs its own layer to
@@ -182,7 +190,7 @@ const ActOneCell = ({
         className={cn(
           styles.layerPt,
           "absolute inset-0 bg-theme-fg-400",
-          radius,
+          RADIUS,
         )}
       />
     )}
@@ -192,14 +200,14 @@ const ActOneCell = ({
           className={cn(
             styles.layerSolid,
             "absolute inset-0 bg-theme-bg-300",
-            radius,
+            RADIUS,
           )}
         />
         <div
           className={cn(
             styles.layerOutline,
             "absolute inset-0 border border-theme-bg-400",
-            radius,
+            RADIUS,
           )}
         />
       </>
@@ -231,9 +239,9 @@ export const ProblemsV3 = () => {
   const actOneRef = useRef<HTMLDivElement>(null);
   const actTwoRef = useRef<HTMLDivElement>(null);
 
-  const { size, gap } = useCellMetrics();
-  const actOneCols = useColumns(actOneRef, size, gap, 14);
-  const actTwoCols = useColumns(actTwoRef, size, gap, 34);
+  const isWide = useIsWide();
+  const actOneCols = useColumns(actOneRef, CELL.size, CELL.gap, 14);
+  const actTwoCols = useColumns(actTwoRef, CELL.size, CELL.gap, 34);
 
   if (reduced) return <Problems />;
 
@@ -263,32 +271,34 @@ export const ProblemsV3 = () => {
   // width and hand the two grids cells that differ by a pixel or two.
   // `cols` is 0 until the observer has measured, and `repeat(0, …)` is invalid.
   const gridStyle = (cols: number): CSSProperties => ({
-    gridTemplateColumns: `repeat(${Math.max(1, cols)}, ${size}px)`,
-    gap: `${gap}px`,
+    gridTemplateColumns: `repeat(${Math.max(1, cols)}, ${CELL.size}px)`,
+    gap: `${CELL.gap}px`,
   });
 
-  const radius = size >= 16 ? "rounded-[4px]" : "rounded-[3px]";
-
-  const actOneCells = buildActOne(actOneCols);
+  // Below md the grid columns are hidden and there is no sweep to run, so the cells are
+  // not built at all rather than laid out behind `display: none`.
+  const actOneCells = isWide ? buildActOne(actOneCols) : [];
+  const actTwoCells = isWide ? buildActTwo(actTwoCols) : [];
   const splitAt = (ACT_ONE_ROWS / 2) * actOneCols;
 
   return (
     <section className="mx-auto flex max-w-screen-xl flex-col px-4 md:px-14">
       <div ref={runwayRef} className={styles.runway}>
         {/* Exactly one viewport, and it clips — act two waits below the fold inside it
-            rather than hanging off the bottom of a taller pinned box. */}
-        <div className={cn(styles.stage, "sticky top-0 h-svh")}>
+            rather than hanging off the bottom of a taller pinned box. Only above md:
+            below it there is no pin and the two acts simply follow each other. */}
+        <div className={cn(styles.stage, "md:sticky md:top-0 md:h-svh")}>
           <div
             className={cn(styles.track, "flex flex-col pt-24 pb-12")}
             style={
               {
-                "--cell-size": `${size}px`,
-                "--cell-gap": `${gap}px`,
+                "--cell-size": `${CELL.size}px`,
+                "--cell-gap": `${CELL.gap}px`,
               } as CSSProperties
             }
           >
             {/* ── Act one ───────────────────────────────────────────────────── */}
-            <div className="grid min-h-[calc(100svh-9rem)] grid-cols-1 content-center gap-10 md:grid-cols-[minmax(0,1fr)_auto] md:gap-16">
+            <div className="grid grid-cols-1 content-center gap-10 md:min-h-[calc(100svh-12rem)] md:mb-12 md:grid-cols-[minmax(0,1fr)_auto] md:gap-16  md:border-b md:border-theme-bg-300">
               <div className="flex flex-col max-w-lg gap-8 md:gap-10">
                 <h2 className="type-heading-h1 text-balance">
                   95% of your members never receive coaching
@@ -299,11 +309,15 @@ export const ProblemsV3 = () => {
                     <button
                       key={message.title}
                       type="button"
+                      // The card scrolls to the beat it captions, so below md — where
+                      // there is no runway and no beat — it is copy rather than a
+                      // control, and shouldn't sit in the tab order as one.
+                      disabled={!isWide}
                       onClick={() => scrollToRest(message.rest)}
                       className={cn(
                         styles.card,
                         index === 0 ? styles.cardOne : styles.cardTwo,
-                        "relative flex cursor-pointer flex-col gap-1 overflow-hidden rounded-3xl border border-transparent p-6 text-left",
+                        "relative flex flex-col gap-1 overflow-hidden rounded-3xl border border-transparent p-6 text-left md:cursor-pointer",
                       )}
                     >
                       <div
@@ -360,7 +374,9 @@ export const ProblemsV3 = () => {
                 </div>
               </div>
 
-              <div className="flex flex-col gap-4 md:w-[clamp(240px,30vw,460px)]">
+              {/* Grid and legend leave together below md — the legend is a caption for
+                  cells that are no longer there. */}
+              <div className="hidden flex-col gap-4 md:flex md:w-[clamp(240px,30vw,460px)]">
                 {/* The grid is one continuous block; the rule is an overlay rather than a
                     row of its own, so claiming the midpoint costs no gap in the picture.
                     With uniform rows the midpoint gap sits at exactly 50% of the height. */}
@@ -379,7 +395,7 @@ export const ProblemsV3 = () => {
                   <div className="inline-flex flex-col">
                     <div className="grid" style={gridStyle(actOneCols)}>
                       {actOneCells.slice(0, splitAt).map((cell, i) => (
-                        <ActOneCell key={i} {...cell} radius={radius} />
+                        <ActOneCell key={i} {...cell} />
                       ))}
                     </div>
 
@@ -396,7 +412,7 @@ export const ProblemsV3 = () => {
 
                     <div className="grid" style={gridStyle(actOneCols)}>
                       {actOneCells.slice(splitAt).map((cell, i) => (
-                        <ActOneCell key={i} {...cell} radius={radius} />
+                        <ActOneCell key={i} {...cell} />
                       ))}
                     </div>
                   </div>
@@ -488,7 +504,8 @@ export const ProblemsV3 = () => {
                 </div>
               </div>
 
-              <div className="flex flex-col gap-4">
+              {/* Same as act one: the wide grid and its legend are md and up. */}
+              <div className="hidden flex-col gap-4 md:flex">
                 <div
                   ref={actTwoRef}
                   className={cn(styles.actTwoBeat, styles.actTwoGrid)}
@@ -499,12 +516,12 @@ export const ProblemsV3 = () => {
                     role="img"
                     aria-label="Every member reached: a few by PT alone, the rest by PT plus Zing AI"
                   >
-                    {buildActTwo(actTwoCols).map(({ pt, l, gx }, i) => (
+                    {actTwoCells.map(({ pt, l, gx }, i) => (
                       <div
                         key={i}
                         className={cn(
                           "relative aspect-square",
-                          radius,
+                          RADIUS,
                           pt ? "bg-theme-fg-400" : "bg-theme-bg-300",
                           styles.cellOrchid,
                         )}
@@ -516,7 +533,7 @@ export const ProblemsV3 = () => {
                           className={cn(
                             styles.layerOrchid,
                             "absolute inset-0",
-                            radius,
+                            RADIUS,
                           )}
                         />
                       </div>

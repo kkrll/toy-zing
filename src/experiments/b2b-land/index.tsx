@@ -73,8 +73,57 @@ const useForceLightScheme = () => {
   }, []);
 };
 
+/**
+ * The colour the browser should paint its own chrome — on iOS, the strip behind the
+ * status bar.
+ *
+ * Left alone, Safari falls back to the document background, which is `<main>`'s white,
+ * while the hero directly under it starts at bg-200. The result is a white band with a
+ * seam ruled straight across the top of the screen. The hero's tint comes from a
+ * multiply overlay whose own gradients are transparent at the top, so what shows there
+ * is the overlay's base colour and nothing else.
+ *
+ * Read off the token rather than written as a hex: `theme-color` is an HTML attribute
+ * and cannot hold a `var()`, so this is the only way to keep the stylesheet the one
+ * place the colour is defined. Reading it needs the light-scheme variables to already be
+ * on the root, which is why this is a second effect rather than part of that one —
+ * effects run in call order.
+ */
+const useTopBackground = () => {
+  useEffect(() => {
+    const value = getComputedStyle(document.documentElement)
+      .getPropertyValue("--ds-theme-bg-200")
+      .trim();
+
+    // A custom property's computed value has its `var()`s substituted, so this is a
+    // literal colour — but it is a token stream by type, and a malformed one would be
+    // handed to the browser as chrome paint. Only ship it if it reads as a colour.
+    if (!/^(#|rgb|color\()/.test(value)) return;
+
+    // Written to the document rather than rendered through `next/head`, for the same
+    // reason `useForceLightScheme` writes its variables: the value isn't known until
+    // the page has computed styles, and routing it back through render to get it into
+    // the markup is a cascade to produce a tag React would only hand to the DOM anyway.
+    // Adopts an existing tag if the document already has one, so this restores on the
+    // way out instead of deleting someone else's.
+    const existing = document.head.querySelector('meta[name="theme-color"]');
+    const meta = existing ?? document.createElement("meta");
+    const previous = existing?.getAttribute("content") ?? null;
+
+    meta.setAttribute("name", "theme-color");
+    meta.setAttribute("content", value);
+    if (!existing) document.head.appendChild(meta);
+
+    return () => {
+      if (!existing) meta.remove();
+      else if (previous !== null) meta.setAttribute("content", previous);
+    };
+  }, []);
+};
+
 const B2BLand = () => {
   useForceLightScheme();
+  useTopBackground();
   const [heroVersion, setHeroVersion] = useState<1 | 2>(2);
 
   return (

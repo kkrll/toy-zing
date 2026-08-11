@@ -53,7 +53,7 @@ export const AidenV2 = () => {
         </div>
 
         <div className="grid gap-12 md:grid-cols-2">
-          <ul className="grid w-full grid-cols-1 gap-2 self-start md:gap-4">
+          <ul className="order-2 grid w-full grid-cols-1 gap-2 self-start md:order-1 md:gap-4">
             {FEATURES.map((feature, index) => (
               <li key={feature.title} className="flex flex-col gap-4">
                 {index !== 0 && (
@@ -74,23 +74,23 @@ export const AidenV2 = () => {
             ))}
           </ul>
 
-          <div className="relative aspect-16/10 overflow-hidden rounded-4xl bg-theme-bg-300 md:aspect-auto md:min-h-full">
+          <div className="relative order-1 aspect-3/2 overflow-hidden rounded-4xl bg-theme-bg-300 md:order-2 md:aspect-auto md:min-h-full">
             <img
               src={FEATURED.image}
               alt=""
-              className="absolute inset-0 size-full scale-150 object-cover"
+              className="absolute inset-0 size-full object-cover"
             />
             <img
               src={FEATURED.ui}
               alt=""
-              className="absolute bottom-0 right-2 w-4/5 min-w-105 object-cover md:w-[85%]"
+              className="absolute inset-0 size-full object-contain object-center p-4 md:p-6"
             />
           </div>
         </div>
 
         <a
           href={DEMO_CALENDAR_URL}
-          className="type-body-lg-semi self-start rounded-2xl bg-theme-fg-100 px-4 py-3 text-theme-bg-100 sm:min-w-3xs sm:text-center"
+          className="type-body-lg-semi w-full rounded-2xl bg-theme-fg-100 px-4 py-3 text-center text-theme-bg-100"
         >
           Get Demo →
         </a>
