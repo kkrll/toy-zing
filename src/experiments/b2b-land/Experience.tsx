@@ -8,26 +8,31 @@ const FEATURES = [
     title: "Proactive AI Coach",
     description:
       "Keeps members engaged with timely guidance, motivation and support — inside and outside the gym",
+    image: "/img/Member%20page/feature-proactive-coach.png",
   },
   {
     title: "Adaptive Training Intelligence",
     description:
       "Continuously adapts training plans to each member’s goals, progress, recovery and changing circumstances",
+    image: "/img/Member%20page/feature-adaptive-training.png",
   },
   {
     title: "Automated Progress Tracking",
     description:
       "Tracks strength, body composition and physical progress over time—without manual assessments or additional hardware",
+    image: "/img/Member%20page/feature-progress.png",
   },
   {
     title: "Nutrition",
     description:
       "Delivers personalized nutrition guidance based on each member’s goals and progress",
+    image: "/img/Member%20page/feature-nutrition.png",
   },
   {
     title: "Engagement",
     description:
       "Builds lasting exercise habits through streaks, challenges, strength scores and personalized milestones",
+    image: "/img/Member%20page/feature-engagement.png",
   },
 ] as const;
 
@@ -162,7 +167,13 @@ export const Experience = () => {
                 key={feature.title}
                 className="flex w-64 shrink-0 snap-start flex-col gap-1 sm:w-80"
               >
-                <div className="mb-4 h-72 w-full overflow-hidden rounded-3xl bg-theme-bg-main-section sm:h-96" />
+                <div className="mb-4 h-72 w-full overflow-hidden rounded-3xl bg-theme-bg-main-section sm:h-96">
+                  <img
+                    src={feature.image}
+                    alt=""
+                    className="size-full object-cover"
+                  />
+                </div>
                 <h3 className="type-body-lg-semi">{feature.title}</h3>
                 <p className="type-body-lg text-theme-text-secondary">
                   {feature.description}

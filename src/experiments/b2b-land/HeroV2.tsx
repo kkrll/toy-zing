@@ -1,7 +1,7 @@
 const STATS = [
   { value: "42%", label: "3-months coaching retention" },
   { value: "7.5M+", label: "workouts completed" },
-  { value: "850k", label: "paying users" },
+  { value: "850k", label: "users coached" },
 ] as const;
 
 const LOGO_BASE = "/img/Member%20page/logos";
@@ -82,12 +82,12 @@ export const HeroV2 = () => {
         <div className="relative z-10 order-1 mx-auto w-full max-w-screen-xl px-4 md:px-14 lg:pt-[20svh] md:order-none md:pt-0">
           <div className="flex flex-col gap-3 md:max-w-[50%]">
             <h1 className="type-heading-h1 text-balance">
-              Provide every member <br className="hidden sm:block" />
-              with a personal coach
+              Every gym member, <br className="hidden sm:block" />
+              Personally coached
             </h1>
             <p className="type-body-lg md:max-w-3xl text-balance">
-              Keep everyone engaged with personalized coaching, not just the 5%
-              who can afford a personal trainer
+              Keep more members engaged for longer, without scaling your
+              coaching team
             </p>
           </div>
         </div>
@@ -99,10 +99,10 @@ export const HeroV2 = () => {
                 key={stat.value}
                 className="flex w-full items-baseline gap-1 rounded-2xl bg-theme-bg-100/70 px-3 py-3 backdrop-blur-sm flex-col md:bg-theme-bg-100/30 md:px-4 md:backdrop-blur-none"
               >
-                <span className="type-heading-h3 lg:type-heading-h1">
+                <span className="type-heading-h3 md:type-heading-h2 xl:type-heading-h1">
                   {stat.value}
                 </span>
-                <span className="type-body-md text-theme-text-secondary md:type-body-lg md:text-theme-text-primary">
+                <span className="type-body-md text-theme-text-secondary md:type-body-sm xl:type-body-lg md:text-theme-text-primary">
                   {stat.label}
                 </span>
               </li>
@@ -131,7 +131,7 @@ export const HeroV2 = () => {
             container, so the items' `snap-start` would bind to the next one up — the
             document, which AidenV2 makes snappable — and turn the strip into six
             vertical snap points on the way into the section below. */}
-        <ul className="flex w-full snap-x snap-mandatory gap-6 overflow-x-auto pb-2 md:flex-wrap md:items-stretch md:justify-center md:gap-8 md:overflow-visible md:pb-0">
+        <ul className="flex w-full snap-x snap-mandatory gap-4 overflow-x-auto pb-2 md:flex-wrap md:items-stretch md:justify-center md:overflow-visible md:pb-0">
           {TRUST_ITEMS.partners.map((item) => (
             <li
               key={item.name}
@@ -142,8 +142,10 @@ export const HeroV2 = () => {
                 alt=""
                 className="mb-2 h-8 w-auto object-contain opacity-40 grayscale transition-opacity duration-200 group-hover:opacity-100"
               />
-              <span className="type-body-md-semi">{item.name}</span>
-              <span className="type-body-sm text-theme-text-secondary">
+              <span className="type-body-sm-medium lg:type-body-md-semi pb-1">
+                {item.name}
+              </span>
+              <span className="type-body-caption text-theme-text-secondary">
                 {item.detail}
               </span>
             </li>
@@ -159,8 +161,10 @@ export const HeroV2 = () => {
                 alt=""
                 className="mb-2 h-8 w-auto object-contain opacity-40 grayscale transition-opacity duration-200 group-hover:opacity-100"
               />
-              <span className="type-body-md-semi">{item.name}</span>
-              <span className="type-body-sm text-theme-text-secondary">
+              <span className="type-body-sm-medium lg:type-body-md-semi pb-1">
+                {item.name}
+              </span>
+              <span className="type-body-caption text-theme-text-secondary">
                 {item.detail}
               </span>
             </li>

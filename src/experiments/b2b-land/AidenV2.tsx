@@ -83,7 +83,7 @@ export const AidenV2 = () => {
             <img
               src={FEATURED.ui}
               alt=""
-              className="absolute bottom-0 left-1/2 w-4/5 -translate-x-1/2 object-cover md:w-[85%]"
+              className="absolute bottom-0 right-2 w-4/5 min-w-105 object-cover md:w-[85%]"
             />
           </div>
         </div>

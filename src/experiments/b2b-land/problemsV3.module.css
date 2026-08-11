@@ -1,0 +1,600 @@
+/*
+ * Problems V3 — the five-phase cut.
+ *
+ * Same scrub engine as V2 (see problems.module.css for the long argument): the browser
+ * drives one number, `--p3-p`, from 0 to 1 across the pinned travel, and every beat is
+ * derived from it with calc(). Nothing runs on scroll in JS.
+ *
+ * What changed is the shape of the story, not the machinery. V2 argued over one
+ * full-bleed grid; V3 splits into two acts — a portrait grid beside a stack of cards
+ * that hands off between them, then a second act below where a wide grid fills with
+ * coaching. So the stage is now taller than the viewport by a whole act, and the drift
+ * that V2 used to nudge a few svh here carries the section from one act to the next.
+ *
+ * Timeline:
+ *
+ *   0.03       where the section arrives — the PT band is already a quarter in
+ *   0.00–0.12  the PT band fills, top three rows, left to right
+ *   0.12–0.20  hold                                   card one lit, legend A
+ *   0.20–0.24  the midpoint rule draws
+ *   0.20–0.42  the lower half hollows to outline, top down
+ *   0.42–0.48  hold                                   card two lit, legend B
+ *   0.48–0.56  the quote card arrives
+ *   0.56–0.62  hold
+ *   0.62–0.78  the stage travels to act two; its copy and grid enter behind it
+ *   0.78–0.96  orchid sweeps the wide grid, left to right
+ *   0.96–1.00  hold
+ *
+ * Scroll is budgeted by how much moves, as in V2. The PT band is 42 cells and gets 12%;
+ * the churn sweep is 126 and the orchid sweep 124, and they get 22% and 18%. The act
+ * handover gets 16% despite moving no cells at all, because it moves the whole stage.
+ */
+
+@property --p3-p {
+    syntax: "<number>";
+    inherits: true;
+    initial-value: 1;
+}
+
+/* Half-width of each wave's soft leading edge, in axis units. */
+@property --p3-wave {
+    syntax: "<number>";
+    inherits: true;
+    initial-value: 0.14;
+}
+
+@property --p3-pt-front {
+    syntax: "<number>";
+    inherits: true;
+    initial-value: 1;
+}
+
+@property --p3-churn-front {
+    syntax: "<number>";
+    inherits: true;
+    initial-value: 1;
+}
+
+@property --p3-orchid-front {
+    syntax: "<number>";
+    inherits: true;
+    initial-value: 1;
+}
+
+/*
+ * A cell's position across the full width of act two's grid, 0 at the left edge and 1 at
+ * the right. Registered so the color-mix below resolves it as a number rather than
+ * re-parsing tokens on every cell.
+ *
+ * It must inherit: the value is set on the cell, but it is read by the fill layer inside
+ * it. Registered as `inherits: false` the layer saw the initial 0 instead of its cell's
+ * position, and every cell in the grid painted the dark end of the ramp.
+ */
+@property --gx {
+    syntax: "<number>";
+    inherits: true;
+    initial-value: 0;
+}
+
+.runway {
+    --runway: 520svh;
+
+    /* Each beat's own 0→1, clipped to its slice of the runway. */
+    --pt-band: clamp(0, calc(var(--p3-p) / 0.12), 1);
+    --churn-band: clamp(0, calc((var(--p3-p) - 0.2) / 0.22), 1);
+    --orchid-band: clamp(0, calc((var(--p3-p) - 0.78) / 0.18), 1);
+
+    /*
+     * Where the leading edge of each wave sits on its axis. It starts one wave-width
+     * short of the near end and finishes at the far one, so a band of 0 leaves every
+     * cell untouched rather than having already painted the origin cells.
+     */
+    --p3-pt-front: calc(var(--pt-band) * (1 + var(--p3-wave)) - var(--p3-wave));
+    --p3-churn-front: calc(
+        var(--churn-band) * (1 + var(--p3-wave)) - var(--p3-wave)
+    );
+    --p3-orchid-front: calc(
+        var(--orchid-band) * (1 + var(--p3-wave)) - var(--p3-wave)
+    );
+
+    position: relative;
+    height: var(--runway);
+    view-timeline-name: --p3-runway;
+    view-timeline-axis: block;
+}
+
+/*
+ * Cells.
+ *
+ * Each carries where it sits along its own sweep — `--l` for the left-to-right ones,
+ * `--d` for the churn band's top-down one. Subtracting that from the front and dividing
+ * by the wave width gives the cell its own 0→1, so one expression covers every cell of
+ * a band regardless of how many columns the layout has.
+ */
+
+/*
+ * Rests at exactly 1 like every other cell: until the wave reaches it a PT cell *is* an
+ * uncoached cell and has to be indistinguishable from one. The dark fill arriving is the
+ * whole of the change, and `.layerPt` crossfades it in over the grey underneath.
+ *
+ * A cell swells slightly as the front crosses it and settles back — t(1-t) peaks at
+ * 0.25, so this tops out around 1.075 and is exactly 1 at both ends.
+ */
+.cellPt {
+    --pt: clamp(0, calc((var(--p3-pt-front) - var(--l)) / var(--p3-wave) + 1), 1);
+
+    transform: scale(calc(1 + 0.3 * var(--pt) * (1 - var(--pt))));
+}
+
+.layerPt {
+    opacity: var(--pt);
+}
+
+/*
+ * The churn band recedes rather than restyling: the design draws a churned chip at 12px
+ * against a grey one's 19px, so it loses 37% of its size as it hollows out, and the
+ * outline sits at 60% opacity so it reads as barely there.
+ */
+.cellChurn {
+    --churn: clamp(
+        0,
+        calc((var(--p3-churn-front) - var(--d)) / var(--p3-wave) + 1),
+        1
+    );
+
+    transform: scale(calc(1 - 0.37 * var(--churn)));
+}
+
+.layerSolid {
+    opacity: calc(1 - var(--churn));
+}
+
+.layerOutline {
+    opacity: calc(var(--churn) * 0.6);
+}
+
+/*
+ * Act two's grid. Same swell as the PT band, and the mark rides in on the fill — white
+ * at 30% inside the artwork, so it reads as texture across a hundred cells rather than
+ * as a logo repeated a hundred times.
+ */
+.cellOrchid {
+    --orchid: clamp(
+        0,
+        calc((var(--p3-orchid-front) - var(--l)) / var(--p3-wave) + 1),
+        1
+    );
+
+    transform: scale(calc(1 + 0.3 * var(--orchid) * (1 - var(--orchid))));
+}
+
+/*
+ * The design masks the whole act-two grid out of a single left-to-right gradient, so a
+ * cell's colour is a function of where it sits across the grid, not of what it is: the
+ * leftmost cells land on the dark end and the rightmost on full orchid, and the PT
+ * columns stop being a separate dark band once the sweep reaches them. `--gx` carries
+ * that position, so each cell samples its own slice of the one ramp.
+ */
+.layerOrchid {
+    opacity: var(--orchid);
+    background-color: color-mix(
+        in srgb,
+        var(--ds-color-orchid-500) calc(var(--gx) * 100%),
+        var(--ds-theme-fg-300)
+    );
+    background-image: url("/img/zing-mark.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+/* The legend swatch for the coached state shows the mark on its own chip. */
+.legendMark {
+    background-image: url("/img/zing-mark.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+/*
+ * The rule that splits the grid in half is the thing that makes "50%" a claim about the
+ * picture rather than a number next to it, so it draws from the left as the hollowing
+ * starts rather than being there all along.
+ */
+.rule {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+/*
+ * The seam between the halves. At rest it is exactly one row gap, so the grid reads as a
+ * single uninterrupted block; it opens by a cell's height as the rule draws, which is
+ * what gives the rule somewhere to sit and makes the split look deliberate rather than
+ * like a line laid over a continuous grid.
+ *
+ * This animates `height`, so it does lay out each frame — but only this one element, and
+ * only across the 4% of the runway the rule is drawing over.
+ */
+.split {
+    position: relative;
+    height: calc(var(--cell-gap) + var(--cell-size));
+}
+
+/*
+ * The pinned box is exactly one viewport, and the acts travel *inside* it.
+ *
+ * The obvious alternative — one sticky element as tall as both acts, translated up — has
+ * a fault that only shows at the end. Sticky releases when the element's bottom reaches
+ * the runway's bottom, which for a two-viewport element is a whole viewport *before* the
+ * `contain` range ends. For that last stretch the stage is unpinned but still translated
+ * by its full overhang, so it rides up the page and leaves precisely that much dead
+ * space under the section. Pinning a viewport-tall box makes the pin last exactly as
+ * long as the timeline that drives it, and there is nothing left over to fall out of
+ * alignment.
+ */
+.stage {
+    overflow: hidden;
+}
+
+/*
+ * `100svh - 100%` is viewport minus track height: 0 when the track fits, and exactly the
+ * hidden remainder when it doesn't. `min()` with 0px keeps a short track from travelling
+ * downwards.
+ *
+ * The travel is the track's own overhang and never more. Driving it from act one's height
+ * instead — to land act two at the top of the frame — overshoots by however much shorter
+ * than a viewport act two is: the track moves further than it has content to move, which
+ * throws act two up past where it settles and leaves that same distance blank underneath.
+ * Anchoring to the overhang means the track's bottom edge parks on the viewport's, so
+ * there is nothing left over at either end.
+ */
+.track {
+    --act-gap: 4rem;
+    --overhang: min(0px, calc(100svh - 100%));
+
+    gap: var(--act-gap);
+    transform: translateY(0);
+}
+
+/*
+ * Everything below is the composed end state — what a browser with no scroll-driven
+ * animations gets, and what `prefers-reduced-motion` never reaches because the component
+ * renders the plain section instead.
+ */
+.card,
+.cardVeil,
+.quoteCard,
+.legendB {
+    opacity: 1;
+}
+
+.legendA {
+    opacity: 0;
+}
+
+.actTwoBeat {
+    opacity: 1;
+    transform: none;
+}
+
+@supports (animation-timeline: view()) {
+    .runway {
+        animation: p3-scrub linear both;
+        animation-timeline: --p3-runway;
+        animation-range: contain;
+        animation-duration: auto;
+    }
+
+    .track,
+    .split,
+    .card,
+    .cardVeil,
+    .quoteCard,
+    .rule,
+    .legendA,
+    .legendB,
+    .actTwoBeat,
+    .actTwoGate {
+        animation-timeline: --p3-runway;
+        animation-range: contain;
+        animation-duration: auto;
+        animation-fill-mode: both;
+    }
+
+    .track {
+        animation-name: p3-track;
+    }
+
+    .cardOne {
+        animation-name: p3-card-one;
+    }
+
+    .cardTwo {
+        animation-name: p3-card-two;
+    }
+
+    .cardVeilOne {
+        animation-name: p3-veil-one;
+    }
+
+    .cardVeilTwo {
+        animation-name: p3-veil-two;
+    }
+
+    .quoteCard {
+        animation-name: p3-quote-card;
+    }
+
+    .rule {
+        animation-name: p3-rule;
+    }
+
+    .split {
+        animation-name: p3-split;
+    }
+
+    .legendA {
+        animation-name: p3-legend-a;
+    }
+
+    .legendB {
+        animation-name: p3-legend-b;
+    }
+
+    .actTwoLead {
+        animation-name: p3-act-two-lead;
+    }
+
+    .actTwoCopy {
+        animation-name: p3-act-two-copy;
+    }
+
+    .actTwoLabel {
+        animation-name: p3-act-two-label;
+    }
+
+    .actTwoGrid {
+        animation-name: p3-act-two-grid;
+    }
+
+    .actTwoLegend {
+        animation-name: p3-act-two-legend;
+    }
+
+    .actTwoGate {
+        animation-name: p3-act-two-gate;
+    }
+}
+
+/*
+ * `contain` runs from the moment the runway's top meets the top of the viewport to the
+ * moment its bottom meets the bottom — precisely the span the sticky child is pinned
+ * for. So keyframe percentages here are progress values and read directly against the
+ * timeline at the top of the file.
+ *
+ * It starts at 0.03 rather than 0 so the section arrives with the band already filling
+ * rather than with a grid that hasn't begun.
+ */
+@keyframes p3-scrub {
+    from {
+        --p3-p: 0.03;
+    }
+    to {
+        --p3-p: 1;
+    }
+}
+
+/*
+ * Held through act one, travelling across the handover, held again while orchid sweeps —
+ * so both acts are read against a fixed frame and only the move between them is in
+ * motion.
+ */
+@keyframes p3-track {
+    0%,
+    62% {
+        transform: translateY(0);
+    }
+    78%,
+    100% {
+        transform: translateY(var(--overhang));
+    }
+}
+
+/*
+ * The cards hand over at the *tail* of each hold rather than the head. A beat's composed
+ * state is the thing its card is captioning, so the card has to outlive the beat by the
+ * length of the hold — keying the swap to the head meant the band finished filling and
+ * the card explaining it dimmed on the same frame. That also gives each card a resting
+ * state to be clicked *to*: `MESSAGES[].rest` sits in the middle of the window where the
+ * beat is done and its card is still lit.
+ */
+@keyframes p3-card-one {
+    0%,
+    18% {
+        opacity: 1;
+    }
+    20%,
+    100% {
+        opacity: 0.45;
+    }
+}
+
+@keyframes p3-card-two {
+    0%,
+    18% {
+        opacity: 0.45;
+    }
+    20%,
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Gradient stays painted underneath; the veil crossfades over it, because a
+ * background-image swap has nothing to interpolate. */
+@keyframes p3-veil-one {
+    0%,
+    18% {
+        opacity: 0;
+    }
+    20%,
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes p3-veil-two {
+    0%,
+    18% {
+        opacity: 1;
+    }
+    20%,
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes p3-quote-card {
+    0%,
+    48% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    56%,
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes p3-rule {
+    0%,
+    20% {
+        transform: scaleX(0);
+    }
+    24%,
+    100% {
+        transform: scaleX(1);
+    }
+}
+
+/* Opens on exactly the rule's beat, so the two read as one gesture. */
+@keyframes p3-split {
+    0%,
+    20% {
+        height: var(--cell-gap);
+    }
+    24%,
+    100% {
+        height: calc(var(--cell-gap) + var(--cell-size));
+    }
+}
+
+/*
+ * Legend A captions a grid that is only two states deep; once the churn sweep starts it
+ * would be describing a picture that no longer exists, so the two swap in the same slot
+ * at the same handover the cards use.
+ */
+@keyframes p3-legend-a {
+    0%,
+    18% {
+        opacity: 1;
+    }
+    20%,
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes p3-legend-b {
+    0%,
+    18% {
+        opacity: 0;
+    }
+    20%,
+    100% {
+        opacity: 1;
+    }
+}
+
+/*
+ * Act two's parts trail the stage's travel rather than waiting for it to finish —
+ * overlapping the two is what stops the handover reading as a pause — and they arrive in
+ * reading order, the wide grid last so it is in place just as orchid starts to cross it.
+ */
+@keyframes p3-act-two-lead {
+    0%,
+    62% {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    72%,
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes p3-act-two-copy {
+    0%,
+    65% {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    75%,
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes p3-act-two-label {
+    0%,
+    68% {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    77%,
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes p3-act-two-grid {
+    0%,
+    70% {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    78%,
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Keyed to the sweep it captions, not to the grid's arrival. */
+@keyframes p3-act-two-legend {
+    0%,
+    80% {
+        opacity: 0;
+    }
+    88%,
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Act two is off-screen and transparent for most of the runway; without this its cards
+ * would still swallow clicks aimed at act one. */
+@keyframes p3-act-two-gate {
+    0%,
+    71.9% {
+        pointer-events: none;
+    }
+    72%,
+    100% {
+        pointer-events: auto;
+    }
+}

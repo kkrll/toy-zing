@@ -15,6 +15,7 @@ import { Stories } from "./Stories";
 import { Validated } from "./Validated";
 import { Value } from "./Value";
 import { ProblemsV2 } from "./ProblemsV2";
+import { ProblemsV3 } from "./ProblemsV3";
 
 /** Light theme tokens — mirrors :root in semantic-colors.css */
 const LIGHT_SCHEME_VARS: Record<string, string> = {
@@ -86,8 +87,8 @@ const B2BLand = () => {
       )}
       <Stories />
       {heroVersion === 1 && <HeroV1 />}
-      <ProblemsV2 />
-      {/*<ProblemsV3 />*/}
+      {/*<ProblemsV2 />*/}
+      <ProblemsV3 />
       {/*<Infrastructure />*/}
       <Value />
       <Validated />

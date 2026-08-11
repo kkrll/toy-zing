@@ -67,7 +67,6 @@ export const Stories = () => {
               className="h-full w-full object-cover"
               playsInline
               controls
-              autoPlay
               preload="metadata"
               src={VIDEO_SRC}
               onEnded={() => setPlaying(false)}

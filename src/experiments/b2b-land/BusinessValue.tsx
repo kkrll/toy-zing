@@ -52,58 +52,51 @@ export const BusinessValue = () => {
   const dimOthers = hoveredIndex !== null;
 
   return (
-    <div className="flex flex-col gap-8 rounded-3xl bg-theme-bg-200 md:gap-16">
+    <div className="flex flex-col gap-8 rounded-3xl bg-theme-bg-200 md:gap-16 pb-12 md:pb-20">
       <div className="flex flex-col">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="flex flex-col gap-4">
-            <h3 className="type-heading-h2 md:pt-24">
-              How Zing creates <br />
-              business value
-            </h3>
-            <ol className="grid grid-cols-1 max-w-xs rounded-2xl overflow-hidden">
-              {VALUE_CHAIN.map((step, index) => {
-                const isHovered = hoveredIndex === index;
-                const isDimmed = dimOthers && !isHovered;
+          <h3 className="order-1 type-heading-h2 md:col-start-1 md:row-start-1 ">
+            How Zing creates <br />
+            business value
+          </h3>
 
-                return (
-                  <li
-                    key={step.label}
-                    className="h-full border-b border-theme-bg-300 last:border-none"
+          <ol className="order-3 grid grid-cols-1 md:order-none md:col-start-1 md:row-start-2 md:max-w-xs">
+            {VALUE_CHAIN.map((step, index) => {
+              const isHovered = hoveredIndex === index;
+              const isDimmed = dimOthers && !isHovered;
+
+              return (
+                <li key={step.label} className="h-full">
+                  <button
+                    type="button"
+                    onMouseEnter={() => setHoveredIndex(index)}
+                    onMouseLeave={() => setHoveredIndex(null)}
+                    className={cn(
+                      "flex w-full h-full items-center px-2 py-2 gap-2 text-left rounded-xl transition-[colors,opacity] duration-300",
+                      isHovered ? "cursor-pointer" : "",
+                      isDimmed ? "opacity-55" : "",
+                    )}
+                    style={{
+                      background: isHovered ? "var(--ds-theme-bg-100)" : "",
+                    }}
                   >
-                    <button
-                      type="button"
-                      onMouseEnter={() => setHoveredIndex(index)}
-                      onMouseLeave={() => setHoveredIndex(null)}
+                    <span
                       className={cn(
-                        "flex w-full h-full items-center px-2 py-2 gap-2 text-left transition-[colors,opacity] duration-300",
-                        isDimmed
-                          ? "text-theme-text-disabled opacity-50"
-                          : "text-theme-text-primary opacity-100",
+                        "size-4 shrink-0 rounded-md transition-colors duration-300",
+                        step.swatch,
                       )}
-                      style={{
-                        background: isHovered
-                          ? "var(--ds-theme-bg-100)"
-                          : "color-mix(in oklab, var(--ds-theme-bg-300) 30%, transparent)",
-                      }}
-                    >
-                      <span
-                        className={cn(
-                          "size-4 shrink-0 rounded-md transition-colors duration-300",
-                          step.swatch,
-                        )}
-                        aria-hidden
-                      />
-                      <div className="flex items-center type-body-md h-full text-balance text-center">
-                        {step.label}
-                      </div>
-                    </button>
-                  </li>
-                );
-              })}
-            </ol>
-          </div>
+                      aria-hidden
+                    />
+                    <div className="flex items-center type-body-md h-full text-balance text-center">
+                      {step.label}
+                    </div>
+                  </button>
+                </li>
+              );
+            })}
+          </ol>
 
-          <figure className="flex flex-col justify-end gap-4 overflow-x-auto pt-2 border-b border-b-theme-bg-300">
+          <figure className="order-2 flex flex-col justify-end gap-4 overflow-x-auto pt-2 border-b border-b-theme-bg-300 md:order-none md:col-start-2 md:row-start-1 md:row-span-2">
             <div
               className="relative flex h-56 min-w-72 items-stretch justify-center gap-4 md:gap-8 sm:h-72 sm:gap-16"
               aria-label="Member LTV comparison: Today vs With Zing"
